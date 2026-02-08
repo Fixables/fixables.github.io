@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Andy Setiawan's Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="mediaqueries.css" />
+
+    <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png" />
+  </head>
+  <body>
+    <nav id="desktop-nav">
+      <a href="index.html" class="logo">Andy Setiawan</a>
+      <div>
+        <ul class="nav-links">
+          <li><a href="index.html#about2">About</a></li>
+          <li><a href="experience.html">Experience</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+    <nav id="hamburger-nav">
+      <a href="index.html" class="logo">Andy Setiawan</a>
+      <div class="hamburger-menu">
+        <div class="hamburger-icon" onclick="toggleMenu()">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="menu-links">
+          <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
+          <li>
+            <a href="experience.html" onclick="toggleMenu()">Experience</a>
+          </li>
+          <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+        </div>
+      </div>
+    </nav>
+    <section id="profile">
+      <div class="section__pic-container">
+        <img
+          src="./assets/DSCF4746-rd.png"
+          alt="Andy Setiawan Profile Picture"
+        />
+      </div>
+      <div class="section__text">
+        <h1 class="title">Andy Setiawan</h1>
+        <p class="section__text__p1">An Electrical Engineering Student</p>
+        <div class="btn-container">
+          <button
+            class="btn btn-color-1"
+            onclick="window.open('./assets/cv-andy.pdf')"
+          >
+            Download CV
+          </button>
+        </div>
+        <div id="socials-container">
+          <img
+            src="./assets/linkedin.png"
+            alt="My LinkedIn Profile"
+            class="icon"
+            onclick="
+              location.href = 'https://www.linkedin.com/in/andysetiawan1405/'
+            "
+          />
+          <img
+            src="./assets/github.png"
+            alt="My GitHub Profile"
+            class="icon"
+            onclick="location.href = 'https://github.com/Fixables'"
+          />
+          <a href="mailto:andykintamani@gmail.com">
+            <img src="./assets/email.png" alt="Email" class="icon" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about2" class="about2-section">
+      <h1 class="title">About Me</h1>
+      <div class="about2-container">
+        <div class="about2-image">
+          <img src="./assets/about-pic.jpg" alt="Andy Setiawan" />
+        </div>
+
+        <div class="about2-text">
+          <p>
+            Heya! 👋 I'm Andy Setiawan, an Electrical Engineering student at UBC
+            with a passion for building robots, automation, and fixing things
+            others gave up on. From Bali to Vancouver, my journey's been a mix
+            of hands-on repair, tinkering with microcontrollers, and guiding
+            others through the magic of electronics.
+            <br /><br />
+            I'm all about mixing creativity with logic, and I enjoy sharing what
+            I learn along the way—whether it's making a portable oscilloscope or
+            cracking tricky math problems. Always up for a challenge and a good
+            chat about tech, so feel free to reach out!
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <h1 class="title">My Journey So Far...</h1>
+
+      <!-- Tab radios (hidden) -->
+      <input type="radio" name="tabset" id="tab1" checked />
+      <input type="radio" name="tabset" id="tab2" />
+
+      <!-- Tab buttons -->
+      <div class="tab-buttons">
+        <label for="tab1" class="tab-toggle">Experience</label>
+        <label for="tab2" class="tab-toggle">Education</label>
+      </div>
+
+      <!-- Panels container -->
+      <div class="tab-panels">
+        <!-- experience PANEL -->
+        <div class="tab-panel experience-panel">
+          <ul class="timeline">
+            <!-- ELEC 201 TA -->
+            <li>
+              <div class="timeline-icon">
+                <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
+                  <img src="./assets/ubc-logo.png" alt="UBC logo" />
+                </a>
+              </div>
+              <div class="timeline-body">
+                <span class="timeline-date">Sept 2025 – Present</span>
+                <h4 class="timeline-place">
+                  UBC Electrical and Computer Engineering Department
+                </h4>
+                <span class="timeline-role"
+                  ><b>ELEC 201 Teaching Assistant</b></span
+                >
+                <ul class="timeline-desc">
+                  <li>
+                    Facilitating bi-weekly lab sessions for 40+ undergraduate
+                    students in circuit fundamentals, including resistive
+                    networks, Kirchhoff’s Laws, Thevenin equivalents, and
+                    first-order RC/RL circuits.
+                  </li>
+                  <li>
+                    Mentoring students on active components such as transistors,
+                    diodes, rectifiers, 555 timer oscillators, and operational
+                    amplifiers to build practical troubleshooting and analytical
+                    intuition.
+                  </li>
+                  <li>
+                    Supporting midterm assessments and WebWork evaluations to
+                    maintain academic integrity and consistency across lab
+                    sections.
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Biological Internet of Things -->
+            <li>
+              <div class="timeline-icon">
+                <a href="https://ubcbiot.com/" target="_blank" rel="noopener">
+                  <img src="./assets/biot_logo1.jpeg" alt="BIoT logo" />
+                </a>
+              </div>
+              <div class="timeline-body">
+                <span class="timeline-date">Sept 2025 – Present</span>
+                <h4 class="timeline-place">Biological Internet of Things</h4>
+                <span class="timeline-role"
+                  ><b>Instrumentation Team, BrewBox</b></span
+                >
+                <ul class="timeline-desc">
+                  <li>
+                    Designing and integrating environmental sensors to monitor
+                    key brewing parameters such as temperature, pH, dissolved
+                    oxygen, and fermentation activity.
+                  </li>
+                  <li>
+                    Developing the “BrewBox,” a compact IoT system that
+                    consolidates all sensor inputs into a microcontroller hub
+                    for real-time data acquisition, calibration, and wireless
+                    dashboard transmission.
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Open Robotics -->
+            <li>
+              <div class="timeline-icon">
+                <a
+                  href="https://openrobotics.ca/"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <img
+                    src="./assets/ubc_open_robotics_logo.jpeg"
+                    alt="Open Robotics logo"
+                  />
+                </a>
+              </div>
+              <div class="timeline-body">
+                <span class="timeline-date">Sept 2023 – Present</span>
+                <h4 class="timeline-place">
+                  Open Robotics, Engineering Design Team
+                </h4>
+                <span class="timeline-role"
+                  ><b>Electrical Power Team, Robocup@Home</b></span
+                >
+                <ul class="timeline-desc">
+                  <li>
+                    Designed and implemented power distribution and safety
+                    cutoff circuits for autonomous robots, achieving more than
+                    95% power efficiency and less than 50 ms emergency response
+                    times.
+                  </li>
+                  <li>
+                    Collaborating across electrical, software, and mechanical
+                    subteams to ensure reliable system performance and real-time
+                    responsiveness.
+                  </li>
+                </ul>
+                <span class="timeline-role"><b>Haptic Knob Project</b></span>
+                <ul class="timeline-desc">
+                  <li>
+                    Developing a closed-loop BLDC motor control system to
+                    generate haptic torque feedback that emulates RLC circuit
+                    behaviors, using current sensing, encoder feedback, and
+                    PID-based control on the ESP32-PICO.
+                  </li>
+                  <li>
+                    Assisting in hardware and firmware integration for the motor
+                    driver, encoder, and SPI OLED display, ensuring stable
+                    communication and real-time responsiveness.
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- Tjahya Electronics -->
+            <li>
+              <div class="timeline-icon">
+                <a
+                  href="https://maps.app.goo.gl/TETcxMwJH3gHsx8H8"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <img
+                    src="./assets/tjahya.jpeg"
+                    alt="Tjahya Electronics logo"
+                  />
+                </a>
+              </div>
+              <div class="timeline-body">
+                <span class="timeline-date">2016 – Present</span>
+                <h4 class="timeline-place">
+                  Tjahya Electronics, Kintamani Bali
+                </h4>
+                <span class="timeline-role"
+                  ><b>Electrical Technician Apprentice &amp; Sales Rep</b></span
+                >
+                <ul class="timeline-desc">
+                  <li>
+                    Diagnosed and repaired 100+ electrical devices—including
+                    CRT/LED televisions, speakers, and household
+                    appliances—using systematic debugging, continuity checks,
+                    and component-level replacement to restore full
+                    functionality and extend device lifespan by up to 50%.
+                  </li>
+                  <li>
+                    Upgraded 20+ legacy speaker systems by integrating Bluetooth
+                    modules, redesigning control boards, and modifying casings
+                    to enhance usability and extend product value.
+                  </li>
+                  <li>
+                    Calibrated and installed digital and satellite TV receivers
+                    to detect Indonesian communication satellites (Ku-Band,
+                    Telkom 3S, Palapa-D, Measat), and developed an all-in-one
+                    USB configuration tool that automated firmware installation
+                    and channel setup, reducing configuration time by 80%.
+                  </li>
+                  <li>
+                    Managed store operations including inventory tracking,
+                    component pricing, and supplier coordination, maintaining
+                    stock of 200+ electronic components and 100+ household
+                    electrical appliances.
+                  </li>
+                  <li>
+                    Provided on-site technical support, achieving a 90% customer
+                    satisfaction rate through clear communication and
+                    personalized service.
+                  </li>
+                  <li>
+                    Providing ongoing remote assistance and consultation while
+                    pursuing full-time studies at UBC.
+                  </li>
+                </ul>
+                <!-- end .timeline-desc -->
+              </div>
+              <!-- end .timeline-body -->
+            </li>
+            <!-- end Tjahya timeline item -->
+          </ul>
+          <!-- end .timeline -->
+
+          <div class="view-more-container">
+            <a href="experience.html" class="view-more-btn"> View More → </a>
+          </div>
+        </div>
+        <!-- end experience panel -->
+
+        <!-- EDUCATION PANEL -->
+        <div class="tab-panel edu-panel">
+          <ul class="timeline">
+            <!-- UBC -->
+            <li>
+              <div class="timeline-icon">
+                <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
+                  <img src="./assets/ubc-logo.png" alt="UBC logo" />
+                </a>
+              </div>
+              <div class="timeline-body">
+                <span class="timeline-date"
+                  >2023 – Expected Graduation: 2027</span
+                >
+                <h4 class="timeline-place">
+                  University of British Columbia, Vancouver BC
+                </h4>
+                <span class="timeline-role"
+                  >B.A.Sc. in Electrical Engineering</span
+                >
+                <ul class="timeline-desc">
+                  <li>
+                    Indonesia Maju Scholarship Awardee (full-ride, CAD 400,000+
+                    funded by Indonesia’s MoECRT).
+                  </li>
+                  <li>Dean’s List.</li>
+                  <li>
+                    Faculty of Applied Science International Student Scholarship
+                    (CAD 8,125.00).
+                  </li>
+                  <li>
+                    Kenneth George VanSacker Memorial Scholarship (CAD
+                    1,500.00).
+                  </li>
+                </ul>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+    <!-- SKILLS SECTION -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills-container">
+        <span class="skill">Python</span>
+        <span class="skill">C / Embedded C</span>
+        <span class="skill">MATLAB</span>
+        <span class="skill">ARM Assembly</span>
+        <span class="skill">Verilog</span>
+        <span class="skill">Power Electronics</span>
+        <span class="skill">Control Systems</span>
+        <span class="skill">Hardware Integration</span>
+        <span class="skill">PCB Design (Altium)</span>
+        <span class="skill">LTSpice</span>
+        <span class="skill">OnShape</span>
+        <span class="skill">Quartus & ModelSim</span>
+        <span class="skill">Oscilloscopes & Multimeters</span>
+        <span class="skill">Wave Generators</span>
+        <span class="skill">8051 Microcontrollers</span>
+        <span class="skill">DE1-SoC</span>
+        <span class="skill">Drilling, Filing, Soldering (SMT & THT)</span>
+      </div>
+    </section>
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <!-- Coin Picking Robot -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="./assets/coin-picking.jpg" alt="Coin Picking Robot" />
+          </div>
+          <h3>Coin Picking Robot</h3>
+          <p>
+            Three-wheeled robot to detect and pick up coins. Switches between
+            autonomous and manual via radio.
+          </p>
+          <!-- <a
+            href="https://github.com/YourRepo"
+            class="source-btn"
+            target="_blank"
+            rel="noopener"
+          >
+             <svg viewBox="0 0 16 16" class="source-icon" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
+                       5.47 7.59.4.07.55-.17.55-.38 
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 
+                       1.87.87 2.33.66.07-.52.28-.87.51-1.07
+                       -1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                       0 0 .67-.21 2.2.82a7.56 7.56 
+                       0 0 1 2-.27c.68.003 1.36.092 
+                       2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                       1.48 0 1.07-.01 1.93-.01 2.19 
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 
+                       16 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+            Source
+          </a> -->
+        </div>
+
+        <!-- Reflow Oven -->
+        <div class="project-card">
+          <div class="project-image">
+            <img src="./assets/reflow-oven.jpg" alt="Reflow Oven Controller" />
+          </div>
+          <h3>Reflow Oven</h3>
+          <p>
+            Controlled a reflow oven with an 8051 MCU and relay. Displayed data
+            and logged thermal profiles in Python.
+          </p>
+          <!-- <a
+            href="https://github.com/YourRepo"
+            class="source-btn"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 16 16" class="source-icon" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
+                       5.47 7.59.4.07.55-.17.55-.38 
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 
+                       1.87.87 2.33.66.07-.52.28-.87.51-1.07
+                       -1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                       0 0 .67-.21 2.2.82a7.56 7.56 
+                       0 0 1 2-.27c.68.003 1.36.092 
+                       2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                       1.48 0 1.07-.01 1.93-.01 2.19 
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 
+                       16 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+            Source
+          </a> -->
+        </div>
+
+        <!-- Oscilloscope & Multimeter -->
+        <div class="project-card">
+          <div class="project-image">
+            <img
+              src="./assets/oscilloscope-multimeter.png"
+              alt="Oscilloscope and Multimeter"
+            />
+          </div>
+          <h3>Oscilloscope & Multimeter</h3>
+          <p>
+            Measured voltage, resistance, and capacitance. Visualized readings
+            in real-time via serial and Python.
+          </p>
+          <!-- <a
+            href="https://github.com/YourRepo"
+            class="source-btn"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 16 16" class="source-icon" aria-hidden="true">
+              <path
+                fill-rule="evenodd"
+                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
+                       5.47 7.59.4.07.55-.17.55-.38 
+                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+                       -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 
+                       1.87.87 2.33.66.07-.52.28-.87.51-1.07
+                       -1.78-.2-3.64-.89-3.64-3.95
+                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+                       0 0 .67-.21 2.2.82a7.56 7.56 
+                       0 0 1 2-.27c.68.003 1.36.092 
+                       2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
+                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+                       1.48 0 1.07-.01 1.93-.01 2.19 
+                       0 .21.15.46.55.38A8.013 8.013 0 0 0 
+                       16 8c0-4.42-3.58-8-8-8z"
+              ></path>
+            </svg>
+            Source
+          </a> -->
+        </div>
+        <!-- “More Projects” card -->
+        <a href="projects.html" class="view-more-btn">
+          <h2>More Projects →</h2>
+        </a>
+      </div>
+    </section>
+
+    <!-- SOCIALS FOOTER -->
+    <footer id="footer-socials">
+      <p class="footer-text">Find me here</p>
+      <div class="footer-icons">
+        <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank">
+          <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" />
+        </a>
+        <a href="https://github.com/Fixables" target="_blank">
+          <img src="./assets/github.png" alt="GitHub" class="icon" />
+        </a>
+        <a href="mailto:andykintamani@gmail.com">
+          <img src="./assets/email.png" alt="Email" class="icon" />
+        </a>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
