@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const container = {
   hidden: {},
@@ -14,56 +15,66 @@ const container = {
 }
 
 const item = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.21, 0.47, 0.32, 0.98] } },
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] } },
 }
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center pcb-bg overflow-hidden">
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/60 via-zinc-950/40 to-zinc-950 pointer-events-none" />
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-32">
+    <section className="relative min-h-screen flex items-center overflow-hidden">
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-32 w-full">
         <motion.div
           variants={container}
           initial="hidden"
           animate="show"
-          className="max-w-3xl"
+          className="flex flex-col sm:flex-row items-center sm:items-start gap-10"
         >
-          <motion.p variants={item} className="font-mono text-sky-400 text-sm tracking-widest uppercase mb-6">
-            Embedded Systems · Firmware · PCB Design
-          </motion.p>
-
-          <motion.h1
-            variants={item}
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-zinc-50 tracking-tight leading-[1.05] mb-6"
-          >
-            Andy Setiawan
-          </motion.h1>
-
-          <motion.p variants={item} className="text-xl sm:text-2xl text-zinc-400 font-light leading-relaxed mb-4 max-w-2xl">
-            Electrical Engineering student at UBC. Building hardware that moves — motor control, firmware, and PCB design from schematic to silicon.
-          </motion.p>
-
-          <motion.p variants={item} className="font-mono text-green-300 text-sm mb-10">
-            {'>'} CAD $400k+ merit scholarship · 7 years hands-on electronics repair
-          </motion.p>
-
-          <motion.div variants={item} className="flex flex-wrap gap-4">
-            <Link
-              href="/projects"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-sky-400 text-zinc-950 font-semibold rounded-lg hover:bg-sky-300 transition-colors"
-            >
-              View Projects <ArrowRight size={16} />
-            </Link>
-            <a
-              href="/assets/resume.pdf"
-              className="inline-flex items-center gap-2 px-6 py-3 border border-zinc-700 text-zinc-300 rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors"
-            >
-              Download CV <Download size={16} />
-            </a>
+          {/* Profile photo */}
+          <motion.div variants={item} className="flex-shrink-0">
+            <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-full overflow-hidden border-2 border-zinc-800 bg-zinc-900">
+              <Image
+                src="/assets/DSCF4746-rd.png"
+                alt="Andy Setiawan"
+                width={176}
+                height={176}
+                className="object-cover w-full h-full"
+                priority
+              />
+            </div>
           </motion.div>
+
+          {/* Text */}
+          <div className="text-center sm:text-left">
+            <motion.p variants={item} className="text-zinc-400 text-base mb-3">
+              Hey there! 👋
+            </motion.p>
+
+            <motion.h1
+              variants={item}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-50 tracking-tight leading-tight mb-4"
+            >
+              I'm Andy Setiawan
+            </motion.h1>
+
+            <motion.p variants={item} className="text-lg text-zinc-400 leading-relaxed mb-8 max-w-xl">
+              Electrical Engineering student at UBC — I love building things, breaking things, and figuring out why they broke.
+            </motion.p>
+
+            <motion.div variants={item} className="flex flex-wrap gap-4 justify-center sm:justify-start">
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-sky-400 text-zinc-950 font-semibold rounded-lg hover:bg-sky-300 transition-colors text-sm"
+              >
+                See my work <ArrowRight size={15} />
+              </Link>
+              <a
+                href="/assets/cv-andy.pdf"
+                className="inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-700 text-zinc-300 rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors text-sm"
+              >
+                Download CV <Download size={15} />
+              </a>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>

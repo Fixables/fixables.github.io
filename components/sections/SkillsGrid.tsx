@@ -1,20 +1,17 @@
 import { skillCategories } from '@/data/skills'
-import SectionHeading from '@/components/ui/SectionHeading'
 import AnimatedReveal from '@/components/ui/AnimatedReveal'
 
 export default function SkillsGrid() {
   return (
-    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-24 border-t border-zinc-800">
+    <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20 border-t border-zinc-800/60">
       <AnimatedReveal>
-        <SectionHeading
-          label="02 — SKILLS"
-          heading="Technical Expertise"
-          subheading="Grouped by domain. Deep hands-on experience from repair bench to firmware to PCB layout."
-          className="mb-12"
-        />
+        <div className="mb-10">
+          <p className="font-mono text-xs text-sky-400 tracking-widest uppercase mb-3">Skillset</p>
+          <h2 className="text-3xl sm:text-4xl font-bold text-zinc-50 tracking-tight">What I work with</h2>
+        </div>
       </AnimatedReveal>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {skillCategories.map((category, i) => (
           <AnimatedReveal key={category.id} delay={i * 0.08}>
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
