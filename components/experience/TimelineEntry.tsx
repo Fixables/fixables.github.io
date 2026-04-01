@@ -13,13 +13,6 @@ const typeColors: Record<string, string> = {
   volunteer: 'bg-amber-400',
 }
 
-const typeLabels: Record<string, string> = {
-  work: 'Work',
-  education: 'Education',
-  'design-team': 'Design Team',
-  volunteer: 'Volunteer',
-}
-
 export default function TimelineEntry({ entry }: TimelineEntryProps) {
   return (
     <AnimatedReveal>
@@ -42,9 +35,6 @@ export default function TimelineEntry({ entry }: TimelineEntryProps) {
           {/* Header */}
           <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
             <div>
-              <span className={`inline-block font-mono text-xs px-2 py-0.5 rounded mb-2 ${typeColors[entry.type]} text-zinc-950`}>
-                {typeLabels[entry.type]}
-              </span>
               <h3 className="text-lg font-semibold text-zinc-50">{entry.role}</h3>
               <p className="text-sky-400 font-medium">{entry.organization}</p>
               <p className="text-sm text-zinc-500">{entry.location}</p>

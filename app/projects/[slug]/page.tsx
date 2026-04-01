@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import PageWrapper from '@/components/layout/PageWrapper'
 import TechBadge from '@/components/projects/TechBadge'
@@ -42,16 +41,7 @@ export default function ProjectPage({ params }: PageProps) {
             <TechBadge label={project.category} variant="category" />
             <span className="font-mono text-sm text-zinc-500">{project.date}</span>
           </div>
-          <div className="flex items-center gap-3 mb-4">
-            {project.logo && (
-              <a href={project.logoUrl ?? '#'} target="_blank" rel="noopener noreferrer">
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-zinc-700 bg-zinc-800 flex-shrink-0">
-                  <Image src={project.logo} alt="" width={40} height={40} className="object-cover w-full h-full" />
-                </div>
-              </a>
-            )}
-            <h1 className="text-4xl sm:text-5xl font-bold text-zinc-50 tracking-tight">{project.title}</h1>
-          </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-50 tracking-tight mb-4">{project.title}</h1>
           <p className="text-xl text-zinc-400 mb-6 max-w-2xl">{project.tagline}</p>
           <div className="flex flex-wrap gap-2 mb-8">
             {project.tags.map((tag) => (
