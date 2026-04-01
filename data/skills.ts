@@ -7,39 +7,39 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
   {
-    id: 'firmware',
-    label: 'Firmware & RTOS',
+    id: 'programming',
+    label: 'Programming',
     color: '#38bdf8',
-    skills: ['C', 'C++', 'FreeRTOS', 'CMSIS', 'STM32 HAL', 'ARM Cortex-M', 'Bare Metal'],
+    skills: ['C', 'C++', 'Python', 'MATLAB', 'ARM Assembly', 'Verilog', 'Arduino'],
+  },
+  {
+    id: 'embedded',
+    label: 'Embedded & Firmware',
+    color: '#86efac',
+    skills: ['ESP32', 'STM32', '8051', 'FreeRTOS', 'UART', 'SPI', 'I2C', 'PWM', 'Microbit'],
   },
   {
     id: 'hardware',
-    label: 'PCB & Hardware',
-    color: '#86efac',
-    skills: ['Altium Designer', 'KiCad', '4-Layer PCB', 'Schematic Capture', 'DFM', 'SMD Soldering'],
-  },
-  {
-    id: 'motor-control',
-    label: 'Motor Control',
+    label: 'CAD & Simulation',
     color: '#f59e0b',
-    skills: ['FOC', 'PID Control', 'H-Bridge', 'BLDC', 'DC Motor', 'Encoder Feedback', 'DRV8313'],
-  },
-  {
-    id: 'peripherals',
-    label: 'Peripherals & Protocols',
-    color: '#a78bfa',
-    skills: ['UART', 'SPI', 'I2C', 'CAN Bus', 'ADC', 'PWM', 'DMA', 'Timers'],
+    skills: ['Altium Designer', 'LTSpice', 'Simulink', 'Quartus', 'ModelSim', 'OnShape', 'Tinkercad'],
   },
   {
     id: 'instrumentation',
-    label: 'Test & Instrumentation',
+    label: 'Instrumentation',
     color: '#fb7185',
-    skills: ['Oscilloscope', 'Logic Analyzer', 'Multimeter', 'Bench PSU', 'JTAG/SWD', 'PCB Repair'],
+    skills: ['Oscilloscope', 'Multimeter', 'Function Generator', 'Bench PSU', 'Soldering (SMT & THT)'],
   },
   {
-    id: 'software',
-    label: 'Software & Tools',
+    id: 'fabrication',
+    label: 'Fabrication',
+    color: '#a78bfa',
+    skills: ['PCB Assembly', 'Drilling', 'Filing', 'Wiring', 'Mechanical Assembly', 'SMD Rework'],
+  },
+  {
+    id: 'tools',
+    label: 'Collaboration & Tools',
     color: '#34d399',
-    skills: ['Python', 'Git', 'Linux', 'STM32CubeIDE', 'VS Code', 'Make', 'GDB'],
+    skills: ['Git', 'Excel', 'Word', 'Teams', 'Documentation', 'Project Management'],
   },
 ]

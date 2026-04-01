@@ -29,7 +29,7 @@ export default function ProjectsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-24">
         <div className="mb-12">
           <SectionHeading
-            label="02 — PROJECTS"
+            label="PROJECTS"
             heading="All Projects"
             subheading="Firmware, PCB design, embedded systems, and robotics."
           />

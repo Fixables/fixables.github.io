@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { ExperienceEntry } from '@/types/experience'
 import AnimatedReveal from '@/components/ui/AnimatedReveal'
 
@@ -23,8 +24,19 @@ export default function TimelineEntry({ entry }: TimelineEntryProps) {
   return (
     <AnimatedReveal>
       <div className="relative pl-12 sm:pl-16">
-        {/* Dot */}
-        <div className={`absolute left-2.5 sm:left-4 top-1.5 w-3 h-3 rounded-full ${typeColors[entry.type]} ring-4 ring-zinc-950`} />
+        {/* Dot or logo */}
+        {entry.logo ? (
+          <a
+            href={entry.logoUrl ?? '#'}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute left-0 sm:left-1 top-1 w-8 h-8 rounded-full overflow-hidden border border-zinc-700 bg-zinc-800 block"
+          >
+            <Image src={entry.logo} alt="" width={32} height={32} className="object-cover w-full h-full" />
+          </a>
+        ) : (
+          <div className={`absolute left-2.5 sm:left-4 top-1.5 w-3 h-3 rounded-full ${typeColors[entry.type]} ring-4 ring-zinc-950`} />
+        )}
 
         <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
           {/* Header */}
@@ -56,9 +68,9 @@ export default function TimelineEntry({ entry }: TimelineEntryProps) {
           {/* Highlights */}
           <ul className="space-y-2">
             {entry.highlights.map((highlight, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-zinc-400">
-                <span className="text-sky-400 mt-1 flex-shrink-0">›</span>
-                {highlight}
+              <li key={i} className="flex gap-2 text-sm text-zinc-400 leading-relaxed">
+                <span className="text-sky-400 flex-shrink-0 leading-relaxed">›</span>
+                <span>{highlight}</span>
               </li>
             ))}
           </ul>

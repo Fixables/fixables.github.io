@@ -8,12 +8,12 @@ export default function ContactPage() {
   return (
     <PageWrapper>
       <div className="max-w-2xl mx-auto px-4 py-24">
-        <SectionHeading label="05 — CONTACT" heading="Get in Touch" />
+        <SectionHeading label="CONTACT" heading="Get in Touch" />
         <p className="text-zinc-400 mt-4 mb-12">
           Open to embedded systems roles, firmware engineering positions, and interesting hardware projects. Feel free to reach out.
         </p>
         <form
-          action="https://formsubmit.co/your-email@example.com"
+          action="https://formsubmit.co/andy.setiawan9910@gmail.com"
           method="POST"
           className="space-y-6"
         >
@@ -59,15 +59,15 @@ export default function ContactPage() {
           </button>
         </form>
         <div className="mt-12 flex gap-6">
-          <a href="https://github.com/fixables" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
+          <a href="https://github.com/Fixables" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
             <Github size={20} />
             <span>GitHub</span>
           </a>
-          <a href="mailto:contact@example.com" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
+          <a href="mailto:andy.setiawan9910@gmail.com" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
             <Mail size={20} />
             <span>Email</span>
           </a>
-          <a href="https://linkedin.com" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
+          <a href="https://www.linkedin.com/in/andysetiawan1405/" className="flex items-center gap-2 text-zinc-400 hover:text-sky-400 transition-colors">
             <Linkedin size={20} />
             <span>LinkedIn</span>
           </a>

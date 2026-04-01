@@ -12,7 +12,7 @@ export default function Footer() {
         </p>
         <div className="flex items-center gap-5">
           <a
-            href="https://github.com/fixables"
+            href="https://github.com/Fixables"
             target="_blank"
             rel="noopener noreferrer"
             className="text-zinc-500 hover:text-sky-400 transition-colors"
@@ -21,7 +21,7 @@ export default function Footer() {
             <Github size={18} />
           </a>
           <a
-            href="https://linkedin.com/in/andysetiawan"
+            href="https://www.linkedin.com/in/andysetiawan1405/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-zinc-500 hover:text-sky-400 transition-colors"
@@ -30,7 +30,7 @@ export default function Footer() {
             <Linkedin size={18} />
           </a>
           <a
-            href="mailto:andysetiawan@example.com"
+            href="mailto:andy.setiawan9910@gmail.com"
             className="text-zinc-500 hover:text-sky-400 transition-colors"
             aria-label="Email"
           >

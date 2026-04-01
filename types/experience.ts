@@ -11,6 +11,7 @@ export interface ExperienceEntry {
   highlights: string[]
   tags?: string[]
   logo?: string
+  logoUrl?: string
   scholarship?: {
     amount: string
     description: string

@@ -1,8 +1,9 @@
 'use client'
 
-import { Suspense, useRef, useState, useCallback } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Suspense, useRef, useState, useCallback, useEffect } from 'react'
+import { Canvas, useThree } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF, Html, useProgress } from '@react-three/drei'
+import { Box3, Vector3 } from 'three'
 import { RotateCcw } from 'lucide-react'
 
 function Loader() {
@@ -19,6 +20,27 @@ function Loader() {
 
 function Model({ url }: { url: string }) {
   const { scene } = useGLTF(url)
+  const { camera } = useThree()
+
+  useEffect(() => {
+    // Auto-fit camera to model bounding box regardless of model scale/units
+    const box = new Box3().setFromObject(scene)
+    const size = new Vector3()
+    const center = new Vector3()
+    box.getSize(size)
+    box.getCenter(center)
+
+    const maxDim = Math.max(size.x, size.y, size.z)
+    const fovRad = (camera as any).fov ? ((camera as any).fov * Math.PI) / 180 : Math.PI / 4
+    const distance = (maxDim / (2 * Math.tan(fovRad / 2))) * 1.8
+
+    camera.position.set(center.x, center.y + maxDim * 0.3, center.z + distance)
+    camera.lookAt(center)
+    ;(camera as any).near = distance * 0.001
+    ;(camera as any).far = distance * 100
+    camera.updateProjectionMatrix()
+  }, [scene, camera])
+
   return <primitive object={scene} />
 }
 
@@ -54,7 +76,7 @@ export default function PCBViewer({ modelPath, className = '' }: PCBViewerProps)
   return (
     <div className={`relative aspect-video bg-zinc-950 rounded-xl overflow-hidden border border-zinc-800 ${className}`}>
       <Canvas
-        camera={{ position: [0, 0.5, 2.5], fov: 45 }}
+        camera={{ position: [0, 1, 5], fov: 45, near: 0.001, far: 100000 }}
         onPointerDown={handleInteraction}
         onWheel={handleInteraction}
       >
@@ -68,8 +90,8 @@ export default function PCBViewer({ modelPath, className = '' }: PCBViewerProps)
             autoRotateSpeed={0.8}
             enableDamping
             dampingFactor={0.08}
-            minDistance={0.5}
-            maxDistance={8}
+            minDistance={0}
+            maxDistance={Infinity}
             makeDefault
           />
         </Suspense>

@@ -27,6 +27,8 @@ export interface ProjectData {
   coverImage: string
   images: string[]
   model3d?: string
+  logo?: string
+  logoUrl?: string
   summary: string
   sections: ProjectSections
   links: ProjectLink[]
