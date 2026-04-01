@@ -1,230 +1,420 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>Projects – Andy Setiawan</title>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="stylesheet" href="mediaqueries.css" />
-    <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png" />
-  </head>
-  <body>
-    <nav id="desktop-nav">
-      <a href="index.html" class="logo">Andy Setiawan</a>
-      <div>
-        <ul class="nav-links">
-          <li><a href="index.html#about2">About</a></li>
-          <li><a href="experience.html">Experience</a></li>
-          <li><a href="projects.html">Projects</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-    </nav>
-    <nav id="hamburger-nav">
-      <a href="index.html" class="logo">Andy Setiawan</a>
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Andy Setiawan's projects — embedded systems, PCB design, motor control, and robotics." />
+  <title>Projects – Andy Setiawan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mediaqueries.css" />
+  <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png" />
+  <script>(function(){const t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+</head>
+<body>
+
+  <!-- ── DESKTOP NAV ────────────────────────────────────── -->
+  <nav id="desktop-nav">
+    <a href="index.html" class="logo">Andy Setiawan</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html#about2">About</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── HAMBURGER NAV ──────────────────────────────────── -->
+  <nav id="hamburger-nav">
+    <a href="index.html" class="logo">Andy Setiawan</a>
+    <div class="nav-hamburger-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
       <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
+          <span></span><span></span><span></span>
         </div>
         <div class="menu-links">
           <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
-          <li>
-            <a href="experience.html" onclick="toggleMenu()">Experience</a>
-          </li>
+          <li><a href="experience.html" onclick="toggleMenu()">Experience</a></li>
           <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
           <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- ALL PROJECTS -->
-    <section id="projects" style="padding: 2rem 1rem">
-      <h1 class="title" style="text-align: center; margin-bottom: 2rem">
-        All Projects
-      </h1>
-      <div class="projects-grid">
-        <!-- Coin Picking Robot -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/coin-picking.jpg" alt="Coin Picking Robot" />
-          </div>
-          <h3>Coin Picking Robot</h3>
-          <p>
-            Three-wheeled robot to detect and pick up coins. Switches between
-            autonomous and manual via radio.
-          </p>
+  <!-- ── ALL PROJECTS ───────────────────────────────────── -->
+  <section id="projects">
+    <div class="page-header">
+      <span class="section-label">Portfolio</span>
+      <h1 class="section-title">All Projects</h1>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- ── PCB / HARDWARE ── -->
+
+      <!-- Haptic Knob -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">Render coming soon</div>
         </div>
-
-        <!-- Reflow Oven -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/reflow-oven.jpg" alt="Reflow Oven Controller" />
-          </div>
-          <h3>Reflow Oven</h3>
+        <div class="project-body">
+          <span class="project-cat">Firmware &middot; Motor Control &middot; RTOS</span>
+          <h3>Haptic Knob</h3>
           <p>
-            Controlled a reflow oven with an 8051 MCU and relay. Displayed data
-            and logged thermal profiles in Python.
+            BLDC haptic interface that emulates circuit element feel (R, L, C,
+            diode) through torque feedback. Closed-loop FOC, encoder feedback,
+            and dual-core FreeRTOS on the ESP32-PICO with SPI OLED display.
           </p>
-        </div>
-
-        <!-- Oscilloscope & Multimeter -->
-        <div class="project-card">
-          <div class="project-image">
-            <img
-              src="./assets/oscilloscope-multimeter.png"
-              alt="Oscilloscope and Multimeter"
-            />
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">ESP32</span>
+              <span class="tech-tag">FreeRTOS</span>
+              <span class="tech-tag">FOC / PID</span>
+              <span class="tech-tag">C++</span>
+              <span class="tech-tag">SPI</span>
+            </div>
           </div>
-          <h3>Oscilloscope & Multimeter</h3>
+        </div>
+      </div>
+
+      <!-- RoboMaestro -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">PCB render coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">PCB Design &middot; Power Electronics</span>
+          <h3>RoboMaestro — H-Bridge Motor Driver</h3>
           <p>
-            Measured voltage, resistance, and capacitance. Visualized readings
-            in real-time via serial and Python.
+            Discrete MOSFET H-bridge designed from scratch in Altium Designer.
+            Gate-drive networks with bootstrap caps, dead-time control,
+            decoupling strategy, and noise-aware 2-layer layout for PWM
+            motor driving.
           </p>
-        </div>
-
-        <!-- Alarm Clock -->
-        <div class="project-card">
-          <div class="project-image">
-            <img
-              src="./assets/alarm-clock.jpg"
-              alt="Alarm Clock in 8051 Microcontroller"
-            />
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Altium</span>
+              <span class="tech-tag">LTSpice</span>
+              <span class="tech-tag">H-Bridge</span>
+              <span class="tech-tag">Gate Drive</span>
+              <span class="tech-tag">2-Layer PCB</span>
+            </div>
           </div>
-          <h3>Alarm Clock in 8051</h3>
-          <p>
-            8051 clock with alarm and buzzer. Used buttons for input and
-            interrupts for responsive timekeeping.
-          </p>
         </div>
+      </div>
 
-        <!-- Emergency Stop -->
-        <div class="project-card">
-          <div class="project-image">
-            <img
-              src="./assets/emergency-stop.png"
-              alt="Emergency Stop System"
-            />
-          </div>
+      <!-- Emergency Stop -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">PCB render coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">PCB Design &middot; Safety Systems</span>
           <h3>Emergency Stop System</h3>
           <p>
-            Quick-response hardware cutoff triggered via emergency push-button.
+            Hardware power-cutoff system for the Robocup@Home robot.
+            Relay-based fail-safe isolation with schematic capture and 2-layer
+            PCB in Altium. LTSpice-validated &lt;50&nbsp;ms response time from
+            button actuation to full power isolation.
           </p>
-          <!-- <a href="https://github.com/YourRepo" class="source-btn" target="_blank" rel="noopener">
-                <svg viewBox="0 0 16 16" class="source-icon" aria-hidden="true">
-                  <path fill-rule="evenodd"
-                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
-                       5.47 7.59.4.07.55-.17.55-.38 
-                       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-                       -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 
-                       1.87.87 2.33.66.07-.52.28-.87.51-1.07
-                       -1.78-.2-3.64-.89-3.64-3.95
-                       0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-                       0 0 .67-.21 2.2.82a7.56 7.56 
-                       0 0 1 2-.27c.68.003 1.36.092 
-                       2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-                       1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15
-                       0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-                       1.48 0 1.07-.01 1.93-.01 2.19 
-                       0 .21.15.46.55.38A8.013 8.013 0 0 0 
-                       16 8c0-4.42-3.58-8-8-8z">
-                  </path>
-                </svg>
-          Source
-        </a> -->
-        </div>
-
-        <!-- RISC Machine -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/risc-machine.png" alt="RISC Machine" />
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Altium</span>
+              <span class="tech-tag">LTSpice</span>
+              <span class="tech-tag">Relay</span>
+              <span class="tech-tag">Power Safety</span>
+            </div>
           </div>
-          <h3>RISC Machine</h3>
-          <p>Designed a RISC CPU in Verilog and simulated with ModelSim.</p>
         </div>
+      </div>
 
-        <!-- Mini Power Bank -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/mini-powerbank.jpg" alt="Mini Power Bank" />
+      <!-- Reflow Oven -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/reflow-oven.jpg" alt="Reflow Oven Controller" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Embedded &middot; Measurement &middot; Signal Conditioning</span>
+          <h3>Reflow Oven Controller</h3>
+          <p>
+            8051-based FSM controller with K-type thermocouple signal
+            conditioning (op-amp amplification + RC filter), PWM-driven
+            SSR, and Python/Excel live strip-chart logging at &plusmn;2&deg;C
+            thermal accuracy.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">8051</span>
+              <span class="tech-tag">Op-Amp</span>
+              <span class="tech-tag">FSM</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Thermocouple</span>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Coin Picking Robot -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/coin-picking.JPG" alt="Coin Picking Robot" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Embedded &middot; Robotics &middot; Wireless</span>
+          <h3>Coin Picking Robot</h3>
+          <p>
+            Multi-microcontroller robot (EFM8LB1, MSP430, LPC824) with JDY-40
+            wireless switching between autonomous coin-collection FSM and
+            manual joystick control. PWM motor drive with ISR-based real-time
+            sensing.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">EFM8LB1</span>
+              <span class="tech-tag">MSP430</span>
+              <span class="tech-tag">PWM</span>
+              <span class="tech-tag">Wireless</span>
+              <span class="tech-tag">FSM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Oscilloscope & Multimeter -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">Photo coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Embedded &middot; Measurement</span>
+          <h3>Oscilloscope &amp; Multimeter</h3>
+          <p>
+            555-timer frequency-shift measurement circuit paired with a
+            microcontroller to probe voltage, resistance, and capacitance at
+            ~1&nbsp;mV, 10&nbsp;&Omega;, and 1&nbsp;pF resolution. Python
+            serial visualisation for real-time plotting and calibration.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">555 Timer</span>
+              <span class="tech-tag">C</span>
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">Measurement</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Alarm Clock -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/alarm-clock.jpg" alt="8051 Alarm Clock" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Embedded &middot; 8051</span>
+          <h3>Alarm Clock (8051)</h3>
+          <p>
+            8051 real-time clock with alarm and buzzer output. Button-driven
+            time and alarm setting, interrupt-based timekeeping, and
+            7-segment display output.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">8051</span>
+              <span class="tech-tag">Interrupts</span>
+              <span class="tech-tag">Assembly / C</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RISC Machine -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">Simulation screenshot coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Digital Design &middot; HDL</span>
+          <h3>RISC CPU (Verilog)</h3>
+          <p>
+            Designed and simulated a reduced instruction-set CPU in Verilog
+            on the DE1-SoC. Datapath, control unit, ALU, and register file.
+            Verified with ModelSim waveforms.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Verilog</span>
+              <span class="tech-tag">ModelSim</span>
+              <span class="tech-tag">Quartus</span>
+              <span class="tech-tag">DE1-SoC</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mini Power Bank -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/mini-powerbank.jpg" alt="Mini Power Bank" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Power Electronics &middot; Hardware</span>
           <h3>Mini Power Bank</h3>
-          <p>Built a USB power bank with Li-ion battery and boost converter.</p>
-        </div>
-
-        <!-- Inventory Analysis -->
-        <div class="project-card">
-          <div class="project-image">
-            <img
-              src="./assets/inventory-analysis.png"
-              alt="Excel Inventory Analysis System"
-            />
+          <p>
+            Compact USB power bank with a Li-ion cell, TP4056 charge
+            management IC, and MT3608 boost converter to deliver regulated
+            5&nbsp;V from a 3.7&nbsp;V battery.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Boost Converter</span>
+              <span class="tech-tag">Li-ion</span>
+              <span class="tech-tag">TP4056</span>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Inventory Analysis -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/inventory-analysis.png" alt="Inventory Analysis System" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Tools &middot; Automation</span>
           <h3>Inventory Analysis System</h3>
-          <p>Excel tool for real-time stock tracking and alerts.</p>
-        </div>
-
-        <!-- Cashier System -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/cashier-system.png" alt="Excel Cashier System" />
+          <p>
+            Excel-based real-time stock tracking system with conditional
+            alerts, pivot dashboards, and automated reorder flagging for a
+            retail electronics store.
+          </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Excel</span>
+              <span class="tech-tag">VBA</span>
+              <span class="tech-tag">Data Analysis</span>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Cashier System -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/cashier-system.png" alt="Spreadsheet Cashier System" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Tools &middot; Automation</span>
           <h3>Spreadsheet Cashier System</h3>
           <p>
-            Google Sheets-based POS system. Tracked balances, handled
-            transactions for a retail store.
+            Google Sheets POS system with transaction logging, balance
+            tracking, and automated daily summaries for a retail store.
           </p>
-        </div>
-
-        <!-- The Claw -->
-        <div class="project-card">
-          <div class="project-image">
-            <img src="./assets/the-claw.jpg" alt="The Claw Project" />
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Google Sheets</span>
+              <span class="tech-tag">Apps Script</span>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- The Claw -->
+      <div class="project-card">
+        <div class="project-image">
+          <img src="./assets/the-claw.jpg" alt="The Claw" />
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Robotics &middot; Mechatronics</span>
           <h3>The Claw</h3>
           <p>
-            Mechanical claw controlled by joystick and servos. Used for
-            dexterity training and object gripping.
+            Joystick-controlled mechanical claw using servo motors. Built
+            for object gripping and fine dexterity tasks.
           </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Servos</span>
+              <span class="tech-tag">Arduino</span>
+              <span class="tech-tag">Joystick</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <!-- Audio-Responsive LED -->
-        <div class="project-card">
-          <h3>Audio-Responsive LED</h3>
+      <!-- Audio-Responsive LED -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">Photo coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Electronics &middot; Audio</span>
+          <h3>Audio-Responsive LED Matrix</h3>
           <p>
-            LED matrix pulses to music volume. Created a disco-light experience
-            based on audio amplitude.
+            LED matrix that pulses to music amplitude via a microphone ADC
+            input. Creates a live audio-reactive light display.
           </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">ADC</span>
+              <span class="tech-tag">LED Matrix</span>
+              <span class="tech-tag">Arduino</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        <!-- Kinetic-Powered LED -->
-        <div class="project-card">
+      <!-- Kinetic LED -->
+      <div class="project-card">
+        <div class="project-image">
+          <div class="project-image-placeholder">Photo coming soon</div>
+        </div>
+        <div class="project-body">
+          <span class="project-cat">Energy Harvesting &middot; Electronics</span>
           <h3>Kinetic-Powered LED</h3>
           <p>
-            Used a hand-crank dynamo to power LEDs. Demonstrated motion-to-light
+            Hand-crank dynamo powering LEDs through a rectifier and
+            smoothing capacitor — demonstrating mechanical to electrical
             energy conversion.
           </p>
+          <div class="project-footer">
+            <div class="tech-tags">
+              <span class="tech-tag">Dynamo</span>
+              <span class="tech-tag">Rectifier</span>
+              <span class="tech-tag">Energy Harvesting</span>
+            </div>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- SOCIALS FOOTER -->
-    <footer id="footer-socials">
-      <p class="footer-text">Find me here</p>
-      <div class="footer-icons">
-        <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank">
-          <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" />
-        </a>
-        <a href="https://github.com/Fixables" target="_blank">
-          <img src="./assets/github.png" alt="GitHub" class="icon" />
-        </a>
-        <a href="mailto:andykintamani@gmail.com">
-          <img src="./assets/email.png" alt="Email" class="icon" />
-        </a>
-      </div>
-    </footer>
+    </div>
+  </section>
 
-    <script src="script.js"></script>
-  </body>
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer id="footer-socials">
+    <p class="footer-text">Find me here</p>
+    <div class="footer-icons">
+      <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" />
+      </a>
+      <a href="https://github.com/Fixables" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="./assets/github.png" alt="GitHub" class="icon" />
+      </a>
+      <a href="mailto:andykintamani@gmail.com" aria-label="Email">
+        <img src="./assets/email.png" alt="Email" class="icon" />
+      </a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
 </html>

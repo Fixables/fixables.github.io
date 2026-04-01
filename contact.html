@@ -1,94 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Me – Andy Setiawan</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="mediaqueries.css">
-  <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Get in touch with Andy Setiawan — open to opportunities, collaborations, and conversations." />
+  <title>Contact – Andy Setiawan</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="mediaqueries.css" />
+  <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png" />
+  <script>(function(){const t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
 </head>
 <body>
 
+  <!-- ── DESKTOP NAV ────────────────────────────────────── -->
   <nav id="desktop-nav">
     <a href="index.html" class="logo">Andy Setiawan</a>
-    <div>
-        <ul class="nav-links">
-            <li><a href="index.html#about2">About</a></li>
-            <li><a href="experience.html">Experience</a></li>
-            <li><a href="projects.html">Projects</a></li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="index.html#about2">About</a></li>
+        <li><a href="experience.html">Experience</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
-</nav>
-<nav id="hamburger-nav">
+  </nav>
+
+  <!-- ── HAMBURGER NAV ──────────────────────────────────── -->
+  <nav id="hamburger-nav">
     <a href="index.html" class="logo">Andy Setiawan</a>
-    <div class="hamburger-menu">
+    <div class="nav-hamburger-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+          <span></span><span></span><span></span>
         </div>
         <div class="menu-links">
-            <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
-            <li><a href="experience.html" onclick="toggleMenu()">Experience</a></li>
-            <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+          <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
+          <li><a href="experience.html" onclick="toggleMenu()">Experience</a></li>
+          <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+          <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </div>
+      </div>
     </div>
-</nav>
+  </nav>
 
-  <!-- CONTACT SECTION (styled to match other pages) -->
+  <!-- ── CONTACT SECTION ────────────────────────────────── -->
   <section id="contact" class="contact-section">
     <div class="container">
-      <h1 class="title">Contact Me</h1>
+      <span class="section-label">Get in touch</span>
+      <h1 class="section-title">Contact Me</h1>
+      <p class="section-sub" style="margin-top: 0.5rem; margin-bottom: 0;">
+        Open to opportunities, collaborations, and conversations.
+      </p>
       <form
-        action="https://formsubmit.co/andysetiawan1405@gmail.com"
+        action="https://formsubmit.co/andy.setiawan9910@gmail.com"
         method="POST"
         class="contact-form"
       >
-        <!-- Name & Email row -->
         <div class="form-row">
-          <input type="text"  name="name"  placeholder="Name"  required>
-          <input type="email" name="email" placeholder="Email" required>
+          <input type="text"  name="name"  placeholder="Name"  required />
+          <input type="email" name="email" placeholder="Email" required />
         </div>
-  
-        <!-- Message field -->
         <textarea
           name="message"
-          placeholder="Leave feedback, career opportunities, or say hello to me 😊"
+          placeholder="Leave feedback, career opportunities, or say hello."
           required
         ></textarea>
-  
-        <!-- Spam honeypot + redirect -->
-        <input type="text"    name="_honey"  style="display:none">
-        <input type="hidden"  name="_captcha" value="false">
-        <input type="hidden"  name="_next"   value="https://andysetiawan.netlify.app/thank-you.html">
-  
-        <!-- Styled submit button -->
-        <button type="submit" class="btn btn-color-1">
-          Send Message →
+
+        <!-- Spam protection -->
+        <input type="text"   name="_honey"   style="display:none" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next"    value="https://fixables.github.io/thank-you.html" />
+
+        <button type="submit" class="btn btn-primary" style="align-self: flex-start;">
+          Send Message &rarr;
         </button>
       </form>
     </div>
   </section>
-    
-  <!-- SOCIALS FOOTER -->
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
   <footer id="footer-socials">
     <p class="footer-text">Find me here</p>
     <div class="footer-icons">
-      <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank">
-        <img src="./assets/linkedin.png" alt="LinkedIn" class="icon">
+      <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" />
       </a>
-      <a href="https://github.com/Fixables" target="_blank">
-        <img src="./assets/github.png" alt="GitHub" class="icon">
+      <a href="https://github.com/Fixables" target="_blank" rel="noopener" aria-label="GitHub">
+        <img src="./assets/github.png" alt="GitHub" class="icon" />
       </a>
-      <a href="mailto:andykintamani@gmail.com">
-        <img src="./assets/email.png" alt="Email" class="icon">
+      <a href="mailto:andykintamani@gmail.com" aria-label="Email">
+        <img src="./assets/email.png" alt="Email" class="icon" />
       </a>
     </div>
   </footer>
-      
+
   <script src="script.js"></script>
 </body>
 </html>
