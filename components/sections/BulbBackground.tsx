@@ -1,43 +1,31 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { BulbConfig, DEFAULT_BULB } from '@/types/bg-config'
 
-const COLOR = '#38bdf8'
-const CURSOR_RADIUS = 200   // px — cursor charges bulbs within this range
-const MAX_WIRE_DIST = 155   // px — max distance for wire connections
-const MIN_SPACING = 70      // px — minimum distance between bulbs
-const DECAY = 0.0016        // charge lost per ms (fades ~600ms after cursor leaves)
-
-interface Bulb {
-  x: number
-  y: number
-  charge: number
-}
-
+interface Bulb { x: number; y: number; charge: number }
 interface Wire { i: number; j: number }
 
-function buildGraph(w: number, h: number): { bulbs: Bulb[]; wires: Wire[] } {
-  const count = Math.max(18, Math.min(55, Math.round((w * h) / 21000)))
+function buildGraph(w: number, h: number, cfg: BulbConfig): { bulbs: Bulb[]; wires: Wire[] } {
+  const count = Math.max(18, Math.min(60, Math.round((w * h) / (cfg.cellSize * cfg.cellSize))))
+  const minSpacing = cfg.cellSize * 0.48
 
-  // Scatter bulbs with rejection sampling to maintain min spacing
   const bulbs: Bulb[] = []
   for (let attempt = 0; attempt < count * 10 && bulbs.length < count; attempt++) {
     const x = 40 + Math.random() * (w - 80)
     const y = 40 + Math.random() * (h - 80)
-    if (bulbs.every(b => Math.hypot(b.x - x, b.y - y) >= MIN_SPACING)) {
+    if (bulbs.every(b => Math.hypot(b.x - x, b.y - y) >= minSpacing)) {
       bulbs.push({ x, y, charge: 0 })
     }
   }
 
-  // Connect each bulb to its nearest 1–3 neighbors within range
   const seen = new Set<string>()
   const wires: Wire[] = []
   for (let i = 0; i < bulbs.length; i++) {
     const nearby = bulbs
       .map((b, j) => ({ j, d: Math.hypot(b.x - bulbs[i].x, b.y - bulbs[i].y) }))
-      .filter(({ j, d }) => j !== i && d < MAX_WIRE_DIST)
-      .sort((a, b) => a.d - b.d)
-      .slice(0, 3)
+      .filter(({ j, d }) => j !== i && d < cfg.maxWireDist)
+      .sort((a, b) => a.d - b.d).slice(0, 3)
     for (const { j } of nearby) {
       const key = `${Math.min(i, j)}_${Math.max(i, j)}`
       if (!seen.has(key)) { seen.add(key); wires.push({ i, j }) }
@@ -47,8 +35,18 @@ function buildGraph(w: number, h: number): { bulbs: Bulb[]; wires: Wire[] } {
   return { bulbs, wires }
 }
 
-export default function BulbBackground() {
+export default function BulbBackground({ config = DEFAULT_BULB }: { config?: BulbConfig }) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const configRef = useRef<BulbConfig>(config)
+  const needsReseedRef = useRef(false)
+
+  useEffect(() => {
+    const p = configRef.current
+    if (p.cellSize !== config.cellSize || p.maxWireDist !== config.maxWireDist) {
+      needsReseedRef.current = true
+    }
+    configRef.current = config
+  }, [config])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -67,13 +65,10 @@ export default function BulbBackground() {
     function resizeCanvas() {
       const parent = canvas!.parentElement
       if (!parent) return
-      const w = parent.clientWidth
-      const h = parent.clientHeight
+      const w = parent.clientWidth, h = parent.clientHeight
       const dpr = window.devicePixelRatio || 1
-      canvas!.width = w * dpr
-      canvas!.height = h * dpr
-      canvas!.style.width = w + 'px'
-      canvas!.style.height = h + 'px'
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = w + 'px'; canvas!.style.height = h + 'px'
       ctx!.scale(dpr, dpr)
       return { w, h }
     }
@@ -81,51 +76,37 @@ export default function BulbBackground() {
     function drawFrame() {
       const parent = canvas!.parentElement
       if (!parent) return
-      const w = parent.clientWidth
-      const h = parent.clientHeight
-      ctx!.clearRect(0, 0, w, h)
-      ctx!.fillStyle = COLOR
+      const cfg = configRef.current
+      const gm = cfg.glowMult
+      ctx!.clearRect(0, 0, parent.clientWidth, parent.clientHeight)
+      ctx!.fillStyle = cfg.color
 
-      // Wires — faint always, bright when endpoints are charged
+      // Wires
       for (const { i, j } of wires) {
         const a = bulbs[i], b = bulbs[j]
         const charge = Math.max(a.charge, b.charge)
         ctx!.beginPath()
-        ctx!.strokeStyle = COLOR
+        ctx!.strokeStyle = cfg.color
         ctx!.lineWidth = 0.5 + charge * 1.5
-        ctx!.globalAlpha = 0.05 + charge * 0.28
-        ctx!.moveTo(a.x, a.y)
-        ctx!.lineTo(b.x, b.y)
+        ctx!.globalAlpha = cfg.wireAlpha + charge * 0.28
+        ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y)
         ctx!.stroke()
       }
 
-      // Bulbs — layered glow proportional to charge
+      // Bulbs
       for (const b of bulbs) {
         const c = b.charge
-
         if (c > 0.04) {
-          // Outer halo
-          ctx!.beginPath()
-          ctx!.globalAlpha = 0.035 * c
-          ctx!.arc(b.x, b.y, 24, 0, Math.PI * 2)
-          ctx!.fill()
-          // Mid glow
-          ctx!.beginPath()
-          ctx!.globalAlpha = 0.08 * c
-          ctx!.arc(b.x, b.y, 13, 0, Math.PI * 2)
-          ctx!.fill()
-          // Inner glow
-          ctx!.beginPath()
-          ctx!.globalAlpha = 0.18 * c
-          ctx!.arc(b.x, b.y, 6, 0, Math.PI * 2)
-          ctx!.fill()
+          ctx!.beginPath(); ctx!.globalAlpha = 0.035 * c * gm
+          ctx!.arc(b.x, b.y, 24, 0, Math.PI * 2); ctx!.fill()
+          ctx!.beginPath(); ctx!.globalAlpha = 0.08 * c * gm
+          ctx!.arc(b.x, b.y, 13, 0, Math.PI * 2); ctx!.fill()
+          ctx!.beginPath(); ctx!.globalAlpha = 0.18 * c * gm
+          ctx!.arc(b.x, b.y, 6, 0, Math.PI * 2); ctx!.fill()
         }
-
-        // Core — always slightly visible, bright when charged
         ctx!.beginPath()
-        ctx!.globalAlpha = 0.1 + 0.72 * c
-        ctx!.arc(b.x, b.y, 2, 0, Math.PI * 2)
-        ctx!.fill()
+        ctx!.globalAlpha = Math.min(0.95, 0.1 + 0.72 * c * gm)
+        ctx!.arc(b.x, b.y, 2, 0, Math.PI * 2); ctx!.fill()
       }
 
       ctx!.globalAlpha = 1
@@ -134,55 +115,45 @@ export default function BulbBackground() {
     function tick(ts: number) {
       const delta = Math.min(ts - lastTime, 50)
       lastTime = ts
+      const cfg = configRef.current
 
-      // 1. Cursor directly charges nearby bulbs
+      if (needsReseedRef.current) {
+        needsReseedRef.current = false
+        const parent = canvas!.parentElement!
+        const g = buildGraph(parent.clientWidth, parent.clientHeight, cfg)
+        bulbs = g.bulbs; wires = g.wires
+      }
+
       for (const b of bulbs) {
         const d = Math.hypot(b.x - mouse.x, b.y - mouse.y)
-        if (d < CURSOR_RADIUS) {
-          const target = (1 - d / CURSOR_RADIUS) * 0.95
-          if (target > b.charge) b.charge = b.charge + (target - b.charge) * 0.12
+        if (d < cfg.cursorRadius) {
+          const target = (1 - d / cfg.cursorRadius) * 0.95
+          if (target > b.charge) b.charge += (target - b.charge) * 0.12
         }
       }
 
-      // 2. Charge spreads along wires (2 passes = 2 hops of propagation per frame)
       for (let pass = 0; pass < 2; pass++) {
         for (const { i, j } of wires) {
           const a = bulbs[i], b = bulbs[j]
-          const maxNeighbor = Math.max(a.charge, b.charge) * 0.58
-          if (a.charge < maxNeighbor) a.charge += (maxNeighbor - a.charge) * 0.07
-          if (b.charge < maxNeighbor) b.charge += (maxNeighbor - b.charge) * 0.07
+          const max = Math.max(a.charge, b.charge) * cfg.spreadFactor
+          if (a.charge < max) a.charge += (max - a.charge) * 0.07
+          if (b.charge < max) b.charge += (max - b.charge) * 0.07
         }
       }
 
-      // 3. Decay all charges
-      for (const b of bulbs) {
-        b.charge = Math.max(0, b.charge - DECAY * delta)
-      }
+      for (const b of bulbs) b.charge = Math.max(0, b.charge - cfg.decay * delta)
 
       drawFrame()
       rafId = requestAnimationFrame(tick)
     }
 
-    function start() {
-      lastTime = performance.now()
-      rafId = requestAnimationFrame(tick)
-    }
-
-    function stop() {
-      cancelAnimationFrame(rafId)
-    }
+    function start() { lastTime = performance.now(); rafId = requestAnimationFrame(tick) }
+    function stop() { cancelAnimationFrame(rafId) }
 
     const dims = resizeCanvas()
-    if (dims) {
-      const g = buildGraph(dims.w, dims.h)
-      bulbs = g.bulbs
-      wires = g.wires
-    }
+    if (dims) { const g = buildGraph(dims.w, dims.h, configRef.current); bulbs = g.bulbs; wires = g.wires }
 
-    if (reducedMotion) {
-      drawFrame()
-      return
-    }
+    if (reducedMotion) { drawFrame(); return }
 
     let resizeTimer = 0
     const ro = new ResizeObserver(() => {
@@ -190,11 +161,7 @@ export default function BulbBackground() {
       resizeTimer = window.setTimeout(() => {
         stop()
         const d = resizeCanvas()
-        if (d) {
-          const g = buildGraph(d.w, d.h)
-          bulbs = g.bulbs
-          wires = g.wires
-        }
+        if (d) { const g = buildGraph(d.w, d.h, configRef.current); bulbs = g.bulbs; wires = g.wires }
         start()
       }, 150)
     })
@@ -202,8 +169,7 @@ export default function BulbBackground() {
 
     const onMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect()
-      mouse.x = e.clientX - rect.left
-      mouse.y = e.clientY - rect.top
+      mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top
     }
     window.addEventListener('mousemove', onMouseMove)
 
@@ -214,21 +180,13 @@ export default function BulbBackground() {
     document.addEventListener('visibilitychange', onVisibility)
 
     start()
-
     return () => {
-      stop()
-      ro.disconnect()
+      stop(); ro.disconnect()
       window.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('visibilitychange', onVisibility)
       clearTimeout(resizeTimer)
     }
   }, [])
 
-  return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden
-      style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }}
-    />
-  )
+  return <canvas ref={canvasRef} aria-hidden style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
 }
