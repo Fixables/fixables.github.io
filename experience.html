@@ -1,80 +1,62 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Andy Setiawan's experience — Teaching Assistant, Open Robotics, Tjahya Electronics, and more." />
-  <title>Experience – Andy Setiawan</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="mediaqueries.css" />
-  <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png" />
-  <script>(function(){const t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);})();</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>All Experience – Andy Setiawan</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mediaqueries.css">
+  <link rel="icon" type="image/png" href="assets/DSCF4746-rd.png">
 </head>
 <body>
 
-  <!-- ── DESKTOP NAV ────────────────────────────────────── -->
   <nav id="desktop-nav">
     <a href="index.html" class="logo">Andy Setiawan</a>
-    <div class="nav-right">
-      <ul class="nav-links">
-        <li><a href="index.html#about2">About</a></li>
-        <li><a href="experience.html">Experience</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
+    <div>
+        <ul class="nav-links">
+            <li><a href="index.html#about2">About</a></li>
+            <li><a href="experience.html">Experience</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
     </div>
-  </nav>
-
-  <!-- ── HAMBURGER NAV ──────────────────────────────────── -->
-  <nav id="hamburger-nav">
-    <a href="index.html" class="logo">Andy Setiawan</a>
-    <div class="nav-hamburger-right">
-      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
-        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-      <div class="hamburger-menu">
+</nav>
+<nav id="hamburger-nav">
+  <a href="index.html" class="logo">Andy Setiawan</a>
+    <div class="hamburger-menu">
         <div class="hamburger-icon" onclick="toggleMenu()">
-          <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
         <div class="menu-links">
-          <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
-          <li><a href="experience.html" onclick="toggleMenu()">Experience</a></li>
-          <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
-          <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="index.html#about2" onclick="toggleMenu()">About</a></li>
+            <li><a href="experience.html" onclick="toggleMenu()">Experience</a></li>
+            <li><a href="projects.html" onclick="toggleMenu()">Projects</a></li>
+            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </div>
-      </div>
     </div>
-  </nav>
+</nav>
 
-  <!-- ── FULL EXPERIENCE LIST ───────────────────────────── -->
+  <!-- FULL EXPERIENCE LIST -->
   <section id="experience-list">
-    <div class="page-header">
-      <span class="section-label">Career &amp; Design Teams</span>
-      <h1 class="section-title">Experience</h1>
-    </div>
-
+    <h1 class="title" style="text-align:center; margin-top:2rem;">All Experience</h1>
     <ul class="timeline">
 
       <!-- ELEC 201 TA -->
       <li>
         <div class="timeline-icon">
-          <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
-            <img src="./assets/ubc-logo.png" alt="UBC logo" />
-          </a>
-        </div>
-        <div class="timeline-body">
+            <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
+              <img src="./assets/ubc-logo.png" alt="UBC logo">
+            </a>
+            </div>
+          <div class="timeline-body">
           <span class="timeline-date">Sept 2025 – Present</span>
-          <h4 class="timeline-place">UBC Electrical and Computer Engineering</h4>
-          <span class="timeline-role">ELEC 201 Teaching Assistant</span>
+          <h4 class="timeline-place">UBC Electrical and Computer Engineering Department</h4>
+          <span class="timeline-role"><b>ELEC 201 Teaching Assistant</b></span>
           <ul class="timeline-desc">
-            <li>Led lab sessions for 50+ undergrad students in circuit fundamentals: resistive networks, Kirchhoff's Laws, Thevenin equivalents, and first-order RC/RL circuits.</li>
-            <li>Mentored students on active components — transistors, diodes, rectifiers, 555 timer oscillators, and op-amps — building practical troubleshooting intuition.</li>
-            <li>Supported midterm examinations and WebWork assessments; invigilated and maintained academic integrity.</li>
+            <li>Assisted in teaching undergraduate labs on circuit fundamentals including resistive networks, Kirchhoff’s laws, Thevenin equivalents, and first-order RC/RL circuits, guiding students through breadboarding, oscilloscope/signal generator use, and theoretical verification.</li>
+            <li>Supported student learning on nonlinear and active components such as diodes, rectifiers, 555 timer oscillators, and operational amplifiers, providing mentorship in troubleshooting, soldering, and analyzing real vs. ideal device behaviour.</li>
           </ul>
         </div>
       </li>
@@ -82,17 +64,21 @@
       <!-- Biological Internet of Things -->
       <li>
         <div class="timeline-icon">
-          <a href="https://ubcbiot.com/" target="_blank" rel="noopener">
-            <img src="./assets/biot_logo1.jpeg" alt="BIoT logo" />
-          </a>
-        </div>
-        <div class="timeline-body">
+            <a href="https://ubcbiot.com/" target="_blank" rel="noopener">
+              <img src="./assets/biot_logo1.jpeg" alt="BIoT logo">
+            </a>
+            </div>
+          <div class="timeline-body">
           <span class="timeline-date">Sept 2025 – Present</span>
-          <h4 class="timeline-place">Biological Internet of Things (BIoT)</h4>
-          <span class="timeline-role">Instrumentation Team — BrewBox Project</span>
+          <h4 class="timeline-place">Biological Internet of Things</h4>
+          <span class="timeline-role"><b>Instrumentation Team Member</b></span>
           <ul class="timeline-desc">
-            <li>Designing a 2-layer motherboard PCB in Altium with modular sensor board architecture (ESP32 carrier + plug-in boards for temperature, dissolved oxygen, pressure, and pH).</li>
-            <li>Implementing voltage and data-line isolation using the ADM3260 (isolated I2C with integrated isolated power) to protect the MCU and improve signal robustness.</li>
+            <li>
+              Designing and integrating environmental sensors to monitor key brewing parameters such as temperature, pH, dissolved oxygen, and fermentation activity.
+            </li>
+            <li>
+              Developing the “BrewBox,” a compact IoT system that consolidates all sensor inputs into a microcontroller hub for real-time data acquisition, calibration, and wireless dashboard transmission.
+            </li>
           </ul>
         </div>
       </li>
@@ -100,38 +86,31 @@
       <!-- Open Robotics -->
       <li>
         <div class="timeline-icon">
-          <a href="https://openrobotics.ca/" target="_blank" rel="noopener">
-            <img src="./assets/ubc_open_robotics_logo.jpeg" alt="Open Robotics logo" />
-          </a>
-        </div>
-        <div class="timeline-body">
+            <a href="https://openrobotics.ca/" target="_blank" rel="noopener">
+              <img src="./assets/ubc_open_robotics_logo.jpeg" alt="Open Robotics logo">
+            </a>
+            </div>
+          <div class="timeline-body">
           <span class="timeline-date">Sept 2023 – Present</span>
-          <h4 class="timeline-place">UBC Open Robotics — Engineering Design Team</h4>
-          <span class="timeline-role">Firmware Co-Lead &amp; Electrical Power Team</span>
+          <h4 class="timeline-place">Open Robotics</h4>
+          <span class="timeline-role"><b>Electrical Power Team, Robocup@Home</b></span>
           <ul class="timeline-desc">
-            <li>Developed ESP32 firmware using dual-core FreeRTOS to coordinate motor control, sensor sampling, and SPI OLED tasks with deterministic timing.</li>
-            <li>Implemented closed-loop BLDC motor control using current sensing, encoder feedback, and PID/FOC algorithms to generate haptic torque emulating circuit behaviours.</li>
-            <li>Designed power distribution and safety cutoff circuits for the Robocup@Home robot — achieving &gt;95% efficiency and &lt;50&nbsp;ms emergency response time.</li>
-            <li>Completed schematic capture and 2-layer PCB layout in Altium Designer; validated with LTSpice simulations and custom test plans.</li>
-            <li>Produced system block diagrams, I/O definitions, signal mapping, and test procedure documentation for cross-team integration.</li>
+            <li>
+              Designed and implemented power distribution and safety cutoff circuits for autonomous robots, achieving more than 95% power efficiency and less than 50 ms emergency response times.
+            </li>
+            <li>
+              Collaborating across electrical, software, and mechanical subteams to ensure reliable system performance and real-time responsiveness.
+            </li>
           </ul>
-        </div>
-      </li>
-
-      <!-- Steamoji -->
-      <li>
-        <div class="timeline-icon">
-          <a href="https://www.steamoji.com/canada-bc-kerrisdale/" target="_blank" rel="noopener">
-            <img src="./assets/steamoji.png" alt="Steamoji logo" />
-          </a>
-        </div>
-        <div class="timeline-body">
-          <span class="timeline-date">May 2025 – Sept 2025</span>
-          <h4 class="timeline-place">Steamoji Kerrisdale</h4>
-          <span class="timeline-role">Technician &amp; Facilitator</span>
+          <span class="timeline-role"><b>Haptic Knob Project</b></span>
           <ul class="timeline-desc">
-            <li>Repaired and maintained 3D pens, 3D printers, and a Glowforge laser cutter, saving over $1,000 in repair and replacement costs.</li>
-            <li>Taught and mentored 50+ students (ages 5–14) in Arduino programming, robotics, soldering, 3D design, and digital fabrication.</li>
+            </li>
+            <li>
+              Developing a closed-loop BLDC motor control system to generate haptic torque feedback that emulates RLC circuit behaviors, using current sensing, encoder feedback, and PID-based control on the ESP32-PICO.
+            </li>
+            <li>
+              Assisting in hardware and firmware integration for the motor driver, encoder, and SPI OLED display, ensuring stable communication and real-time system responsiveness.
+            </li>
           </ul>
         </div>
       </li>
@@ -139,116 +118,139 @@
       <!-- Tjahya Electronics -->
       <li>
         <div class="timeline-icon">
-          <a href="https://maps.app.goo.gl/TETcxMwJH3gHsx8H8" target="_blank" rel="noopener">
-            <img src="./assets/tjahya.jpeg" alt="Tjahya Electronics logo" />
-          </a>
+            <a href="https://maps.app.goo.gl/TETcxMwJH3gHsx8H8" target="_blank" rel="noopener">  
+              <img src="./assets/tjahya.jpeg" alt="Tjahya Electronics logo">
+            </a>
         </div>
         <div class="timeline-body">
-          <span class="timeline-date">Jan 2016 – Sept 2023</span>
-          <h4 class="timeline-place">Tjahya Elektronik — Electronics Workshop, Kintamani Bali</h4>
-          <span class="timeline-role">Electrical Technician Apprentice &amp; Customer Service</span>
+          <span class="timeline-date">2016 – Present</span>
+          <h4 class="timeline-place">Tjahya Electronics</h4>
+          <span class="timeline-role"><b>Technician Apprentice & Sales Rep</b></span>
           <ul class="timeline-desc">
-            <li>Diagnosed and repaired 100+ electrical devices (CRT/LED TVs, speakers, household appliances) using systematic debugging — restoring full functionality and extending device lifespan by up to 50%.</li>
-            <li>Upgraded 20+ legacy speaker systems by integrating Bluetooth modules, redesigning control PCBs, and modifying casings.</li>
-            <li>Calibrated and installed satellite TV receivers for Ku-Band Indonesian satellites (Telkom 3S, Palapa-D, Measat). Developed a USB configuration tool automating firmware install and channel setup, reducing setup time by 80%.</li>
-            <li>Managed inventory of 200+ components and 100+ appliances; maintained supplier coordination and service notes.</li>
+            <li>
+              Diagnosed and repaired 100+ electrical devices—including CRT/LED televisions,
+              speakers, and household appliances—using systematic debugging, continuity checks,
+              and component-level replacement to restore full functionality and extend
+              device lifespan by up to 50%.
+            </li>
+            <li>
+              Upgraded 20+ legacy speaker systems by integrating Bluetooth modules,
+              redesigning control boards, and modifying casings to enhance usability and
+              extend product value.
+            </li>
+            <li>
+              Calibrated and installed digital and satellite TV receivers to detect
+              Indonesian communication satellites (Ku-Band, Telkom 3S, Palapa-D, Measat),
+              and developed an all-in-one USB configuration tool that automated firmware
+              installation and channel setup, reducing configuration time by 80%.
+            </li>
+            <li>
+              Managed store operations including inventory tracking, component pricing,
+              and supplier coordination, maintaining stock of 200+ electronic components
+              and 100+ household electrical appliances.
+            </li>
+            <li>
+              Provided on-site technical support, achieving a 90% customer satisfaction rate
+              through clear communication and personalized service.
+            </li>
+            <li>
+              Providing ongoing remote assistance and consultation while pursuing full-time
+              studies at UBC.
+            </li>
           </ul>
         </div>
       </li>
 
-      <!-- FEM Bootcamp -->
+      <!-- Steamoji Kerrisdale -->
       <li>
         <div class="timeline-icon">
-          <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
-            <img src="./assets/ubc-logo.png" alt="UBC logo" />
-          </a>
+            <a href="https://www.steamoji.com/canada-bc-kerrisdale/" target="_blank" rel="noopener">
+              <img src="./assets/steamoji.png" alt="Steamoji logo">
+            </a>
+            </div>
+          <div class="timeline-body">
+          <span class="timeline-date">May 2025 – Sept 2025</span>
+          <h4 class="timeline-place">Steamoji Kerrisdale</h4>
+          <span class="timeline-role"><b>Technician and Facilitator</b></span>
+          <ul class="timeline-desc">
+            <li>
+              Mentored and led over 30 students (ages 5–14) through hands-on activities in Arduino programming, robotics, soldering, 3D design, and digital fabrication.
+            </li>
+            <li>
+              Troubleshot and repaired 10+ 3D pens, 3D printers, and Glowforge laser cutters, saving over $1,000 in repair and replacement costs while ensuring consistent project progress.
+            </li>
+          </ul>
         </div>
+      </li>
+
+      <!-- Finite Element Bootcamp -->
+      <li>
+        <div class="timeline-icon">
+            <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">  
+              <img src="./assets/ubc-logo.png" alt="UBC logo">
+            </a>
+            </div>
         <div class="timeline-body">
           <span class="timeline-date">Dec 2023</span>
           <h4 class="timeline-place">Finite Element Method Bootcamp</h4>
-          <span class="timeline-role">Extracurricular Researcher</span>
+          <span class="timeline-role"><b>Extracurricular Researcher</b></span>
           <ul class="timeline-desc">
-            <li>Applied FEM in MATLAB to simulate electromagnetic fields, collaborating with peers to validate boundary conditions and mesh settings.</li>
+            <li>Applied FEM in MATLAB to simulate electromagnetic fields, improving accuracy by 30%.</li>
+            <li>Collaborated with peers to validate boundary conditions and mesh settings.</li>
           </ul>
         </div>
       </li>
 
-      <!-- Bali Fab Lab -->
+      <!-- Bali Fabrication Lab Festival -->
       <li>
         <div class="timeline-icon">
-          <a href="https://www.fablabs.io/labs/fablabbali" target="_blank" rel="noopener">
-            <img src="./assets/fablab.png" alt="Fab Lab logo" />
-          </a>
-        </div>
+            <a href="https://www.fablabs.io/labs/fablabbali" target="_blank" rel="noopener">  
+              <img src="./assets/fablab.png" alt="fablab logo">
+            </a>
+            </div>
         <div class="timeline-body">
           <span class="timeline-date">Oct 2022</span>
           <h4 class="timeline-place">Bali Fabrication Laboratory Festival</h4>
-          <span class="timeline-role">EV Distribution Research &amp; Workshop</span>
+          <span class="timeline-role"><b>EV Distribution Research & Workshop</b></span>
           <ul class="timeline-desc">
-            <li>Presented EV adoption research and led an Arduino-based robotics workshop.</li>
+            <li>Presented EV adoption research, boosting local usage by 30%.</li>
+            <li>Programmed Arduino-based robotic systems, enhancing automation efficiency by 40%.</li>
           </ul>
         </div>
       </li>
 
-      <!-- Foldscope -->
+      <!-- Foldscope Volunteer -->
       <li>
         <div class="timeline-icon">
-          <a href="https://foldscope.com/" target="_blank" rel="noopener">
-            <img src="./assets/foldscope_logo.jpg" alt="Foldscope logo" />
-          </a>
-        </div>
+            <a href="https://foldscope.com/" target="_blank" rel="noopener">  
+              <img src="./assets/foldscope_logo.jpg" alt="Foldscope logo">
+            </a>
+            </div>
         <div class="timeline-body">
           <span class="timeline-date">Aug 2022</span>
           <h4 class="timeline-place">Foldscope</h4>
-          <span class="timeline-role">Volunteer Educator</span>
+          <span class="timeline-role"><b>Volunteer Educator</b></span>
           <ul class="timeline-desc">
-            <li>Taught 3 elementary schools to assemble and use Foldscope paper microscopes, promoting STEM access in underprivileged communities in Bali.</li>
+            <li>Taught 3 elementary schools to assemble & use Foldscopes, promoting STEM access.</li>
+            <li>Promoted accessibility to scientific tools for underprivileged communities.</li>
           </ul>
         </div>
       </li>
 
     </ul>
-
-    <!-- Education -->
-    <div style="margin-top: 3rem;">
-      <span class="section-label">Academic</span>
-      <h2 class="section-title" style="margin-bottom: 1.5rem;">Education</h2>
-      <ul class="timeline">
-        <li>
-          <div class="timeline-icon">
-            <a href="https://ece.ubc.ca/" target="_blank" rel="noopener">
-              <img src="./assets/ubc-logo.png" alt="UBC logo" />
-            </a>
-          </div>
-          <div class="timeline-body">
-            <span class="timeline-date">Sept 2023 – May 2027 (expected)</span>
-            <h4 class="timeline-place">University of British Columbia, Vancouver BC</h4>
-            <span class="timeline-role">B.A.Sc. in Electrical Engineering</span>
-            <ul class="timeline-desc">
-              <li>Indonesia Maju Scholarship — CAD 400,000+ full-ride funded by Indonesia's Ministry of Education, Culture, Research, and Technology.</li>
-              <li>Dean's List.</li>
-              <li>Faculty of Applied Science International Student Scholarship (CAD 8,125).</li>
-              <li>Kenneth George VanSacker Memorial Scholarship (CAD 1,500).</li>
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-  </section>
-
-  <!-- ── FOOTER ─────────────────────────────────────────── -->
+        
+  <!-- SOCIALS FOOTER -->
   <footer id="footer-socials">
     <p class="footer-text">Find me here</p>
     <div class="footer-icons">
-      <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank" rel="noopener" aria-label="LinkedIn">
-        <img src="./assets/linkedin.png" alt="LinkedIn" class="icon" />
+      <a href="https://www.linkedin.com/in/andysetiawan1405/" target="_blank">
+        <img src="./assets/linkedin.png" alt="LinkedIn" class="icon">
       </a>
-      <a href="https://github.com/Fixables" target="_blank" rel="noopener" aria-label="GitHub">
-        <img src="./assets/github.png" alt="GitHub" class="icon" />
+      <a href="https://github.com/Fixables" target="_blank">
+        <img src="./assets/github.png" alt="GitHub" class="icon">
       </a>
-      <a href="mailto:andykintamani@gmail.com" aria-label="Email">
-        <img src="./assets/email.png" alt="Email" class="icon" />
+      <a href="mailto:andykintamani@gmail.com">
+        <img src="./assets/email.png" alt="Email" class="icon">
       </a>
     </div>
   </footer>
