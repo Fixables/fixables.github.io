@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { ArrowRight, Download } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import CircuitBackground from '@/components/sections/CircuitBackground'
+import HeroBackground from '@/components/sections/HeroBackground'
 
 const container = {
   hidden: {},
@@ -23,7 +23,7 @@ const item = {
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      <CircuitBackground />
+      <HeroBackground />
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-32 w-full">
         <motion.div
           variants={container}
