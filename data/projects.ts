@@ -11,6 +11,7 @@ export const projects: ProjectData[] = [
     featured: true,
     coverImage: '',
     images: [],
+    model3d: '/assets/models/haptic-knob.glb',
     summary:
       'A haptic feedback rotary knob using closed-loop BLDC motor control. The user physically feels the behaviour of an RLC circuit by turning the knob — inductance, resistance, capacitance, and diode characteristics are encoded as torque profiles in real time.',
     sections: {
@@ -44,25 +45,16 @@ export const projects: ProjectData[] = [
     model3d: '/assets/models/robomaestro.glb',
     fabStats: {
       layers: 2,
-      dimensions: '— mm',      // fill in once you check Altium board outline
+      dimensions: '— mm',
       minTrace: '0.2 mm',
       minVia: '0.3 mm drill',
       surface: 'HASL',
       manufacturer: 'JLCPCB',
     },
-    // To enable 2D layer view: export each layer as monochrome PNG from Altium,
-    // place in public/assets/projects/robomaestro/layers/, then add:
-    // pcbLayers: [
-    //   { name:'F.Cu', label:'Top Copper',   url:'/assets/projects/robomaestro/layers/fcu.png',    color:'#c87533', defaultVisible:true  },
-    //   { name:'B.Cu', label:'Bottom Copper', url:'/assets/projects/robomaestro/layers/bcu.png',    color:'#4169e1', defaultVisible:true  },
-    //   { name:'F.SilkS', label:'Silkscreen', url:'/assets/projects/robomaestro/layers/silk.png',   color:'#ffffff', defaultVisible:true  },
-    //   { name:'Edge.Cuts', label:'Outline',  url:'/assets/projects/robomaestro/layers/edge.png',   color:'#ffff00', defaultVisible:true  },
-    // ],
-    // schematic: '/assets/projects/robomaestro/schematic.svg',
-    // bomData: [
-    //   { ref:'Q1', value:'AO3400', footprint:'SOT-23', qty:4 },
-    //   { ref:'R1', value:'10kΩ',   footprint:'0402',   qty:6 },
-    // ],
+    pcbLayers: [
+      { name: 'Top',    label: 'Top Layer',    url: '/assets/projects/robomaestro/layers/top.png',    color: '#c87533', defaultVisible: true },
+      { name: 'Bottom', label: 'Bottom Layer', url: '/assets/projects/robomaestro/layers/bottom.png', color: '#4169e1', defaultVisible: true },
+    ],
     summary:
       'A discrete MOSFET H-bridge motor driver designed from scratch in Altium. Focused on gate-drive integrity, level shifting, and noise-aware PCB layout for reliable PWM operation and dead-time control.',
     sections: {
@@ -72,7 +64,10 @@ export const projects: ProjectData[] = [
         '2-layer PCB in Altium. Gate-drive networks with decoupling suppression to reduce noise and improve switching robustness. Power and signal planes carefully separated.',
       results: 'PCB fabricated and under bring-up testing. PWM switching verified on bench.',
     },
-    links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
+    links: [
+      { label: 'GitHub', url: 'https://github.com/Fixables' },
+      { label: 'Schematic PDF', url: '/assets/projects/robomaestro/schematic.pdf' },
+    ],
   },
   {
     slug: 'coin-picking-robot',
@@ -291,6 +286,70 @@ export const projects: ProjectData[] = [
       results: 'Visually responsive to music with no perceptible latency.',
     },
     links: [],
+  },
+  {
+    slug: 'elec301-amplifiers',
+    title: 'BJT Amplifier Analysis',
+    tagline: 'LTSpice simulation and hand analysis of RC filters, CE/CB/CC BJT amplifiers, and frequency response',
+    category: 'software',
+    tags: ['LTSpice', 'BJT', 'SPICE', 'Analog Design', 'Bode Plot', 'ELEC301'],
+    date: '2025',
+    featured: false,
+    coverImage: '',
+    images: [],
+    summary:
+      'ELEC301 Mini Project 1 — Frequency response analysis of a four-pole RC bandpass filter using OC/SC time constants. Hand-calculated and SPICE-simulated pole locations compared against LTSpice Bode plots. Extended to CE, CB, and CC BJT amplifier configurations with Miller\'s theorem, midband gain, and input/output resistance analysis.',
+    sections: {
+      problem:
+        'Analyse a four-pole RC bandpass filter and three BJT amplifier topologies. Predict pole locations analytically using OC/SC method, then verify with LTSpice AC sweep.',
+      goals: [
+        'Find all poles of a 4-element RC bandpass filter using OC and SC time constants',
+        'Simulate CE, CB, and CC amplifier configurations in LTSpice',
+        'Apply Miller\'s theorem to approximate high-frequency pole locations',
+        'Compare calculated midband gain and I/O resistances against SPICE simulation',
+      ],
+      designDecisions:
+        'Used the open-circuit/short-circuit (OC/SC) time constant method to approximate pole frequencies without solving the full transfer function. Miller\'s theorem used to decouple the feedback capacitance for high-frequency analysis. All simulations run in LTSpice with decade AC sweeps from 1 mHz to 1 THz.',
+      validation:
+        'Simulated poles matched calculated values within acceptable margin. Error analysis documented for each topology. CE vs CB input/output impedance comparison confirmed textbook trade-offs.',
+      results:
+        'RC filter poles identified at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — consistent across both methods. BJT amplifier I/O resistances and gains verified in simulation.',
+    },
+    links: [
+      { label: 'Full Report (PDF)', url: '/assets/projects/elec301-amplifiers/report.pdf' },
+    ],
+  },
+  {
+    slug: 'elec301-cascode',
+    title: 'Cascode Amplifier & Butterworth Filter Design',
+    tagline: 'Designed a 2N3904 cascode amplifier and 3rd-order Butterworth active filter from specs to simulation',
+    category: 'software',
+    tags: ['LTSpice', 'BJT', 'Cascode', 'Active Filter', 'Butterworth', 'ELEC301'],
+    date: '2025',
+    featured: false,
+    coverImage: '',
+    images: [],
+    summary:
+      'ELEC301 Mini Project 2 — Full design flow for a two-transistor 2N3904 cascode amplifier meeting Rout = 2.5 kΩ, Rin ≥ 3.5 kΩ, |AM| ≥ 50 V/V, ωL,3dB ≤ 1200 rad/s. Separate design of a 3rd-order Butterworth low-pass active filter at 10 kHz cutoff, plus stability analysis of an oscillator via root locus.',
+    sections: {
+      problem:
+        'Design a cascode BJT amplifier meeting strict gain, impedance, and bandwidth specs. Separately, design a 3rd-order Butterworth active filter and analyse oscillator stability using root locus.',
+      goals: [
+        'Bias a dual 2N3904 cascode for VCC = 20V with specified DC operating point',
+        'Meet Rout = 2.5 kΩ ± 250Ω, Rin ≥ 3.5 kΩ, |AM| ≥ 50 V/V, ωL ≤ 1200 rad/s',
+        'Design a 3rd-order Butterworth LPF with 3dB cutoff at 10 kHz',
+        'Verify all designs in LTSpice with Bode plots and DC operating point simulation',
+      ],
+      designDecisions:
+        'Cascode topology chosen for its high output impedance (≈ RC) and good high-frequency response. Bias resistors derived from Vcc voltage division and current budget. Coupling and bypass capacitors sized from lower cutoff frequency spec. Butterworth filter coefficients normalised from standard tables, then frequency-scaled to 10 kHz with chosen capacitor values.',
+      validation:
+        'DC operating points verified against hand calculations. Bode plots confirm gain and cutoff frequency specs are met. Root locus analysis shows stable and marginally oscillating conditions for the feedback oscillator.',
+      results:
+        'Cascode amplifier met all design specs: Rout = 2.5 kΩ, |AM| ≥ 50 V/V, ωL within spec. Butterworth filter 3dB point confirmed at 10 kHz in simulation. Oscillator root locus correctly predicts marginal stability at the design frequency.',
+    },
+    links: [
+      { label: 'Full Report (PDF)', url: '/assets/projects/elec301-cascode/report.pdf' },
+    ],
   },
   {
     slug: 'kinetic-led',
