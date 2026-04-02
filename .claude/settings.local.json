@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -l \"DEFAULT_OSCILLOSCOPE\\\\|DEFAULT_CPU\\\\|DEFAULT_EMFIELD\\\\|DEFAULT_SIGNALFLOW\" \"C:/Users/andyk/Documents/GitHub/fixables.github.io/components/sections/\"*.tsx)"
+    ]
+  }
+}

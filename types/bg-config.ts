@@ -25,6 +25,42 @@ export interface BulbConfig {
   maxWireDist: number     // max px distance for a wire connection
 }
 
+export interface OscilloscopeConfig {
+  color: string
+  gridAlpha: number       // 0.04 — grid line opacity
+  waveAlpha: number       // 0.22 — waveform opacity
+  waveCount: number       // 2 — number of channels (1-3)
+  speed: number           // 1 — scroll speed multiplier
+  glowMult: number        // 1 — glow intensity multiplier
+}
+
+export interface CpuConfig {
+  color: string
+  traceAlpha: number      // 0.09 — trace line opacity
+  packetAlpha: number     // 0.55 — data packet glow opacity
+  coreAlpha: number       // 0.12 — internal chip block opacity
+  traceCount: number      // 14 — traces per side of chip (total 4 sides)
+  speed: number           // 1 — packet speed multiplier
+}
+
+export interface EMFieldConfig {
+  color: string
+  particleCount: number   // 80
+  chargeCount: number     // 2 — number of ± charge pairs (so 2 = 4 actual charges)
+  trailLength: number     // 12 — particle trail steps
+  alpha: number           // 0.28 — overall particle/trail opacity
+  speed: number           // 1 — particle movement speed multiplier
+}
+
+export interface SignalFlowConfig {
+  color: string
+  wireAlpha: number       // 0.07
+  signalAlpha: number     // 0.5
+  nodeAlpha: number       // 0.1
+  nodeCount: number       // 14 — number of nodes
+  speed: number           // 1 — signal speed multiplier
+}
+
 export const DEFAULT_CIRCUIT: CircuitConfig = {
   color: '#38bdf8',
   traceAlpha: 0.09,
@@ -52,10 +88,69 @@ export const DEFAULT_BULB: BulbConfig = {
   maxWireDist: 155,
 }
 
+export const DEFAULT_OSCILLOSCOPE: OscilloscopeConfig = {
+  color: '#38bdf8',
+  gridAlpha: 0.04,
+  waveAlpha: 0.22,
+  waveCount: 2,
+  speed: 1,
+  glowMult: 1,
+}
+
+export const DEFAULT_CPU: CpuConfig = {
+  color: '#38bdf8',
+  traceAlpha: 0.09,
+  packetAlpha: 0.55,
+  coreAlpha: 0.12,
+  traceCount: 14,
+  speed: 1,
+}
+
+export const DEFAULT_EMFIELD: EMFieldConfig = {
+  color: '#38bdf8',
+  particleCount: 80,
+  chargeCount: 2,
+  trailLength: 12,
+  alpha: 0.28,
+  speed: 1,
+}
+
+export const DEFAULT_SIGNALFLOW: SignalFlowConfig = {
+  color: '#38bdf8',
+  wireAlpha: 0.07,
+  signalAlpha: 0.5,
+  nodeAlpha: 0.1,
+  nodeCount: 14,
+  speed: 1,
+}
+
 export const BG_LS_KEY = 'hero-bg-override'
+export const BG_SETTINGS_KEY = 'bg-all-settings'
 
 export interface BgOverride {
   mode?: 'circuit' | 'bulb'
   circuit?: CircuitConfig
   bulb?: BulbConfig
+}
+
+export type BgId = 'circuit' | 'bulb' | 'oscilloscope' | 'cpu' | 'emfield' | 'signalflow'
+export type PageId = 'home' | 'experience' | 'projects' | 'contact'
+
+export interface BgPageEntry {
+  enabled: boolean
+  pages: PageId[]
+}
+
+export interface AllBgSettings {
+  backgrounds: Record<BgId, BgPageEntry>
+  configs: Partial<Record<BgId, object>>
+}
+
+export const DEFAULT_BG_ENTRIES: Record<BgId, BgPageEntry> = {
+  circuit:      { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
+  bulb:         { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
+  oscilloscope: { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
+  cpu:          { enabled: true, pages: ['home', 'projects'] },
+  emfield:      { enabled: true, pages: ['home', 'experience', 'contact'] },
+  signalflow:   { enabled: true, pages: ['home', 'projects'] },
 }
