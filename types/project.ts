@@ -41,6 +41,15 @@ export interface FabStats {
   manufacturer?: string  // e.g. 'JLCPCB'
 }
 
+export interface Subsystem {
+  label: string           // e.g. 'Hardware', 'Firmware', 'Mechanical', 'Testing'
+  icon: string            // lucide icon name: 'CircuitBoard' | 'Cpu' | 'Wrench' | 'FlaskConical' | 'Layers'
+  summary: string         // one-line description shown in collapsed state
+  body: string            // full text shown when expanded
+  tags?: string[]         // tech tags for this discipline
+  defaultOpen?: boolean   // first item defaults to true
+}
+
 export interface ProjectData {
   slug: string
   title: string
@@ -57,6 +66,8 @@ export interface ProjectData {
   summary: string
   sections: ProjectSections
   links: ProjectLink[]
+  // Multi-discipline breakdown (optional — only for complex projects)
+  subsystems?: Subsystem[]
   // PCB viewer extras
   pcbLayers?: PCBLayer[]
   schematic?: string     // path to SVG or PNG schematic

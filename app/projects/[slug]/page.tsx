@@ -6,6 +6,7 @@ import TechBadge from '@/components/projects/TechBadge'
 import ProjectGallery from '@/components/projects/ProjectGallery'
 import PCBTabViewer from '@/components/projects/PCBTabViewer'
 import FabStatsCard from '@/components/projects/FabStatsCard'
+import SubsystemsAccordion from '@/components/projects/SubsystemsAccordion'
 import { projects, getProjectBySlug } from '@/data/projects'
 
 interface PageProps {
@@ -118,6 +119,12 @@ export default function ProjectPage({ params }: PageProps) {
               <section>
                 <h2 className="text-xl font-semibold text-zinc-50 mb-3">Results</h2>
                 <p className="text-zinc-400 leading-relaxed">{sections.results}</p>
+              </section>
+            )}
+            {project.subsystems && project.subsystems.length > 0 && (
+              <section>
+                <h2 className="text-xl font-semibold text-zinc-50 mb-3">How it's built</h2>
+                <SubsystemsAccordion items={project.subsystems} />
               </section>
             )}
             {/* PCB viewer — shown for any project with 3D model, layer PNGs, schematic, or BOM */}

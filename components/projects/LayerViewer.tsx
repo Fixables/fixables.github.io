@@ -102,24 +102,15 @@ export default function LayerViewer({ layers }: Props) {
                 mixBlendMode: 'screen',
               }}
             >
+              {/* Colored background — image multiplies against it: white traces → color, black → black */}
+              <div style={{ position: 'absolute', inset: 0, backgroundColor: layer.color }} />
               <Image
                 src={layer.url}
                 alt={layer.label}
                 fill
                 className="object-contain"
-                style={{ filter: `brightness(0) saturate(100%) invert(1) sepia(1) hue-rotate(0deg)` }}
+                style={{ mixBlendMode: 'multiply' }}
                 unoptimized
-              />
-              {/* Color tint overlay */}
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  backgroundColor: layer.color,
-                  mixBlendMode: 'multiply',
-                  opacity: 0.9,
-                  pointerEvents: 'none',
-                }}
               />
             </div>
           ))}

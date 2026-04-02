@@ -31,6 +31,37 @@ export const projects: ProjectData[] = [
         'Smooth, silent haptic feedback across all profiles. FOC eliminated cogging noise present in simpler PWM approaches.',
     },
     links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
+    subsystems: [
+      {
+        label: 'Hardware',
+        icon: 'CircuitBoard',
+        summary: 'ESP32-PICO, current sensing, encoder, SPI OLED, power supply',
+        body: 'The board centres on an ESP32-PICO-D4 with integrated flash. Three-phase current is sensed on each leg via low-side shunt resistors read by the ADC. A magnetic encoder reads rotor position for FOC. An SPI OLED displays active haptic profile. Power flows through a 3.3 V LDO and a separate gate-drive rail for the BLDC bridge.',
+        tags: ['ESP32-PICO', 'Current Sensing', 'Magnetic Encoder', 'SPI', 'OLED'],
+        defaultOpen: true,
+      },
+      {
+        label: 'Firmware',
+        icon: 'Cpu',
+        summary: 'Dual-core FreeRTOS, FOC loop, haptic profile encoding',
+        body: 'Core 0 runs the real-time FOC loop at ~10 kHz: read encoder → compute d/q currents → PI current controllers → inverse Park/Clarke → SVPWM. Core 1 handles haptic profile logic, OLED refresh, and USB Serial. Profiles encode R (damping), L (velocity spring), C (position spring), and diode (asymmetric friction) as torque commands injected into the FOC q-axis.',
+        tags: ['FreeRTOS', 'FOC', 'PID', 'SVPWM', 'C++'],
+      },
+      {
+        label: 'Mechanical',
+        icon: 'Wrench',
+        summary: 'Motor mount, knob shaft coupling, housing',
+        body: 'A gimbal BLDC motor is coupled to the knob shaft via a 3D-printed press-fit hub. The housing clamps the motor at a precise axial offset to minimise wobble. The knob cap is turned on a lathe for consistent feel. All structural parts are PLA with M3 heat-set inserts for durability.',
+        tags: ['3D Printing', 'PLA', 'BLDC Gimbal Motor'],
+      },
+      {
+        label: 'Testing',
+        icon: 'FlaskConical',
+        summary: 'Oscilloscope phase current verification, haptic profile latency',
+        body: 'Phase currents were verified on an oscilloscope to confirm balanced three-phase excitation. End-to-end haptic latency (input → torque response) was measured at under 2 ms. Haptic profiles were evaluated subjectively for naturalness across R, L, C, RLC, and diode modes. FOC confirmed to eliminate cogging noise present in simpler six-step commutation.',
+        tags: ['Oscilloscope', 'Latency Measurement', 'FOC Verification'],
+      },
+    ],
   },
   {
     slug: 'robomaestro',
@@ -67,6 +98,30 @@ export const projects: ProjectData[] = [
     links: [
       { label: 'GitHub', url: 'https://github.com/Fixables' },
       { label: 'Schematic PDF', url: '/assets/projects/robomaestro/schematic.pdf' },
+    ],
+    subsystems: [
+      {
+        label: 'Hardware',
+        icon: 'CircuitBoard',
+        summary: 'MOSFET H-bridge, gate-drive network, decoupling, level shifting',
+        body: 'Discrete N-channel MOSFETs form the full H-bridge. High-side gate drive is handled by a bootstrap circuit to overcome the source-follower threshold. Gate resistors and Schottky snubbers damp ringing on fast PWM edges. Bulk and ceramic decoupling capacitors are placed close to each MOSFET to suppress supply bounce. Level shifting bridges the 3.3 V logic signal to the 12 V gate drive domain.',
+        tags: ['MOSFET', 'Gate Driver', 'Bootstrap', 'Level Shifting', 'Decoupling'],
+        defaultOpen: true,
+      },
+      {
+        label: 'PCB Layout',
+        icon: 'Layers',
+        summary: '2-layer Altium board, power/signal separation, trace widths',
+        body: 'Designed as a 2-layer board in Altium Designer. High-current power traces (motor supply and return) are on the bottom layer with widths calculated for ≥5 A. Gate-drive and logic signals are kept on the top layer and routed away from the switching nodes. A solid ground pour ties both layers and minimises the high-frequency loop area on each half-bridge.',
+        tags: ['Altium Designer', '2-Layer PCB', 'Power Layout', 'Ground Pour'],
+      },
+      {
+        label: 'Testing',
+        icon: 'FlaskConical',
+        summary: 'PWM switching verification, bring-up status',
+        body: 'PWM switching waveforms verified on oscilloscope at 20 kHz — confirmed dead-time insertion and clean gate transitions. Current draw measured under resistive load. Board is currently in bring-up; motor spin-up under closed-loop control is the next milestone.',
+        tags: ['Oscilloscope', 'PWM Verification', 'Bring-Up'],
+      },
     ],
   },
   {

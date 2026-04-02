@@ -2,7 +2,7 @@
 
 import { Suspense, useRef, useState, useCallback, useEffect } from 'react'
 import { Canvas, useThree } from '@react-three/fiber'
-import { OrbitControls, Environment, useGLTF, Html, useProgress } from '@react-three/drei'
+import { OrbitControls, Environment, useGLTF, Html, useProgress, GizmoHelper, GizmoViewport } from '@react-three/drei'
 import { Box3, Vector3 } from 'three'
 import { RotateCcw } from 'lucide-react'
 
@@ -94,6 +94,12 @@ export default function PCBViewer({ modelPath, className = '' }: PCBViewerProps)
             maxDistance={Infinity}
             makeDefault
           />
+          <GizmoHelper alignment="top-right" margin={[72, 72]}>
+            <GizmoViewport
+              axisColors={['#e54d4d', '#4de54d', '#4d8be5']}
+              labelColor="white"
+            />
+          </GizmoHelper>
         </Suspense>
       </Canvas>
 
