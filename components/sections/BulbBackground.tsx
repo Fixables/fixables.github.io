@@ -6,14 +6,19 @@ import { BulbConfig, DEFAULT_BULB } from '@/types/bg-config'
 interface Bulb { x: number; y: number; charge: number }
 interface Wire { i: number; j: number }
 
+// Extra virtual height so bulbs extend below viewport for parallax scrolling
+const PARALLAX_EXTRA = 700
+const PARALLAX_FACTOR = 0.2
+
 function buildGraph(w: number, h: number, cfg: BulbConfig): { bulbs: Bulb[]; wires: Wire[] } {
-  const count = Math.max(18, Math.min(60, Math.round((w * h) / (cfg.cellSize * cfg.cellSize))))
+  const virtualH = h + PARALLAX_EXTRA
+  const count = Math.max(24, Math.min(80, Math.round((w * virtualH) / (cfg.cellSize * cfg.cellSize))))
   const minSpacing = cfg.cellSize * 0.48
 
   const bulbs: Bulb[] = []
   for (let attempt = 0; attempt < count * 10 && bulbs.length < count; attempt++) {
     const x = 40 + Math.random() * (w - 80)
-    const y = 40 + Math.random() * (h - 80)
+    const y = 40 + Math.random() * (virtualH - 80)
     if (bulbs.every(b => Math.hypot(b.x - x, b.y - y) >= minSpacing)) {
       bulbs.push({ x, y, charge: 0 })
     }
@@ -39,6 +44,7 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const configRef = useRef<BulbConfig>(config)
   const needsReseedRef = useRef(false)
+  const scrollYRef = useRef(0)
 
   useEffect(() => {
     const p = configRef.current
@@ -78,7 +84,10 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
       if (!parent) return
       const cfg = configRef.current
       const gm = cfg.glowMult
-      ctx!.clearRect(0, 0, parent.clientWidth, parent.clientHeight)
+      const w = parent.clientWidth, h = parent.clientHeight
+      const offsetY = -(scrollYRef.current * PARALLAX_FACTOR)
+
+      ctx!.clearRect(0, 0, w, h)
       ctx!.fillStyle = cfg.color
 
       // Wires
@@ -89,24 +98,26 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
         ctx!.strokeStyle = cfg.color
         ctx!.lineWidth = 0.5 + charge * 1.5
         ctx!.globalAlpha = cfg.wireAlpha + charge * 0.28
-        ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y)
+        ctx!.moveTo(a.x, a.y + offsetY)
+        ctx!.lineTo(b.x, b.y + offsetY)
         ctx!.stroke()
       }
 
       // Bulbs
       for (const b of bulbs) {
         const c = b.charge
+        const dy = b.y + offsetY
         if (c > 0.04) {
           ctx!.beginPath(); ctx!.globalAlpha = 0.035 * c * gm
-          ctx!.arc(b.x, b.y, 24, 0, Math.PI * 2); ctx!.fill()
+          ctx!.arc(b.x, dy, 24, 0, Math.PI * 2); ctx!.fill()
           ctx!.beginPath(); ctx!.globalAlpha = 0.08 * c * gm
-          ctx!.arc(b.x, b.y, 13, 0, Math.PI * 2); ctx!.fill()
+          ctx!.arc(b.x, dy, 13, 0, Math.PI * 2); ctx!.fill()
           ctx!.beginPath(); ctx!.globalAlpha = 0.18 * c * gm
-          ctx!.arc(b.x, b.y, 6, 0, Math.PI * 2); ctx!.fill()
+          ctx!.arc(b.x, dy, 6, 0, Math.PI * 2); ctx!.fill()
         }
         ctx!.beginPath()
         ctx!.globalAlpha = Math.min(0.95, 0.1 + 0.72 * c * gm)
-        ctx!.arc(b.x, b.y, 2, 0, Math.PI * 2); ctx!.fill()
+        ctx!.arc(b.x, dy, 2, 0, Math.PI * 2); ctx!.fill()
       }
 
       ctx!.globalAlpha = 1
@@ -124,8 +135,12 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
         bulbs = g.bulbs; wires = g.wires
       }
 
+      // Mouse interacts in virtual (pre-parallax) space
+      const offsetY = -(scrollYRef.current * PARALLAX_FACTOR)
+      const virtualMouseY = mouse.y - offsetY  // mouse canvas → virtual bulb space
+
       for (const b of bulbs) {
-        const d = Math.hypot(b.x - mouse.x, b.y - mouse.y)
+        const d = Math.hypot(b.x - mouse.x, b.y - virtualMouseY)
         if (d < cfg.cursorRadius) {
           const target = (1 - d / cfg.cursorRadius) * 0.95
           if (target > b.charge) b.charge += (target - b.charge) * 0.12
@@ -173,6 +188,9 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
     }
     window.addEventListener('mousemove', onMouseMove)
 
+    const onScroll = () => { scrollYRef.current = window.scrollY }
+    window.addEventListener('scroll', onScroll, { passive: true })
+
     const onVisibility = () => {
       if (document.hidden) stop()
       else { lastTime = performance.now(); start() }
@@ -183,6 +201,7 @@ export default function BulbBackground({ config = DEFAULT_BULB }: { config?: Bul
     return () => {
       stop(); ro.disconnect()
       window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('scroll', onScroll)
       document.removeEventListener('visibilitychange', onVisibility)
       clearTimeout(resizeTimer)
     }

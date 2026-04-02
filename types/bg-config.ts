@@ -32,6 +32,7 @@ export interface OscilloscopeConfig {
   waveCount: number       // 2 — number of channels (1-3)
   speed: number           // 1 — scroll speed multiplier
   glowMult: number        // 1 — glow intensity multiplier
+  heightFraction: number  // 0.45 — fraction of viewport height to fill (hero treatment)
 }
 
 export interface CpuConfig {
@@ -59,6 +60,22 @@ export interface SignalFlowConfig {
   nodeAlpha: number       // 0.1
   nodeCount: number       // 14 — number of nodes
   speed: number           // 1 — signal speed multiplier
+}
+
+export interface MagneticConfig {
+  color: string
+  dipoleCount: number     // 1-3 dipoles in the scene
+  fieldLineCount: number  // field lines per dipole pole (seeds per N pole)
+  alpha: number           // field line + flux dot opacity
+  speed: number           // flux dot animation speed
+}
+
+export interface VectorFieldConfig {
+  color: string
+  cellSize: number        // grid spacing px
+  alpha: number           // arrow opacity
+  speed: number           // vortex rotation speed
+  mouseInfluence: number  // px radius where cursor aligns arrows toward it
 }
 
 export const DEFAULT_CIRCUIT: CircuitConfig = {
@@ -95,6 +112,7 @@ export const DEFAULT_OSCILLOSCOPE: OscilloscopeConfig = {
   waveCount: 2,
   speed: 1,
   glowMult: 1,
+  heightFraction: 0.45,
 }
 
 export const DEFAULT_CPU: CpuConfig = {
@@ -124,6 +142,22 @@ export const DEFAULT_SIGNALFLOW: SignalFlowConfig = {
   speed: 1,
 }
 
+export const DEFAULT_MAGNETIC: MagneticConfig = {
+  color: '#38bdf8',
+  dipoleCount: 2,
+  fieldLineCount: 10,
+  alpha: 0.15,
+  speed: 1,
+}
+
+export const DEFAULT_VECTORFIELD: VectorFieldConfig = {
+  color: '#38bdf8',
+  cellSize: 60,
+  alpha: 0.18,
+  speed: 1,
+  mouseInfluence: 200,
+}
+
 export const BG_LS_KEY = 'hero-bg-override'
 export const BG_SETTINGS_KEY = 'bg-all-settings'
 
@@ -133,7 +167,7 @@ export interface BgOverride {
   bulb?: BulbConfig
 }
 
-export type BgId = 'circuit' | 'bulb' | 'oscilloscope' | 'cpu' | 'emfield' | 'signalflow'
+export type BgId = 'circuit' | 'bulb' | 'oscilloscope' | 'cpu' | 'emfield' | 'signalflow' | 'magnetic' | 'vectorfield'
 export type PageId = 'home' | 'experience' | 'projects' | 'contact'
 
 export interface BgPageEntry {
@@ -147,10 +181,12 @@ export interface AllBgSettings {
 }
 
 export const DEFAULT_BG_ENTRIES: Record<BgId, BgPageEntry> = {
-  circuit:      { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
-  bulb:         { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
-  oscilloscope: { enabled: true, pages: ['home', 'experience', 'projects', 'contact'] },
-  cpu:          { enabled: true, pages: ['home', 'projects'] },
-  emfield:      { enabled: true, pages: ['home', 'experience', 'contact'] },
-  signalflow:   { enabled: true, pages: ['home', 'projects'] },
+  circuit:     { enabled: true,  pages: ['home', 'experience', 'projects', 'contact'] },
+  bulb:        { enabled: true,  pages: ['home', 'experience', 'projects', 'contact'] },
+  oscilloscope:{ enabled: true,  pages: ['home'] },          // hero-only treatment
+  cpu:         { enabled: false, pages: ['home', 'projects'] }, // opt-in (too noisy by default)
+  emfield:     { enabled: true,  pages: ['home', 'experience', 'contact'] },
+  signalflow:  { enabled: true,  pages: ['home', 'projects'] },
+  magnetic:    { enabled: true,  pages: ['home', 'experience', 'projects', 'contact'] },
+  vectorfield: { enabled: true,  pages: ['home', 'experience', 'projects', 'contact'] },
 }

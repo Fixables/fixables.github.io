@@ -43,14 +43,20 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
 
     function drawFrame(w: number, h: number, ph: number) {
       const cfg = configRef.current
+      const maxH = Math.round(h * Math.max(0.05, Math.min(1, cfg.heightFraction)))
       ctx!.clearRect(0, 0, w, h)
 
-      // Draw grid
+      // Clip drawing to the active region
+      ctx!.save()
+      ctx!.beginPath()
+      ctx!.rect(0, 0, w, maxH)
+      ctx!.clip()
+
       ctx!.strokeStyle = cfg.color
       ctx!.lineWidth = 0.5
 
-      // Horizontal grid lines every h/8
-      const hStep = h / 8
+      // Horizontal grid lines
+      const hStep = maxH / 8
       for (let i = 0; i <= 8; i++) {
         const y = i * hStep
         const isMajor = i % 2 === 0
@@ -61,7 +67,7 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
         ctx!.stroke()
       }
 
-      // Vertical grid lines every w/10
+      // Vertical grid lines
       const vStep = w / 10
       for (let i = 0; i <= 10; i++) {
         const x = i * vStep
@@ -69,21 +75,20 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
         ctx!.globalAlpha = cfg.gridAlpha * (isMajor ? 1.5 : 1)
         ctx!.beginPath()
         ctx!.moveTo(x, 0)
-        ctx!.lineTo(x, h)
+        ctx!.lineTo(x, maxH)
         ctx!.stroke()
       }
 
-      // Draw waveform channels
+      // Waveform channels
       const waveCount = Math.max(1, Math.min(3, Math.round(cfg.waveCount)))
-      const bandH = h / waveCount
+      const bandH = maxH / waveCount
 
       for (let ch = 0; ch < waveCount; ch++) {
         const bandTop = ch * bandH
         const bandMid = bandTop + bandH / 2
         const amplitude = bandH * 0.35
-        const freq = 3 // 3 cycles visible across width
+        const freq = 3
 
-        // Build path
         ctx!.beginPath()
         const steps = Math.ceil(w)
         for (let px = 0; px <= steps; px++) {
@@ -92,13 +97,10 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
 
           let y: number
           if (ch === 0) {
-            // Sine wave
             y = bandMid + Math.sin(angle) * amplitude
           } else if (ch === 1) {
-            // Square wave
             y = bandMid + (Math.sin(angle) >= 0 ? 1 : -1) * amplitude
           } else {
-            // Triangle wave
             const norm = ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2)
             const tri = norm < Math.PI ? (norm / Math.PI) * 2 - 1 : (1 - (norm - Math.PI) / Math.PI) * 2 - 1
             y = bandMid + tri * amplitude
@@ -108,16 +110,31 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
           else ctx!.lineTo(px, y)
         }
 
-        // Glow pass — wide soft halo
+        // Glow pass
         ctx!.strokeStyle = cfg.color
         ctx!.lineWidth = 5
         ctx!.globalAlpha = cfg.waveAlpha * 0.15 * cfg.glowMult
         ctx!.stroke()
 
-        // Sharp line pass
+        // Sharp pass
         ctx!.lineWidth = 1.5
         ctx!.globalAlpha = cfg.waveAlpha
         ctx!.stroke()
+      }
+
+      ctx!.restore()
+
+      // Fade to transparent at bottom edge of active region (destination-out erase)
+      if (cfg.heightFraction < 0.99) {
+        const fadeH = Math.min(maxH * 0.45, 120)
+        const grad = ctx!.createLinearGradient(0, maxH - fadeH, 0, maxH)
+        grad.addColorStop(0, 'rgba(0,0,0,0)')
+        grad.addColorStop(1, 'rgba(0,0,0,1)')
+        ctx!.globalCompositeOperation = 'destination-out'
+        ctx!.globalAlpha = 1
+        ctx!.fillStyle = grad
+        ctx!.fillRect(0, maxH - fadeH, w, fadeH)
+        ctx!.globalCompositeOperation = 'source-over'
       }
 
       ctx!.globalAlpha = 1
@@ -128,9 +145,7 @@ export default function OscilloscopeBackground({ config = DEFAULT_OSCILLOSCOPE }
       if (!parent) return
       const w = parent.clientWidth, h = parent.clientHeight
 
-      if (needsReseedRef.current) {
-        needsReseedRef.current = false
-      }
+      if (needsReseedRef.current) needsReseedRef.current = false
 
       const delta = Math.min(ts - lastTime, 50)
       lastTime = ts

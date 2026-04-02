@@ -18,7 +18,6 @@ function buildCharges(w: number, h: number, chargeCount: number): Charge[] {
   const charges: Charge[] = []
   const n = Math.max(1, Math.round(chargeCount))
   for (let i = 0; i < n; i++) {
-    // positive
     charges.push({
       x: 0.2 * w + Math.random() * 0.6 * w,
       y: 0.2 * h + Math.random() * 0.6 * h,
@@ -26,7 +25,6 @@ function buildCharges(w: number, h: number, chargeCount: number): Charge[] {
       vy: (Math.random() - 0.5) * 0.04,
       sign: 1,
     })
-    // negative
     charges.push({
       x: 0.2 * w + Math.random() * 0.6 * w,
       y: 0.2 * h + Math.random() * 0.6 * h,
@@ -38,10 +36,22 @@ function buildCharges(w: number, h: number, chargeCount: number): Charge[] {
   return charges
 }
 
-function buildParticles(w: number, h: number, count: number): Particle[] {
+function spawnParticle(w: number, h: number, charges: Charge[]): Particle {
+  // Spawn near a positive (source) charge for immediate visual interest
+  const sources = charges.filter(c => c.sign === 1)
+  if (sources.length > 0) {
+    const src = sources[Math.floor(Math.random() * sources.length)]
+    const angle = Math.random() * Math.PI * 2
+    const dist = 15 + Math.random() * 40
+    return { x: src.x + Math.cos(angle) * dist, y: src.y + Math.sin(angle) * dist, trail: [] }
+  }
+  return { x: Math.random() * w, y: Math.random() * h, trail: [] }
+}
+
+function buildParticles(w: number, h: number, count: number, charges: Charge[]): Particle[] {
   const ps: Particle[] = []
   for (let i = 0; i < count; i++) {
-    ps.push({ x: Math.random() * w, y: Math.random() * h, trail: [] })
+    ps.push(spawnParticle(w, h, charges))
   }
   return ps
 }
@@ -105,7 +115,7 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
       ctx!.strokeStyle = cfg.color
       ctx!.fillStyle = cfg.color
 
-      // Draw trails + particles
+      // Trails + particles
       const trailLen = Math.max(2, Math.round(cfg.trailLength))
       for (const p of particles) {
         if (p.trail.length < 2) continue
@@ -118,34 +128,25 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
           ctx!.lineTo(p.trail[i][0], p.trail[i][1])
           ctx!.stroke()
         }
-        // Draw particle core
         ctx!.globalAlpha = cfg.alpha
         ctx!.beginPath()
         ctx!.arc(p.x, p.y, 1.5, 0, Math.PI * 2)
         ctx!.fill()
       }
 
-      // Draw charges
+      // Charge markers
       for (const c of charges) {
         ctx!.globalAlpha = 0.2
         ctx!.beginPath()
         ctx!.arc(c.x, c.y, 4, 0, Math.PI * 2)
-        if (c.sign > 0) {
-          ctx!.fill()
-        } else {
-          ctx!.lineWidth = 1
-          ctx!.stroke()
-        }
+        if (c.sign > 0) ctx!.fill()
+        else { ctx!.lineWidth = 1; ctx!.stroke() }
 
         ctx!.globalAlpha = 0.05
         ctx!.beginPath()
         ctx!.arc(c.x, c.y, 8, 0, Math.PI * 2)
-        if (c.sign > 0) {
-          ctx!.fill()
-        } else {
-          ctx!.lineWidth = 1
-          ctx!.stroke()
-        }
+        if (c.sign > 0) ctx!.fill()
+        else { ctx!.lineWidth = 1; ctx!.stroke() }
       }
 
       ctx!.globalAlpha = 1
@@ -160,7 +161,7 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
         needsReseedRef.current = false
         const cfg = configRef.current
         charges = buildCharges(w, h, cfg.chargeCount)
-        particles = buildParticles(w, h, cfg.particleCount)
+        particles = buildParticles(w, h, cfg.particleCount, charges)
       }
 
       const delta = Math.min(ts - lastTime, 50)
@@ -176,6 +177,9 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
         if (c.y < 0 || c.y > h) { c.vy = -c.vy * 0.8; c.y = Math.max(0, Math.min(h, c.y)) }
       }
 
+      const sinks   = charges.filter(c => c.sign === -1)
+      const sources  = charges.filter(c => c.sign === 1)
+
       // Move particles along field lines
       for (const p of particles) {
         p.trail.push([p.x, p.y])
@@ -183,18 +187,37 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
 
         const [ex, ey] = fieldAt(charges, p.x, p.y)
         const mag = Math.hypot(ex, ey)
-        if (mag === 0) continue
-        const nx = ex / mag
-        const ny = ey / mag
+        if (mag > 0) {
+          const step = Math.min(2, delta * 0.08 * cfg.speed)
+          p.x += (ex / mag) * step
+          p.y += (ey / mag) * step
+        }
 
-        const step = Math.min(2, delta * 0.08 * cfg.speed)
-        p.x += nx * step
-        p.y += ny * step
+        // Check absorption by a negative charge (sink)
+        let needsRespawn = false
+        for (const s of sinks) {
+          if (Math.hypot(p.x - s.x, p.y - s.y) < 10) { needsRespawn = true; break }
+        }
 
-        // Reset if off canvas
-        if (p.x < 0 || p.x > w || p.y < 0 || p.y > h) {
-          p.x = Math.random() * w
-          p.y = Math.random() * h
+        // Check off-canvas
+        if (!needsRespawn && (p.x < -12 || p.x > w + 12 || p.y < -12 || p.y > h + 12)) {
+          needsRespawn = true
+        }
+
+        if (needsRespawn) {
+          // Respawn near a positive (source) charge
+          const src = sources.length > 0
+            ? sources[Math.floor(Math.random() * sources.length)]
+            : null
+          if (src) {
+            const angle = Math.random() * Math.PI * 2
+            const dist = 15 + Math.random() * 35
+            p.x = src.x + Math.cos(angle) * dist
+            p.y = src.y + Math.sin(angle) * dist
+          } else {
+            p.x = Math.random() * w
+            p.y = Math.random() * h
+          }
           p.trail = []
         }
       }
@@ -210,7 +233,7 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
     if (dims) {
       const cfg = configRef.current
       charges = buildCharges(dims.w, dims.h, cfg.chargeCount)
-      particles = buildParticles(dims.w, dims.h, cfg.particleCount)
+      particles = buildParticles(dims.w, dims.h, cfg.particleCount, charges)
     }
 
     if (reducedMotion) {
@@ -227,7 +250,7 @@ export default function EMFieldBackground({ config = DEFAULT_EMFIELD }: { config
         if (d) {
           const cfg = configRef.current
           charges = buildCharges(d.w, d.h, cfg.chargeCount)
-          particles = buildParticles(d.w, d.h, cfg.particleCount)
+          particles = buildParticles(d.w, d.h, cfg.particleCount, charges)
         }
         start()
       }, 150)
