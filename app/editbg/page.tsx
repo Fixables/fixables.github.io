@@ -1,19 +1,23 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Check } from 'lucide-react'
+import { Check, ArrowLeft } from 'lucide-react'
 import CircuitBackground from '@/components/sections/CircuitBackground'
 import BulbBackground from '@/components/sections/BulbBackground'
 import OscilloscopeBackground from '@/components/sections/OscilloscopeBackground'
 import CpuBackground from '@/components/sections/CpuBackground'
 import EMFieldBackground from '@/components/sections/EMFieldBackground'
 import SignalFlowBackground from '@/components/sections/SignalFlowBackground'
+import MagneticBackground from '@/components/sections/MagneticBackground'
+import VectorFieldBackground from '@/components/sections/VectorFieldBackground'
 import {
   BgId, PageId,
   BG_SETTINGS_KEY, DEFAULT_BG_ENTRIES, AllBgSettings,
-  CircuitConfig, BulbConfig, OscilloscopeConfig, CpuConfig, EMFieldConfig, SignalFlowConfig,
-  DEFAULT_CIRCUIT, DEFAULT_BULB, DEFAULT_OSCILLOSCOPE, DEFAULT_CPU, DEFAULT_EMFIELD, DEFAULT_SIGNALFLOW,
+  CircuitConfig, BulbConfig, OscilloscopeConfig, CpuConfig,
+  EMFieldConfig, SignalFlowConfig, MagneticConfig, VectorFieldConfig,
+  DEFAULT_CIRCUIT, DEFAULT_BULB, DEFAULT_OSCILLOSCOPE, DEFAULT_CPU,
+  DEFAULT_EMFIELD, DEFAULT_SIGNALFLOW, DEFAULT_MAGNETIC, DEFAULT_VECTORFIELD,
 } from '@/types/bg-config'
 
 // ── helpers ──────────────────────────────────────────────────────
@@ -45,12 +49,14 @@ const PAGE_IDS: PageId[] = ['home', 'experience', 'projects', 'contact']
 const PAGE_LABELS: Record<PageId, string> = { home: 'Home', experience: 'Exp', projects: 'Proj', contact: 'Cont' }
 
 const BG_META: Record<BgId, { name: string; desc: string }> = {
-  circuit:      { name: 'Circuit Traces',  desc: 'Grid nodes + orthogonal traces + pulses' },
-  bulb:         { name: 'Bulb Network',    desc: 'Cursor charges nearby bulb nodes' },
-  oscilloscope: { name: 'Oscilloscope',    desc: 'Scrolling waveforms on a CRT grid' },
-  cpu:          { name: 'CPU Die',         desc: 'Chip with radiating traces + data packets' },
-  emfield:      { name: 'EM Field',        desc: 'Particles following dipole field lines' },
-  signalflow:   { name: 'Signal Flow',     desc: 'Datapath nodes with propagating signals' },
+  circuit:     { name: 'Circuit Traces',   desc: 'Grid nodes + orthogonal traces + pulses' },
+  bulb:        { name: 'Bulb Network',     desc: 'Cursor charges nearby nodes (scroll-parallax)' },
+  oscilloscope:{ name: 'Oscilloscope',     desc: 'Scrolling waveforms — hero region only' },
+  cpu:         { name: 'CPU Die',          desc: 'Chip with radiating traces + packets (opt-in)' },
+  emfield:     { name: 'EM Field',         desc: 'Particles following dipole field lines' },
+  signalflow:  { name: 'Signal Flow',      desc: 'Datapath nodes with propagating signals' },
+  magnetic:    { name: 'Magnetic Dipoles', desc: 'Static field lines with animated flux' },
+  vectorfield: { name: 'Vector Field',     desc: 'Slow vortex — mouse aligns nearby vectors' },
 }
 
 // ── main ─────────────────────────────────────────────────────────
@@ -58,11 +64,13 @@ const BG_META: Record<BgId, { name: string; desc: string }> = {
 type Configs = {
   circuit: CircuitConfig; bulb: BulbConfig; oscilloscope: OscilloscopeConfig
   cpu: CpuConfig; emfield: EMFieldConfig; signalflow: SignalFlowConfig
+  magnetic: MagneticConfig; vectorfield: VectorFieldConfig
 }
 
 const DEFAULTS: Configs = {
   circuit: DEFAULT_CIRCUIT, bulb: DEFAULT_BULB, oscilloscope: DEFAULT_OSCILLOSCOPE,
   cpu: DEFAULT_CPU, emfield: DEFAULT_EMFIELD, signalflow: DEFAULT_SIGNALFLOW,
+  magnetic: DEFAULT_MAGNETIC, vectorfield: DEFAULT_VECTORFIELD,
 }
 
 export default function EditBgPage() {
@@ -79,12 +87,14 @@ export default function EditBgPage() {
       if (parsed.backgrounds) setEntries({ ...DEFAULT_BG_ENTRIES, ...parsed.backgrounds })
       if (parsed.configs) {
         setConfigs({
-          circuit:      { ...DEFAULT_CIRCUIT,      ...(parsed.configs.circuit      ?? {}) } as CircuitConfig,
-          bulb:         { ...DEFAULT_BULB,         ...(parsed.configs.bulb         ?? {}) } as BulbConfig,
-          oscilloscope: { ...DEFAULT_OSCILLOSCOPE, ...(parsed.configs.oscilloscope ?? {}) } as OscilloscopeConfig,
-          cpu:          { ...DEFAULT_CPU,          ...(parsed.configs.cpu          ?? {}) } as CpuConfig,
-          emfield:      { ...DEFAULT_EMFIELD,      ...(parsed.configs.emfield      ?? {}) } as EMFieldConfig,
-          signalflow:   { ...DEFAULT_SIGNALFLOW,   ...(parsed.configs.signalflow   ?? {}) } as SignalFlowConfig,
+          circuit:     { ...DEFAULT_CIRCUIT,      ...(parsed.configs.circuit      ?? {}) } as CircuitConfig,
+          bulb:        { ...DEFAULT_BULB,         ...(parsed.configs.bulb         ?? {}) } as BulbConfig,
+          oscilloscope:{ ...DEFAULT_OSCILLOSCOPE, ...(parsed.configs.oscilloscope ?? {}) } as OscilloscopeConfig,
+          cpu:         { ...DEFAULT_CPU,          ...(parsed.configs.cpu          ?? {}) } as CpuConfig,
+          emfield:     { ...DEFAULT_EMFIELD,      ...(parsed.configs.emfield      ?? {}) } as EMFieldConfig,
+          signalflow:  { ...DEFAULT_SIGNALFLOW,   ...(parsed.configs.signalflow   ?? {}) } as SignalFlowConfig,
+          magnetic:    { ...DEFAULT_MAGNETIC,     ...(parsed.configs.magnetic     ?? {}) } as MagneticConfig,
+          vectorfield: { ...DEFAULT_VECTORFIELD,  ...(parsed.configs.vectorfield  ?? {}) } as VectorFieldConfig,
         })
       }
     } catch { /* ignore */ }
@@ -110,8 +120,6 @@ export default function EditBgPage() {
   function applyAll() {
     const settings: AllBgSettings = { backgrounds: entries, configs: configs as unknown as AllBgSettings['configs'] }
     localStorage.setItem(BG_SETTINGS_KEY, JSON.stringify(settings))
-    // Clear session cache so next page load picks fresh
-    Object.keys(sessionStorage).filter(k => k.startsWith('bg-choice-')).forEach(k => sessionStorage.removeItem(k))
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -125,7 +133,7 @@ export default function EditBgPage() {
   return (
     <div className="fixed inset-0 bg-zinc-950 overflow-hidden">
 
-      {/* ── Live preview (full viewport, behind panels) ──── */}
+      {/* ── Live preview ──────────────────────────────── */}
       <div className="absolute inset-0 z-0">
         {selected === 'circuit'      && <CircuitBackground      config={configs.circuit} />}
         {selected === 'bulb'         && <BulbBackground         config={configs.bulb} />}
@@ -133,13 +141,15 @@ export default function EditBgPage() {
         {selected === 'cpu'          && <CpuBackground          config={configs.cpu} />}
         {selected === 'emfield'      && <EMFieldBackground      config={configs.emfield} />}
         {selected === 'signalflow'   && <SignalFlowBackground   config={configs.signalflow} />}
+        {selected === 'magnetic'     && <MagneticBackground     config={configs.magnetic} />}
+        {selected === 'vectorfield'  && <VectorFieldBackground  config={configs.vectorfield} />}
       </div>
 
-      {/* ── Demo hero text (center, pointer-events-none) ── */}
+      {/* ── Demo hero text ────────────────────────────── */}
       <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none px-[280px]">
         <div>
           <p className="text-zinc-400 text-sm mb-2">Hey there! 👋</p>
-          <h1 className="text-4xl font-bold text-zinc-50 tracking-tight leading-tight mb-3">I'm Andy Setiawan</h1>
+          <h1 className="text-4xl font-bold text-zinc-50 tracking-tight leading-tight mb-3">I&apos;m Andy Setiawan</h1>
           <p className="text-zinc-400 text-sm max-w-xs leading-relaxed">
             EE student at UBC — I build firmware, PCBs, and robots.
           </p>
@@ -150,18 +160,16 @@ export default function EditBgPage() {
         </div>
       </div>
 
-      {/* ── LEFT PANEL — background list ─────────────────── */}
+      {/* ── LEFT PANEL — background list ──────────────── */}
       <aside className="absolute top-0 left-0 h-full w-[250px] z-20 bg-zinc-950/90 backdrop-blur-md border-r border-zinc-800 flex flex-col overflow-hidden">
-        {/* Header */}
         <div className="px-4 pt-4 pb-3 border-b border-zinc-800 flex-shrink-0">
           <Link href="/" className="inline-flex items-center gap-1.5 text-[11px] text-zinc-500 hover:text-sky-400 transition-colors mb-2">
             <ArrowLeft size={10} /> Home
           </Link>
           <p className="text-xs font-semibold text-zinc-100">Background Editor</p>
-          <p className="text-[10px] text-zinc-500 mt-0.5">Click a background to preview & configure</p>
+          <p className="text-[10px] text-zinc-500 mt-0.5">Click a background to preview &amp; configure</p>
         </div>
 
-        {/* Background list */}
         <div className="flex-1 overflow-y-auto px-3 py-2 space-y-1.5">
           {(Object.keys(BG_META) as BgId[]).map(id => {
             const meta = BG_META[id]
@@ -182,7 +190,6 @@ export default function EditBgPage() {
                     <p className="text-[11px] font-medium text-zinc-200 truncate">{meta.name}</p>
                     <p className="text-[10px] text-zinc-600 leading-tight mt-0.5">{meta.desc}</p>
                   </div>
-                  {/* Enable toggle */}
                   <button
                     onClick={e => { e.stopPropagation(); toggleEnabled(id) }}
                     className={`flex-shrink-0 w-8 h-4 rounded-full transition-colors relative ${
@@ -195,7 +202,6 @@ export default function EditBgPage() {
                   </button>
                 </div>
 
-                {/* Page toggles */}
                 <div className="flex gap-1 flex-wrap">
                   {PAGE_IDS.map(page => (
                     <button
@@ -216,7 +222,6 @@ export default function EditBgPage() {
           })}
         </div>
 
-        {/* Apply all button */}
         <div className="px-3 py-3 border-t border-zinc-800 flex-shrink-0">
           <button
             onClick={applyAll}
@@ -225,12 +230,12 @@ export default function EditBgPage() {
             {saved ? <><Check size={12} /> Saved!</> : 'Apply All Settings'}
           </button>
           <p className="text-[9px] text-zinc-600 text-center mt-1.5 leading-relaxed">
-            Saves to localStorage. Clears session cache so next navigation picks fresh.
+            Saves to localStorage. Refresh the site to see the new random pick.
           </p>
         </div>
       </aside>
 
-      {/* ── RIGHT PANEL — config sliders ─────────────────── */}
+      {/* ── RIGHT PANEL — config sliders ──────────────── */}
       <aside className="absolute top-0 right-0 h-full w-[300px] z-20 bg-zinc-950/90 backdrop-blur-md border-l border-zinc-800 flex flex-col overflow-hidden">
         <div className="px-4 pt-4 pb-3 border-b border-zinc-800 flex-shrink-0">
           <p className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">Configure</p>
@@ -239,7 +244,7 @@ export default function EditBgPage() {
 
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3">
 
-          {/* Color picker — shared by all */}
+          {/* Color — shared */}
           <div className="space-y-1">
             <span className="text-[11px] text-zinc-400">Color</span>
             <div className="flex items-center gap-3">
@@ -296,12 +301,14 @@ export default function EditBgPage() {
             const s = <K extends keyof OscilloscopeConfig>(k: K, v: OscilloscopeConfig[K]) => setC('oscilloscope', k, v)
             return (<>
               <SectionLabel label="Visual" />
-              <Slider label="Grid opacity"   min={0.01} max={0.15} step={0.005} value={c.gridAlpha} onChange={v => s('gridAlpha', v)} fmt={v => v.toFixed(3)} />
-              <Slider label="Wave opacity"   min={0.05} max={0.6}  step={0.01}  value={c.waveAlpha} onChange={v => s('waveAlpha', v)} fmt={v => v.toFixed(2)} />
-              <Slider label="Glow intensity" min={0.1}  max={4}    step={0.1}   value={c.glowMult}  onChange={v => s('glowMult', v)}  fmt={v => v.toFixed(1) + '×'} />
+              <Slider label="Grid opacity"    min={0.01} max={0.15} step={0.005} value={c.gridAlpha}       onChange={v => s('gridAlpha', v)}       fmt={v => v.toFixed(3)} />
+              <Slider label="Wave opacity"    min={0.05} max={0.6}  step={0.01}  value={c.waveAlpha}       onChange={v => s('waveAlpha', v)}       fmt={v => v.toFixed(2)} />
+              <Slider label="Glow intensity"  min={0.1}  max={4}    step={0.1}   value={c.glowMult}        onChange={v => s('glowMult', v)}        fmt={v => v.toFixed(1) + '×'} />
+              <SectionLabel label="Layout" />
+              <Slider label="Height fraction" min={0.1}  max={1}    step={0.05}  value={c.heightFraction}  onChange={v => s('heightFraction', v)}  fmt={v => Math.round(v * 100) + '%'} />
               <SectionLabel label="Channels" />
-              <Slider label="Wave count"     min={1}    max={3}    step={1}     value={c.waveCount} onChange={v => s('waveCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
-              <Slider label="Scroll speed"   min={0.2}  max={4}    step={0.1}   value={c.speed}     onChange={v => s('speed', v)}     fmt={v => v.toFixed(1) + '×'} />
+              <Slider label="Wave count"      min={1}    max={3}    step={1}     value={c.waveCount}       onChange={v => s('waveCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
+              <Slider label="Scroll speed"    min={0.2}  max={4}    step={0.1}   value={c.speed}           onChange={v => s('speed', v)}           fmt={v => v.toFixed(1) + '×'} />
             </>)
           })()}
 
@@ -310,13 +317,13 @@ export default function EditBgPage() {
             const s = <K extends keyof CpuConfig>(k: K, v: CpuConfig[K]) => setC('cpu', k, v)
             return (<>
               <SectionLabel label="Visual" />
-              <Slider label="Trace opacity"  min={0.02} max={0.3}  step={0.01} value={c.traceAlpha}  onChange={v => s('traceAlpha', v)}  fmt={v => v.toFixed(2)} />
-              <Slider label="Packet opacity" min={0.1}  max={1}    step={0.05} value={c.packetAlpha} onChange={v => s('packetAlpha', v)} fmt={v => v.toFixed(2)} />
-              <Slider label="Core opacity"   min={0.02} max={0.3}  step={0.01} value={c.coreAlpha}   onChange={v => s('coreAlpha', v)}   fmt={v => v.toFixed(2)} />
+              <Slider label="Trace opacity"   min={0.02} max={0.3}  step={0.01} value={c.traceAlpha}  onChange={v => s('traceAlpha', v)}  fmt={v => v.toFixed(2)} />
+              <Slider label="Packet opacity"  min={0.1}  max={1}    step={0.05} value={c.packetAlpha} onChange={v => s('packetAlpha', v)} fmt={v => v.toFixed(2)} />
+              <Slider label="Core opacity"    min={0.02} max={0.3}  step={0.01} value={c.coreAlpha}   onChange={v => s('coreAlpha', v)}   fmt={v => v.toFixed(2)} />
               <SectionLabel label="Structure" />
-              <Slider label="Traces per side" min={4}   max={24}   step={1}    value={c.traceCount}  onChange={v => s('traceCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
+              <Slider label="Traces per side" min={4}    max={24}   step={1}    value={c.traceCount}  onChange={v => s('traceCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
               <SectionLabel label="Animation" />
-              <Slider label="Packet speed"   min={0.2}  max={4}    step={0.1}  value={c.speed}       onChange={v => s('speed', v)}       fmt={v => v.toFixed(1) + '×'} />
+              <Slider label="Packet speed"    min={0.2}  max={4}    step={0.1}  value={c.speed}       onChange={v => s('speed', v)}       fmt={v => v.toFixed(1) + '×'} />
             </>)
           })()}
 
@@ -340,20 +347,48 @@ export default function EditBgPage() {
             const s = <K extends keyof SignalFlowConfig>(k: K, v: SignalFlowConfig[K]) => setC('signalflow', k, v)
             return (<>
               <SectionLabel label="Visual" />
-              <Slider label="Wire opacity"   min={0.01} max={0.3}  step={0.01} value={c.wireAlpha}   onChange={v => s('wireAlpha', v)}   fmt={v => v.toFixed(2)} />
-              <Slider label="Signal opacity" min={0.1}  max={1}    step={0.05} value={c.signalAlpha} onChange={v => s('signalAlpha', v)} fmt={v => v.toFixed(2)} />
-              <Slider label="Node opacity"   min={0.02} max={0.4}  step={0.01} value={c.nodeAlpha}   onChange={v => s('nodeAlpha', v)}   fmt={v => v.toFixed(2)} />
+              <Slider label="Wire opacity"    min={0.01} max={0.3}  step={0.01} value={c.wireAlpha}   onChange={v => s('wireAlpha', v)}   fmt={v => v.toFixed(2)} />
+              <Slider label="Signal opacity"  min={0.1}  max={1}    step={0.05} value={c.signalAlpha} onChange={v => s('signalAlpha', v)} fmt={v => v.toFixed(2)} />
+              <Slider label="Node opacity"    min={0.02} max={0.4}  step={0.01} value={c.nodeAlpha}   onChange={v => s('nodeAlpha', v)}   fmt={v => v.toFixed(2)} />
               <SectionLabel label="Structure" />
-              <Slider label="Node count"     min={6}    max={24}   step={1}    value={c.nodeCount}   onChange={v => s('nodeCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
+              <Slider label="Node count"      min={6}    max={24}   step={1}    value={c.nodeCount}   onChange={v => s('nodeCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
               <SectionLabel label="Animation" />
-              <Slider label="Signal speed"   min={0.2}  max={4}    step={0.1}  value={c.speed}       onChange={v => s('speed', v)}       fmt={v => v.toFixed(1) + '×'} />
+              <Slider label="Signal speed"    min={0.2}  max={4}    step={0.1}  value={c.speed}       onChange={v => s('speed', v)}       fmt={v => v.toFixed(1) + '×'} />
+            </>)
+          })()}
+
+          {selected === 'magnetic' && (() => {
+            const c = configs.magnetic
+            const s = <K extends keyof MagneticConfig>(k: K, v: MagneticConfig[K]) => setC('magnetic', k, v)
+            return (<>
+              <SectionLabel label="Visual" />
+              <Slider label="Opacity"         min={0.04} max={0.5}  step={0.01} value={c.alpha}          onChange={v => s('alpha', v)}          fmt={v => v.toFixed(2)} />
+              <SectionLabel label="Structure" />
+              <Slider label="Dipole count"    min={1}    max={3}    step={1}    value={c.dipoleCount}    onChange={v => s('dipoleCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
+              <Slider label="Field lines"     min={4}    max={18}   step={1}    value={c.fieldLineCount} onChange={v => s('fieldLineCount', Math.round(v))} fmt={v => Math.round(v).toString()} />
+              <SectionLabel label="Animation" />
+              <Slider label="Flux speed"      min={0.2}  max={4}    step={0.1}  value={c.speed}          onChange={v => s('speed', v)}          fmt={v => v.toFixed(1) + '×'} />
+            </>)
+          })()}
+
+          {selected === 'vectorfield' && (() => {
+            const c = configs.vectorfield
+            const s = <K extends keyof VectorFieldConfig>(k: K, v: VectorFieldConfig[K]) => setC('vectorfield', k, v)
+            return (<>
+              <SectionLabel label="Visual" />
+              <Slider label="Opacity"          min={0.04} max={0.5}  step={0.01}  value={c.alpha}          onChange={v => s('alpha', v)}          fmt={v => v.toFixed(2)} />
+              <SectionLabel label="Structure" />
+              <Slider label="Grid spacing"     min={30}   max={130}  step={5}     value={c.cellSize}       onChange={v => s('cellSize', v)}       fmt={v => v + 'px'} />
+              <SectionLabel label="Mouse" />
+              <Slider label="Influence radius" min={50}   max={500}  step={10}    value={c.mouseInfluence} onChange={v => s('mouseInfluence', v)} fmt={v => v + 'px'} />
+              <SectionLabel label="Animation" />
+              <Slider label="Vortex speed"     min={0.1}  max={4}    step={0.1}   value={c.speed}          onChange={v => s('speed', v)}          fmt={v => v.toFixed(1) + '×'} />
             </>)
           })()}
 
           <div className="h-3" />
         </div>
 
-        {/* Reset button */}
         <div className="px-4 py-3 border-t border-zinc-800 flex-shrink-0">
           <button
             onClick={resetSelected}

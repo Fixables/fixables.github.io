@@ -4,6 +4,7 @@ import './globals.css'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageBackground from '@/components/layout/PageBackground'
+import OpAmpCursor from '@/components/layout/OpAmpCursor'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className="bg-zinc-950 text-zinc-50 font-sans antialiased">
+        <OpAmpCursor />
         <PageBackground />
         <Navbar />
         <main>{children}</main>
