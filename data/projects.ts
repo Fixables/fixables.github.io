@@ -42,6 +42,27 @@ export const projects: ProjectData[] = [
     coverImage: '',
     images: [],
     model3d: '/assets/models/robomaestro.glb',
+    fabStats: {
+      layers: 2,
+      dimensions: '— mm',      // fill in once you check Altium board outline
+      minTrace: '0.2 mm',
+      minVia: '0.3 mm drill',
+      surface: 'HASL',
+      manufacturer: 'JLCPCB',
+    },
+    // To enable 2D layer view: export each layer as monochrome PNG from Altium,
+    // place in public/assets/projects/robomaestro/layers/, then add:
+    // pcbLayers: [
+    //   { name:'F.Cu', label:'Top Copper',   url:'/assets/projects/robomaestro/layers/fcu.png',    color:'#c87533', defaultVisible:true  },
+    //   { name:'B.Cu', label:'Bottom Copper', url:'/assets/projects/robomaestro/layers/bcu.png',    color:'#4169e1', defaultVisible:true  },
+    //   { name:'F.SilkS', label:'Silkscreen', url:'/assets/projects/robomaestro/layers/silk.png',   color:'#ffffff', defaultVisible:true  },
+    //   { name:'Edge.Cuts', label:'Outline',  url:'/assets/projects/robomaestro/layers/edge.png',   color:'#ffff00', defaultVisible:true  },
+    // ],
+    // schematic: '/assets/projects/robomaestro/schematic.svg',
+    // bomData: [
+    //   { ref:'Q1', value:'AO3400', footprint:'SOT-23', qty:4 },
+    //   { ref:'R1', value:'10kΩ',   footprint:'0402',   qty:6 },
+    // ],
     summary:
       'A discrete MOSFET H-bridge motor driver designed from scratch in Altium. Focused on gate-drive integrity, level shifting, and noise-aware PCB layout for reliable PWM operation and dead-time control.',
     sections: {

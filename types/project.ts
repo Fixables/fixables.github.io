@@ -16,6 +16,31 @@ export interface ProjectSections {
   results?: string
 }
 
+export interface PCBLayer {
+  name: string           // e.g. 'F.Cu'
+  label: string          // e.g. 'Top Copper'
+  url: string            // path to PNG in /public
+  color: string          // hex tint — applied via CSS filter + mix-blend-mode
+  defaultVisible: boolean
+}
+
+export interface BOMEntry {
+  ref: string            // e.g. 'R1', 'U2'
+  value: string          // e.g. '10kΩ', 'STM32F4'
+  footprint: string      // e.g. '0402', 'SOIC-8'
+  qty: number
+  note?: string
+}
+
+export interface FabStats {
+  layers: number
+  dimensions: string     // e.g. '65 × 45 mm'
+  minTrace?: string      // e.g. '0.2 mm'
+  minVia?: string        // e.g. '0.3 mm drill'
+  surface?: string       // e.g. 'HASL', 'ENIG'
+  manufacturer?: string  // e.g. 'JLCPCB'
+}
+
 export interface ProjectData {
   slug: string
   title: string
@@ -32,4 +57,9 @@ export interface ProjectData {
   summary: string
   sections: ProjectSections
   links: ProjectLink[]
+  // PCB viewer extras
+  pcbLayers?: PCBLayer[]
+  schematic?: string     // path to SVG or PNG schematic
+  bomData?: BOMEntry[]
+  fabStats?: FabStats
 }

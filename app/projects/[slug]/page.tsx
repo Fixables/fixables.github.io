@@ -4,7 +4,8 @@ import { ArrowLeft, ExternalLink } from 'lucide-react'
 import PageWrapper from '@/components/layout/PageWrapper'
 import TechBadge from '@/components/projects/TechBadge'
 import ProjectGallery from '@/components/projects/ProjectGallery'
-import PCBViewer from '@/components/projects/PCBViewerWrapper'
+import PCBTabViewer from '@/components/projects/PCBTabViewer'
+import FabStatsCard from '@/components/projects/FabStatsCard'
 import { projects, getProjectBySlug } from '@/data/projects'
 
 interface PageProps {
@@ -119,16 +120,17 @@ export default function ProjectPage({ params }: PageProps) {
                 <p className="text-zinc-400 leading-relaxed">{sections.results}</p>
               </section>
             )}
+            {/* PCB viewer — shown for any project with 3D model, layer PNGs, schematic, or BOM */}
+            {(project.model3d || project.pcbLayers?.length || project.schematic || project.bomData?.length) && (
+              <section>
+                <h2 className="text-xl font-semibold text-zinc-50 mb-4">PCB Viewer</h2>
+                <PCBTabViewer project={project} />
+              </section>
+            )}
             {project.images.length > 0 && (
               <section>
                 <h2 className="text-xl font-semibold text-zinc-50 mb-4">Gallery</h2>
                 <ProjectGallery images={project.images} title={project.title} />
-              </section>
-            )}
-            {project.model3d && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-4">3D PCB Viewer</h2>
-                <PCBViewer modelPath={project.model3d} />
               </section>
             )}
           </div>
@@ -156,6 +158,9 @@ export default function ProjectPage({ params }: PageProps) {
                   </div>
                 </dl>
               </div>
+              {project.fabStats && (
+                <FabStatsCard stats={project.fabStats} />
+              )}
               {project.links.length > 0 && (
                 <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
                   <h3 className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-4">Links</h3>
