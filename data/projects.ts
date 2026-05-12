@@ -279,9 +279,9 @@ export const projects: ProjectData[] = [
     status: "Ongoing",
     role: "Instrumentation Team — designed the motherboard PCB (schematic, layout, isolation architecture) and developed sensor front-ends, calibration procedures, and data-processing routines",
     featured: true,
-    coverImage: "/assets/projects/BrewBox/TopPCB.png",
+    coverImage: "/assets/projects/BrewBox/TopPCB_out.png",
     images: [
-      "/assets/projects/BrewBox/TopPCB.png",
+      "/assets/projects/BrewBox/TopPCB_out.png",
       "/assets/projects/BrewBox/RealLife_PCB_Photo.JPG",
       "/assets/projects/BrewBox/PCB_andTheTeam.JPG",
       "/assets/projects/BrewBox/Input_Power_Schematic.png",

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { PCBLayer } from '@/types/project'
 
 interface Props {
@@ -92,34 +91,30 @@ export default function LayerViewer({ layers }: Props) {
             transformOrigin: 'center center',
           }}
         >
-          {layers.map(layer => {
-            const isSvg = layer.url.endsWith('.svg')
-            return (
-              <div
-                key={layer.name}
-                style={{
-                  position: 'absolute',
-                  inset: 0,
-                  display: visible[layer.name] ? 'block' : 'none',
-                  mixBlendMode: 'screen',
-                }}
-              >
-                {/* PNGs: monochrome white-on-black — tint by multiplying against a color background.
-                    SVGs: already have baked-in colors — render directly, screen blend makes black transparent. */}
-                {!isSvg && (
-                  <div style={{ position: 'absolute', inset: 0, backgroundColor: layer.color }} />
-                )}
-                <Image
-                  src={layer.url}
-                  alt={layer.label}
-                  fill
-                  className="object-contain"
-                  style={{ mixBlendMode: isSvg ? 'normal' : 'multiply' }}
-                  unoptimized
-                />
-              </div>
-            )
-          })}
+          {layers.map(layer => (
+            // CSS mask-image: SVG/PNG acts as a luminance stencil.
+            // White pixels → opaque (shows layer.color), black pixels → transparent.
+            // No blend-mode tricks needed — works correctly regardless of SVG background transparency.
+            <div
+              key={layer.name}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: visible[layer.name] ? 'block' : 'none',
+                mixBlendMode: 'screen',
+                backgroundColor: layer.color,
+                maskImage: `url(${layer.url})`,
+                maskSize: 'contain',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+                maskMode: 'luminance',
+                WebkitMaskImage: `url(${layer.url})`,
+                WebkitMaskSize: 'contain',
+                WebkitMaskPosition: 'center',
+                WebkitMaskRepeat: 'no-repeat',
+              } as React.CSSProperties}
+            />
+          ))}
         </div>
 
         {/* Zoom indicator */}
