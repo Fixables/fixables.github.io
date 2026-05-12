@@ -532,41 +532,41 @@ export const projects: ProjectData[] = [
   },
 
   // ── 4. Smart Energy Meter ─────────────────────────────────────────
-  {
-    slug: "smart-energy-meter",
-    title: "Smart Energy Meter",
-    tagline:
-      "ESP32 energy monitor — real-time RMS, power factor, and a Python pipeline that catches the weird stuff",
-    category: "embedded",
-    tags: [
-      "ESP32",
-      "IoT",
-      "SCT-013",
-      "ZMPT101B",
-      "TFT Display",
-      "Python",
-      "Power Measurement",
-    ],
-    date: "2025",
-    featured: false,
-    coverImage: "",
-    images: [],
-    summary:
-      "An ESP32 reads a non-invasive SCT-013 current clamp and a ZMPT101B voltage sensor, then computes RMS, real power, and power factor in firmware. A TFT shows live readings, and a Python backend on the other side logs everything and runs anomaly detection — useful for spotting the kind of weird load behaviour you'd otherwise never notice (like that one appliance that draws way more than it should). Verified against a bench power analyser. It's the kind of project where the firmware is straightforward but the calibration is where you spend half your time.",
-    sections: {
-      designDecisions:
-        "SCT-013 non-invasive current transformer and ZMPT101B voltage sensor feed ADC inputs on the ESP32. RMS computation done in firmware. TFT display shows live readings. Python backend handles long-term logging and analytics.",
-      goals: [
-        "Real-time RMS voltage, current, power, and power factor measurement",
-        "TFT display for live readings",
-        "IoT data pipeline for remote monitoring",
-        "Python analytics with anomaly detection and short-term forecasting",
-      ],
-      results:
-        "Live readings verified against bench power analyser. Python dashboard operational with anomaly detection.",
-    },
-    links: [{ label: "GitHub", url: "https://github.com/Fixables" }],
-  },
+  // {
+  //   slug: "smart-energy-meter",
+  //   title: "Smart Energy Meter",
+  //   tagline:
+  //     "ESP32 energy monitor — real-time RMS, power factor, and a Python pipeline that catches the weird stuff",
+  //   category: "embedded",
+  //   tags: [
+  //     "ESP32",
+  //     "IoT",
+  //     "SCT-013",
+  //     "ZMPT101B",
+  //     "TFT Display",
+  //     "Python",
+  //     "Power Measurement",
+  //   ],
+  //   date: "2025",
+  //   featured: false,
+  //   coverImage: "",
+  //   images: [],
+  //   summary:
+  //     "An ESP32 reads a non-invasive SCT-013 current clamp and a ZMPT101B voltage sensor, then computes RMS, real power, and power factor in firmware. A TFT shows live readings, and a Python backend on the other side logs everything and runs anomaly detection — useful for spotting the kind of weird load behaviour you'd otherwise never notice (like that one appliance that draws way more than it should). Verified against a bench power analyser. It's the kind of project where the firmware is straightforward but the calibration is where you spend half your time.",
+  //   sections: {
+  //     designDecisions:
+  //       "SCT-013 non-invasive current transformer and ZMPT101B voltage sensor feed ADC inputs on the ESP32. RMS computation done in firmware. TFT display shows live readings. Python backend handles long-term logging and analytics.",
+  //     goals: [
+  //       "Real-time RMS voltage, current, power, and power factor measurement",
+  //       "TFT display for live readings",
+  //       "IoT data pipeline for remote monitoring",
+  //       "Python analytics with anomaly detection and short-term forecasting",
+  //     ],
+  //     results:
+  //       "Live readings verified against bench power analyser. Python dashboard operational with anomaly detection.",
+  //   },
+  //   links: [{ label: "GitHub", url: "https://github.com/Fixables" }],
+  // },
 
   // ── 5. Reflow Oven Controller ─────────────────────────────────────
   {
@@ -746,8 +746,11 @@ export const projects: ProjectData[] = [
     ],
     date: "2025",
     featured: false,
-    coverImage: "",
-    images: ["/assets/projects/elec301-cascode/poles.gif"],
+    coverImage: "/assets/projects/elec301-cascode/thumbnail.png",
+    images: [
+      "/assets/projects/elec301-cascode/thumbnail.png",
+      "/assets/projects/elec301-cascode/poles.gif",
+    ],
     reportUrl: "/assets/projects/elec301-cascode/report.pdf",
     summary:
       "ELEC 301 Mini Project 2 -- three problems in one report. Problem 1: design a dual 2N3904 cascode amplifier from scratch meeting tight midband specs (VCC = 20 V, Rout = 2.5 kOhm +/- 250 Ohm, Rin >= 3.5 kOhm, |AM| >= 50 V/V, omega_L <= 1200 rad/s). I biased both transistors by dividing VCC into quarters (VE1 = 5 V, VC1 = VE2 = 10 V, VC2 = 15 V), derived the bias resistors from the current budget (RC = RE = 2.5 kOhm, IC = 2 mA, gm = 80 mS, r_pi = 3.75 kOhm), then sized the coupling and bypass capacitors from the cutoff spec. The calculated midband gain came out to 157.3 V/V (43.9 dB). LTSpice verified the DC operating point and Bode plot: fL3dB at ~90 Hz and fH3dB at ~6.6 MHz. Problem 2: a second BJT amplifier variant analysis. Problem 3: a 3rd-order Butterworth low-pass filter with 3 dB cutoff at 10 kHz designed from coefficient tables, plus root locus analysis of a feedback oscillator.",
@@ -830,8 +833,8 @@ export const projects: ProjectData[] = [
     tags: ["LTSpice", "BJT", "OC/SC Method", "Miller's Theorem", "Bode Plot", "Frequency Response", "ELEC301"],
     date: "2025",
     featured: false,
-    coverImage: "",
-    images: [],
+    coverImage: "/assets/projects/elec301-amplifiers/thumbnail.png",
+    images: ["/assets/projects/elec301-amplifiers/thumbnail.png"],
     reportUrl: "/assets/projects/elec301-amplifiers/report.pdf",
     summary:
       "ELEC 301 Mini Project 1 -- frequency response analysis across four problems. Problem 1: a four-pole RC bandpass filter with component values R1=50 Ohm, R2=R3=R4=500 Ohm, C1=20 uF, C2=100 pF, C3=500 nF, C4=100 pF. I used the open-circuit / short-circuit (OC/SC) time constant method to find all four poles by hand without solving the full transfer function. C3 dominates the low-frequency cutoff (tau_C3 = 522.7 us, fc3 = 304.5 Hz), and the combined high-frequency cutoff from C2 and C4 comes out to 6.01 MHz. LTSpice AC sweep confirmed poles at 14.22 Hz, 312.6 Hz, 5.90 MHz, and 38.61 MHz -- close agreement with the OC/SC method. Problem 1B validated the method by sweeping C3 across five values and comparing calculated vs simulated cutoff frequencies. Problems 2-4 analyse a transconductance amplifier and CE/CB/CC BJT configurations using Miller's theorem to decouple the feedback capacitance and find high-frequency poles.",

@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   title: 'Andy Setiawan — Embedded Systems & Firmware Engineer',
   description: 'Portfolio of Andy Setiawan. Embedded systems, firmware, PCB design, motor control, RTOS, robotics.',
   keywords: ['embedded systems', 'firmware', 'PCB design', 'motor control', 'RTOS', 'robotics', 'Altium', 'STM32'],
+  icons: {
+    icon: '/assets/DSCF4746-rd.png',
+    shortcut: '/assets/DSCF4746-rd.png',
+    apple: '/assets/DSCF4746-rd.png',
+  },
   openGraph: {
     title: 'Andy Setiawan — Embedded Systems & Firmware Engineer',
     description: 'Portfolio of Andy Setiawan. Embedded systems, firmware, PCB design, motor control, RTOS, robotics.',
