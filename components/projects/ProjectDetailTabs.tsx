@@ -1,16 +1,44 @@
 'use client'
 
 import { useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 import type { ProjectData } from '@/types/project'
 import PCBTabViewer from './PCBTabViewer'
 import ProjectGallery from './ProjectGallery'
 import SubsystemsAccordion from './SubsystemsAccordion'
 
-type TabId = 'overview' | 'pcb' | 'gallery' | 'specs' | 'process' | 'lessons'
+type TabId = 'overview' | 'pcb' | 'gallery' | 'details' | 'lessons'
 
 interface Tab {
   id: TabId
   label: string
+}
+
+function AccordionSection({ title, defaultOpen = false, children }: {
+  title: string
+  defaultOpen?: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(defaultOpen)
+  return (
+    <div className="border border-zinc-800 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-4 text-left bg-zinc-900 hover:bg-zinc-800/60 transition-colors"
+      >
+        <span className="font-medium text-zinc-200 text-sm">{title}</span>
+        <ChevronDown
+          size={16}
+          className={`text-zinc-500 transition-transform duration-200 flex-shrink-0 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {open && (
+        <div className="px-5 py-4 bg-zinc-950 border-t border-zinc-800">
+          {children}
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default function ProjectDetailTabs({ project }: { project: ProjectData }) {
@@ -18,21 +46,21 @@ export default function ProjectDetailTabs({ project }: { project: ProjectData })
 
   const hasPCB = !!(project.model3d || project.pcbLayers?.length || project.schematic || project.bomData?.length)
   const hasGallery = project.images.length > 0
-  const hasSpecs = !!(project.specs?.length)
-  const hasLessons = !!(project.lessons?.length)
-  const hasProcess = !!(
-    sections.designDecisions || project.process?.length ||
+  const hasDetails = !!(
+    project.specs?.length ||
+    project.process?.length ||
+    sections.designDecisions ||
     sections.pcbHighlights || sections.schematicHighlights ||
     sections.validation || sections.challenges || sections.results
   )
+  const hasLessons = !!(project.lessons?.length)
 
   const tabs: Tab[] = [
     { id: 'overview', label: 'Overview' },
-    ...(hasPCB     ? [{ id: 'pcb'     as TabId, label: 'PCB Views'        }] : []),
-    ...(hasGallery ? [{ id: 'gallery' as TabId, label: 'Gallery'           }] : []),
-    ...(hasSpecs   ? [{ id: 'specs'   as TabId, label: 'Tech Specs'        }] : []),
-    ...(hasProcess ? [{ id: 'process' as TabId, label: 'Process & Outcome' }] : []),
-    ...(hasLessons ? [{ id: 'lessons' as TabId, label: 'What I Learned'    }] : []),
+    ...(hasPCB      ? [{ id: 'pcb'     as TabId, label: 'PCB Views' }] : []),
+    ...(hasGallery  ? [{ id: 'gallery' as TabId, label: 'Gallery'   }] : []),
+    ...(hasDetails  ? [{ id: 'details' as TabId, label: 'Details'   }] : []),
+    ...(hasLessons  ? [{ id: 'lessons' as TabId, label: 'Lessons'   }] : []),
   ]
 
   const [active, setActive] = useState<TabId>('overview')
@@ -97,30 +125,24 @@ export default function ProjectDetailTabs({ project }: { project: ProjectData })
         <ProjectGallery images={project.images} title={project.title} />
       )}
 
-      {/* Tech Specs */}
-      {active === 'specs' && hasSpecs && (
-        <dl className="grid sm:grid-cols-2 gap-3">
-          {project.specs!.map((spec, i) => (
-            <div key={i} className="bg-zinc-950 border border-zinc-800 rounded-lg p-4">
-              <dt className="text-xs text-zinc-500 font-mono uppercase tracking-wider mb-1">{spec.label}</dt>
-              <dd className="text-zinc-200 font-medium">{spec.value}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-
-      {/* Process & Outcome */}
-      {active === 'process' && (
-        <div className="space-y-8">
-          {sections.designDecisions && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">Design Decisions</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.designDecisions}</p>
-            </section>
+      {/* Details — merged Tech Specs + Process & Outcome with accordions */}
+      {active === 'details' && (
+        <div className="space-y-3">
+          {project.specs && project.specs.length > 0 && (
+            <AccordionSection title="Tech Specs" defaultOpen>
+              <dl className="grid sm:grid-cols-2 gap-3">
+                {project.specs.map((spec, i) => (
+                  <div key={i} className="bg-zinc-900 border border-zinc-800 rounded-lg p-3">
+                    <dt className="text-xs text-zinc-500 font-mono uppercase tracking-wider mb-1">{spec.label}</dt>
+                    <dd className="text-zinc-200 font-medium text-sm">{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </AccordionSection>
           )}
+
           {project.process && project.process.length > 0 && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-5">Design Process</h3>
+            <AccordionSection title="Design Process" defaultOpen={!project.specs?.length}>
               <ol className="space-y-5">
                 {project.process.map((step, i) => (
                   <li key={i} className="flex gap-4">
@@ -134,37 +156,43 @@ export default function ProjectDetailTabs({ project }: { project: ProjectData })
                   </li>
                 ))}
               </ol>
-            </section>
+            </AccordionSection>
           )}
+
+          {sections.designDecisions && (
+            <AccordionSection title="Design Decisions">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.designDecisions}</p>
+            </AccordionSection>
+          )}
+
           {sections.schematicHighlights && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">Schematic Highlights</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.schematicHighlights}</p>
-            </section>
+            <AccordionSection title="Schematic Highlights">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.schematicHighlights}</p>
+            </AccordionSection>
           )}
+
           {sections.pcbHighlights && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">PCB Layout</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.pcbHighlights}</p>
-            </section>
+            <AccordionSection title="PCB Layout">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.pcbHighlights}</p>
+            </AccordionSection>
           )}
+
           {sections.validation && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">Validation & Testing</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.validation}</p>
-            </section>
+            <AccordionSection title="Validation & Testing">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.validation}</p>
+            </AccordionSection>
           )}
+
           {sections.challenges && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">Challenges & Tradeoffs</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.challenges}</p>
-            </section>
+            <AccordionSection title="Challenges & Tradeoffs">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.challenges}</p>
+            </AccordionSection>
           )}
+
           {sections.results && (
-            <section>
-              <h3 className="text-lg font-semibold text-zinc-50 mb-3">Results</h3>
-              <p className="text-zinc-400 leading-relaxed">{sections.results}</p>
-            </section>
+            <AccordionSection title="Results">
+              <p className="text-zinc-400 text-sm leading-relaxed">{sections.results}</p>
+            </AccordionSection>
           )}
         </div>
       )}

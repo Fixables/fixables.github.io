@@ -43,7 +43,6 @@ export default function ProjectPage({ params }: PageProps) {
   if (!project) notFound()
 
   const { sections } = project
-  const hasSummaryCards = !!(sections.problem || project.summary || project.role || sections.results)
 
   return (
     <PageWrapper>
@@ -107,38 +106,6 @@ export default function ProjectPage({ params }: PageProps) {
           </div>
         </div>
       </div>
-
-      {/* ── Summary cards ──────────────────────────────────────────────── */}
-      {hasSummaryCards && (
-        <div className="border-b border-zinc-800 bg-zinc-950">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {sections.problem && (
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                  <p className="text-xs font-mono uppercase tracking-wider text-rose-400 mb-2">Problem</p>
-                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{sections.problem}</p>
-                </div>
-              )}
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                <p className="text-xs font-mono uppercase tracking-wider text-sky-400 mb-2">Solution</p>
-                <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{project.summary}</p>
-              </div>
-              {project.role && (
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                  <p className="text-xs font-mono uppercase tracking-wider text-violet-400 mb-2">My Role</p>
-                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{project.role}</p>
-                </div>
-              )}
-              {sections.results && (
-                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-                  <p className="text-xs font-mono uppercase tracking-wider text-green-400 mb-2">Outcome</p>
-                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{sections.results}</p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* ── Main content ───────────────────────────────────────────────── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
