@@ -23,7 +23,7 @@ export const projects: ProjectData[] = [
     featured: true,
     coverImage: "",
     images: [],
-    model3d: "/assets/models/haptic-knob.glb",
+    model3d: "/assets/projects/3dPCB.mtl",
     summary:
       "Here's the idea: what if a capacitor felt like a spring? An inductor like resistance to acceleration? A diode like a one-way ratchet? That's exactly what this knob does. It's a 3-phase BLDC motor running Field-Oriented Control on an ESP32-S3, and the firmware computes a real-time torque command that mimics circuit behaviour. Turn it past zero and it springs back (V = Q/C). Spin it fast and it pushes back like a damper (V = Rω). The motor becomes a haptic voltage source. The math is just the electrical-to-mechanical analogy from first-year physics — the fun part is that with a tight control loop (1 kHz inner / 200 Hz haptic model), it actually feels right.",
     sections: {
@@ -304,38 +304,17 @@ export const projects: ProjectData[] = [
     },
     pcbLayers: [
       {
-        name: "GTL",
-        label: "Top Copper",
-        url: "/assets/projects/BrewBox/brewbox1.0.GTL.svg",
+        name: "Top",
+        label: "Top View",
+        url: "/assets/projects/BrewBox/top.svg",
         color: "#c87533",
         defaultVisible: true,
       },
       {
-        name: "GBL",
-        label: "Bottom Copper",
-        url: "/assets/projects/BrewBox/brewbox1.0.GBL.svg",
+        name: "Bottom",
+        label: "Bottom View",
+        url: "/assets/projects/BrewBox/bottom.svg",
         color: "#4169e1",
-        defaultVisible: true,
-      },
-      {
-        name: "GTO",
-        label: "Top Silkscreen",
-        url: "/assets/projects/BrewBox/brewbox1.0.GTO.svg",
-        color: "#e8e8e8",
-        defaultVisible: false,
-      },
-      {
-        name: "GTS",
-        label: "Top Soldermask",
-        url: "/assets/projects/BrewBox/brewbox1.0.GTS.svg",
-        color: "#2d7a3a",
-        defaultVisible: false,
-      },
-      {
-        name: "GBS",
-        label: "Bottom Soldermask",
-        url: "/assets/projects/BrewBox/brewbox1.0.GBS.svg",
-        color: "#1a5276",
         defaultVisible: false,
       },
     ],
