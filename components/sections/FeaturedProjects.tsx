@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { getFeaturedProjects } from '@/data/projects'
 import AnimatedReveal from '@/components/ui/AnimatedReveal'
+import ProjectCard from '@/components/projects/ProjectCard'
 
 export default function FeaturedProjects() {
   const featured = getFeaturedProjects()
@@ -26,29 +27,7 @@ export default function FeaturedProjects() {
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         {featured.map((project, i) => (
           <AnimatedReveal key={project.slug} delay={i * 0.08}>
-            <Link href={`/projects/${project.slug}`} className="group block">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-sky-400/5 h-full">
-                <div className="aspect-video bg-zinc-800 relative overflow-hidden flex items-center justify-center">
-                  <span className="font-mono text-zinc-600 text-xs">{project.category}</span>
-                </div>
-                <div className="p-5">
-                  <span className="inline-block font-mono text-xs text-sky-400 bg-sky-400/10 px-2 py-0.5 rounded mb-3">
-                    {project.category}
-                  </span>
-                  <h3 className="text-base font-semibold text-zinc-50 mb-1.5 group-hover:text-sky-400 transition-colors leading-snug">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-zinc-400 line-clamp-2 mb-4 leading-relaxed">{project.tagline}</p>
-                  <div className="flex flex-wrap gap-1.5">
-                    {project.tags.slice(0, 4).map((tag) => (
-                      <span key={tag} className="text-xs text-zinc-500 bg-zinc-800 px-2 py-0.5 rounded">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </Link>
+            <ProjectCard project={project} />
           </AnimatedReveal>
         ))}
       </div>

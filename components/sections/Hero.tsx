@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { ArrowRight, Download } from 'lucide-react'
+import { ArrowRight, Download, MapPin, Briefcase } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -9,7 +9,7 @@ const container = {
   hidden: {},
   show: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
     },
   },
 }
@@ -44,21 +44,58 @@ export default function Hero() {
           </motion.div>
 
           {/* Text */}
-          <div className="text-center sm:text-left">
-            <motion.p variants={item} className="text-zinc-400 text-base mb-3">
-              Hey there! 👋
+          <div className="text-center sm:text-left flex-1">
+            <motion.p
+              variants={item}
+              className="font-mono text-xs text-sky-400 tracking-widest uppercase mb-3"
+            >
+              Electrical Engineering @ UBC
             </motion.p>
 
             <motion.h1
               variants={item}
-              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-50 tracking-tight leading-tight mb-4"
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-zinc-50 tracking-tight leading-tight mb-5"
             >
               I'm Andy Setiawan
             </motion.h1>
 
-            <motion.p variants={item} className="text-lg text-zinc-400 leading-relaxed mb-8 max-w-xl">
-              Electrical Engineering student at UBC — I love building things, breaking things, and figuring out why they broke.
+            <motion.p
+              variants={item}
+              className="text-lg sm:text-xl text-zinc-300 leading-relaxed mb-3 max-w-2xl"
+            >
+              Firmware, PCBs, and embedded systems — from BLDC motor control to IoT instrumentation.
             </motion.p>
+
+            <motion.p
+              variants={item}
+              className="text-base text-zinc-500 leading-relaxed mb-7 max-w-xl"
+            >
+              I love building things, breaking things, and figuring out why they broke.
+            </motion.p>
+
+            {/* Availability strip */}
+            <motion.div
+              variants={item}
+              className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-2 text-sm text-zinc-400 mb-8"
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin size={14} className="text-sky-400" />
+                Vancouver, BC
+              </span>
+              <span className="text-zinc-700" aria-hidden>·</span>
+              <span className="inline-flex items-center gap-1.5">
+                <Briefcase size={14} className="text-sky-400" />
+                Seeking Summer 2026 internships
+              </span>
+              <span className="text-zinc-700" aria-hidden>·</span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-60 animate-ping motion-reduce:hidden" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-green-400" />
+                </span>
+                Available
+              </span>
+            </motion.div>
 
             <motion.div variants={item} className="flex flex-wrap gap-4 justify-center sm:justify-start">
               <Link

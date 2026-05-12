@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, MapPin, GraduationCap, Wrench } from 'lucide-react'
 import AnimatedReveal from '@/components/ui/AnimatedReveal'
 
 export default function AboutMe() {
@@ -26,11 +26,20 @@ export default function AboutMe() {
                 className="object-cover w-full h-full"
               />
             </div>
-            <div className="space-y-2 text-sm text-zinc-500">
-              <p>📍 Vancouver, BC (from Bali, Indonesia)</p>
-              <p>🎓 B.A.Sc Electrical Engineering @ UBC</p>
-              <p>🔧 7+ years tinkering with electronics</p>
-            </div>
+            <ul className="space-y-2.5 text-sm text-zinc-400">
+              <li className="flex items-center gap-2.5">
+                <MapPin size={14} className="text-sky-400 flex-shrink-0" />
+                <span>Vancouver, BC (from Bali, Indonesia)</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <GraduationCap size={14} className="text-sky-400 flex-shrink-0" />
+                <span>B.A.Sc Electrical Engineering @ UBC</span>
+              </li>
+              <li className="flex items-center gap-2.5">
+                <Wrench size={14} className="text-sky-400 flex-shrink-0" />
+                <span>7+ years tinkering with electronics</span>
+              </li>
+            </ul>
           </div>
         </AnimatedReveal>
 
