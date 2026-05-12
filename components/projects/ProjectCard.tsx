@@ -10,8 +10,18 @@ export default function ProjectCard({ project }: ProjectCardProps) {
   return (
     <Link href={`/projects/${project.slug}`} className="group block h-full">
       <article className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden h-full hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-sky-400/5">
-        <div className="aspect-video bg-zinc-800 relative overflow-hidden flex items-center justify-center">
-          <TechBadge label={project.category} variant="category" />
+        <div className="aspect-video bg-zinc-800 relative overflow-hidden">
+          {project.coverImage ? (
+            <img
+              src={project.coverImage}
+              alt={project.title}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <span className="font-mono text-xs text-zinc-600 uppercase tracking-widest">{project.category}</span>
+            </div>
+          )}
         </div>
         <div className="p-5">
           <div className="flex items-start justify-between gap-3 mb-3">

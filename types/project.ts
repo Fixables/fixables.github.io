@@ -1,5 +1,15 @@
 export type ProjectCategory = 'firmware' | 'pcb' | 'embedded' | 'software' | 'robotics'
 
+export interface SpecEntry {
+  label: string
+  value: string
+}
+
+export interface ProcessStep {
+  title: string
+  description: string
+}
+
 export interface ProjectLink {
   label: string
   url: string
@@ -57,6 +67,8 @@ export interface ProjectData {
   category: ProjectCategory
   tags: string[]
   date: string
+  status?: string          // e.g. 'Ongoing' | 'Complete' | 'On Hold'
+  role?: string            // e.g. 'Solo — hardware, firmware, mechanical'
   featured: boolean
   coverImage: string
   images: string[]
@@ -66,6 +78,9 @@ export interface ProjectData {
   summary: string
   sections: ProjectSections
   links: ProjectLink[]
+  specs?: SpecEntry[]
+  process?: ProcessStep[]
+  lessons?: string[]
   // Multi-discipline breakdown (optional — only for complex projects)
   subsystems?: Subsystem[]
   // PCB viewer extras

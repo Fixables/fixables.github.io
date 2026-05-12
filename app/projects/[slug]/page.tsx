@@ -3,10 +3,8 @@ import Link from 'next/link'
 import { ArrowLeft, ExternalLink } from 'lucide-react'
 import PageWrapper from '@/components/layout/PageWrapper'
 import TechBadge from '@/components/projects/TechBadge'
-import ProjectGallery from '@/components/projects/ProjectGallery'
-import PCBTabViewer from '@/components/projects/PCBTabViewer'
 import FabStatsCard from '@/components/projects/FabStatsCard'
-import SubsystemsAccordion from '@/components/projects/SubsystemsAccordion'
+import ProjectDetailTabs from '@/components/projects/ProjectDetailTabs'
 import { projects, getProjectBySlug } from '@/data/projects'
 
 interface PageProps {
@@ -26,137 +24,161 @@ export function generateMetadata({ params }: PageProps) {
   }
 }
 
+function StatusBadge({ status }: { status: string }) {
+  const color =
+    status === 'Complete' ? 'text-green-400 bg-green-400/10 border-green-400/20' :
+    status === 'Ongoing'  ? 'text-sky-400 bg-sky-400/10 border-sky-400/20' :
+    status === 'On Hold'  ? 'text-amber-400 bg-amber-400/10 border-amber-400/20' :
+                            'text-zinc-400 bg-zinc-800 border-zinc-700'
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${color}`}>
+      <span className="w-1.5 h-1.5 rounded-full bg-current" />
+      {status}
+    </span>
+  )
+}
+
 export default function ProjectPage({ params }: PageProps) {
   const project = getProjectBySlug(params.slug)
   if (!project) notFound()
 
   const { sections } = project
+  const hasSummaryCards = !!(sections.problem || project.summary || project.role || sections.results)
 
   return (
     <PageWrapper>
+
+      {/* ── Hero ───────────────────────────────────────────────────────── */}
       <div className="bg-zinc-900 border-b border-zinc-800">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16 pt-28">
-          <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-sky-400 transition-colors mb-8">
+          <Link
+            href="/projects"
+            className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-sky-400 transition-colors mb-10"
+          >
             <ArrowLeft size={14} /> Back to Projects
           </Link>
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-            <TechBadge label={project.category} variant="category" />
-            <span className="font-mono text-sm text-zinc-500">{project.date}</span>
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-50 tracking-tight mb-4">{project.title}</h1>
-          <p className="text-xl text-zinc-400 mb-6 max-w-2xl">{project.tagline}</p>
-          <div className="flex flex-wrap gap-2 mb-8">
-            {project.tags.map((tag) => (
-              <TechBadge key={tag} label={tag} />
-            ))}
-          </div>
-          {project.links.length > 0 && (
-            <div className="flex flex-wrap gap-3">
-              {project.links.map((link) => (
-                <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors">
-                  {link.label} <ExternalLink size={12} />
-                </a>
-              ))}
+
+          <div className={project.coverImage ? 'lg:grid lg:grid-cols-5 lg:gap-14 items-start' : ''}>
+            {/* Left: text */}
+            <div className={project.coverImage ? 'lg:col-span-3' : ''}>
+              <div className="flex flex-wrap items-center gap-3 mb-5">
+                <TechBadge label={project.category} variant="category" />
+                <span className="font-mono text-sm text-zinc-500">{project.date}</span>
+                {project.status && <StatusBadge status={project.status} />}
+              </div>
+              <h1 className="text-4xl sm:text-5xl font-bold text-zinc-50 tracking-tight mb-4 leading-tight">
+                {project.title}
+              </h1>
+              <p className="text-xl text-zinc-400 mb-6 leading-relaxed max-w-2xl">{project.tagline}</p>
+              <div className="flex flex-wrap gap-2 mb-8">
+                {project.tags.map((tag) => (
+                  <TechBadge key={tag} label={tag} />
+                ))}
+              </div>
+              {project.links.length > 0 && (
+                <div className="flex flex-wrap gap-3">
+                  {project.links.map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors"
+                    >
+                      {link.label} <ExternalLink size={12} />
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Right: cover image */}
+            {project.coverImage && (
+              <div className="lg:col-span-2 mt-10 lg:mt-0">
+                <div className="rounded-xl overflow-hidden aspect-video bg-zinc-800 border border-zinc-700">
+                  <img
+                    src={project.coverImage}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* ── Summary cards ──────────────────────────────────────────────── */}
+      {hasSummaryCards && (
+        <div className="border-b border-zinc-800 bg-zinc-950">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {sections.problem && (
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                  <p className="text-xs font-mono uppercase tracking-wider text-rose-400 mb-2">Problem</p>
+                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{sections.problem}</p>
+                </div>
+              )}
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                <p className="text-xs font-mono uppercase tracking-wider text-sky-400 mb-2">Solution</p>
+                <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{project.summary}</p>
+              </div>
+              {project.role && (
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                  <p className="text-xs font-mono uppercase tracking-wider text-violet-400 mb-2">My Role</p>
+                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{project.role}</p>
+                </div>
+              )}
+              {sections.results && (
+                <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
+                  <p className="text-xs font-mono uppercase tracking-wider text-green-400 mb-2">Outcome</p>
+                  <p className="text-zinc-300 text-sm leading-relaxed line-clamp-4">{sections.results}</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Main content ───────────────────────────────────────────────── */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         <div className="lg:grid lg:grid-cols-3 lg:gap-12">
-          <div className="lg:col-span-2 space-y-10">
-            {sections.problem && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Problem Statement</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.problem}</p>
-              </section>
-            )}
-            {sections.goals && sections.goals.length > 0 && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Goals & Constraints</h2>
-                <ul className="space-y-2">
-                  {sections.goals.map((goal, i) => (
-                    <li key={i} className="flex items-start gap-2 text-zinc-400">
-                      <span className="text-sky-400 mt-1 flex-shrink-0">›</span>
-                      {goal}
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-            {sections.designDecisions && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Design Decisions</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.designDecisions}</p>
-              </section>
-            )}
-            {sections.schematicHighlights && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Schematic Highlights</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.schematicHighlights}</p>
-              </section>
-            )}
-            {sections.pcbHighlights && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">PCB Layout</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.pcbHighlights}</p>
-              </section>
-            )}
-            {sections.validation && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Validation & Testing</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.validation}</p>
-              </section>
-            )}
-            {sections.challenges && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Challenges & Tradeoffs</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.challenges}</p>
-              </section>
-            )}
-            {sections.results && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">Results</h2>
-                <p className="text-zinc-400 leading-relaxed">{sections.results}</p>
-              </section>
-            )}
-            {project.subsystems && project.subsystems.length > 0 && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-3">How it's built</h2>
-                <SubsystemsAccordion items={project.subsystems} />
-              </section>
-            )}
-            {/* PCB viewer — shown for any project with 3D model, layer PNGs, schematic, or BOM */}
-            {(project.model3d || project.pcbLayers?.length || project.schematic || project.bomData?.length) && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-4">PCB Viewer</h2>
-                <PCBTabViewer project={project} />
-              </section>
-            )}
-            {project.images.length > 0 && (
-              <section>
-                <h2 className="text-xl font-semibold text-zinc-50 mb-4">Gallery</h2>
-                <ProjectGallery images={project.images} title={project.title} />
-              </section>
-            )}
+
+          {/* Tabbed content */}
+          <div className="lg:col-span-2">
+            <ProjectDetailTabs project={project} />
           </div>
 
+          {/* Sticky sidebar */}
           <aside className="mt-12 lg:mt-0">
-            <div className="sticky top-24 space-y-6">
+            <div className="sticky top-24 space-y-5">
+
+              {/* Project info */}
               <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
                 <h3 className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-4">Project Info</h3>
-                <dl className="space-y-3">
+                <dl className="space-y-4">
                   <div>
-                    <dt className="text-xs text-zinc-600 mb-0.5">Category</dt>
+                    <dt className="text-xs text-zinc-600 mb-1">Category</dt>
                     <dd><TechBadge label={project.category} variant="category" /></dd>
                   </div>
                   <div>
-                    <dt className="text-xs text-zinc-600 mb-0.5">Date</dt>
+                    <dt className="text-xs text-zinc-600 mb-1">Year</dt>
                     <dd className="font-mono text-sm text-zinc-300">{project.date}</dd>
                   </div>
+                  {project.status && (
+                    <div>
+                      <dt className="text-xs text-zinc-600 mb-1">Status</dt>
+                      <dd><StatusBadge status={project.status} /></dd>
+                    </div>
+                  )}
+                  {project.role && (
+                    <div>
+                      <dt className="text-xs text-zinc-600 mb-1">My Role</dt>
+                      <dd className="text-sm text-zinc-300 leading-relaxed">{project.role}</dd>
+                    </div>
+                  )}
                   <div>
-                    <dt className="text-xs text-zinc-600 mb-1">Tools & Technologies</dt>
+                    <dt className="text-xs text-zinc-600 mb-2">Tools & Technologies</dt>
                     <dd className="flex flex-wrap gap-1.5">
                       {project.tags.map((tag) => (
                         <TechBadge key={tag} label={tag} />
@@ -165,16 +187,23 @@ export default function ProjectPage({ params }: PageProps) {
                   </div>
                 </dl>
               </div>
-              {project.fabStats && (
-                <FabStatsCard stats={project.fabStats} />
-              )}
+
+              {/* Fab stats (PCB projects) */}
+              {project.fabStats && <FabStatsCard stats={project.fabStats} />}
+
+              {/* Links */}
               {project.links.length > 0 && (
                 <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
                   <h3 className="font-mono text-xs text-zinc-500 uppercase tracking-wider mb-4">Links</h3>
                   <div className="space-y-2">
                     {project.links.map((link) => (
-                      <a key={link.label} href={link.url} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-sm text-zinc-400 hover:text-sky-400 transition-colors">
+                      <a
+                        key={link.label}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-zinc-400 hover:text-sky-400 transition-colors"
+                      >
                         <ExternalLink size={12} />
                         {link.label}
                       </a>
@@ -182,6 +211,7 @@ export default function ProjectPage({ params }: PageProps) {
                   </div>
                 </div>
               )}
+
             </div>
           </aside>
         </div>

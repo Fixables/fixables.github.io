@@ -8,6 +8,8 @@ export const projects: ProjectData[] = [
     category: 'firmware',
     tags: ['ESP32', 'BLDC', 'FOC', 'PID', 'C++', 'FreeRTOS', 'Motor Control'],
     date: '2024',
+    status: 'Ongoing',
+    role: 'Solo — hardware design, PCB layout, firmware (FreeRTOS + FOC), and mechanical',
     featured: true,
     coverImage: '',
     images: [],
@@ -16,20 +18,63 @@ export const projects: ProjectData[] = [
       'A haptic feedback rotary knob using closed-loop BLDC motor control. The user physically feels the behaviour of an RLC circuit by turning the knob — inductance, resistance, capacitance, and diode characteristics are encoded as torque profiles in real time.',
     sections: {
       problem:
-        'Off-the-shelf encoders give no physical feedback. The goal was a knob that simulates circuit element behaviour — spring centering, damping, detents — purely through torque control on a BLDC motor.',
+        'Circuits are normally invisible — you measure them with probes and plots. The goal was a knob that lets you physically feel circuit element behaviour: resistance as velocity damping, capacitance as a position spring, inductance as resistance to acceleration, and a diode as one-way blocking.',
       goals: [
         'Implement FOC for smooth, silent torque control at low RPM',
-        'Encode R, L, C, and diode behaviour as distinct haptic profiles',
+        'Encode R, L, C, RLC, and diode behaviour as distinct haptic torque profiles',
         'Run under real-time constraints using dual-core FreeRTOS on ESP32-PICO',
-        'Integrate encoder feedback, current sensing, and SPI OLED display',
+        'Integrate SSI encoder, SPI current ADC, and SPI OLED display with clean task separation',
       ],
       designDecisions:
-        'Developed ESP32 firmware using dual-core FreeRTOS to coordinate motor control, sensor sampling, and SPI OLED display tasks with deterministic timing and clean task separation. FOC chosen over simple PWM for torque smoothness — critical for natural-feeling haptics.',
+        'FOC chosen over six-step commutation for torque smoothness — cogging noise from simpler PWM approaches would break the haptic illusion. Dual-core FreeRTOS gives Core 0 full ownership of the deterministic 1 kHz control loop; Core 1 handles all non-real-time work (OLED, telemetry, watchdog). Kalman filtering used for velocity estimation instead of finite-difference to suppress encoder quantisation noise at low speeds.',
       validation:
-        'Tested across haptic profiles for R, L, C, RLC, and diode. Oscilloscope verification of phase currents. Latency under 2ms from input to haptic response.',
+        'Phase currents verified on oscilloscope for three-phase balance. End-to-end haptic latency measured at < 2 ms. All five haptic profiles (R, L, C, RLC, Diode) tested subjectively for naturalness. FOC confirmed to eliminate cogging noise present in six-step commutation.',
       results:
-        'Smooth, silent haptic feedback across all profiles. FOC eliminated cogging noise present in simpler PWM approaches.',
+        'Smooth, silent haptic feedback across all profiles. < 2 ms end-to-end latency. FOC eliminated cogging noise. Haptic analogies feel perceptually correct: the capacitor profile genuinely feels like winding a spring, the diode profile blocks motion in one direction.',
     },
+    specs: [
+      { label: 'MCU', value: 'ESP32-PICO-D4' },
+      { label: 'Motor type', value: 'Gimbal BLDC (3-phase)' },
+      { label: 'Motor control', value: 'Field-Oriented Control (FOC)' },
+      { label: 'Control loop rate', value: '~1 kHz (ControlTask, Core 0)' },
+      { label: 'End-to-end haptic latency', value: '< 2 ms' },
+      { label: 'Position sensing', value: 'SSI magnetic encoder via SPI' },
+      { label: 'Current sensing', value: 'External SPI ADC — low-side shunt resistors' },
+      { label: 'State estimation', value: 'Kalman filter (θ and ω)' },
+      { label: 'Display', value: 'SPI OLED' },
+      { label: 'RTOS', value: 'FreeRTOS — dual-core (Core 0: control, Core 1: UI)' },
+      { label: 'Language', value: 'C++ — PlatformIO / ESP-IDF' },
+      { label: 'Haptic profiles', value: 'Resistor, Capacitor, Inductor, RLC, Diode' },
+    ],
+    process: [
+      {
+        title: 'Electrical-to-mechanical analogy',
+        description:
+          'Mapped circuit variables to knob kinematics: voltage → torque, current → angular velocity, charge → angular displacement. This one-to-one mapping gives each element a clean torque equation: V=IR → T=Rω (resistor), V=Q/C → T=θ/C (capacitor), V=L·di/dt → T=L·α (inductor). The RLC model combines all three.',
+      },
+      {
+        title: 'FOC firmware architecture',
+        description:
+          'Core 0 runs the deterministic 1 kHz control loop: SSI encoder read (SPI) → Kalman filter for θ and ω → haptic model computes desired current → SPI ADC reads measured current → PID current controller → motor driver output. Core 1 handles OLED refresh, serial telemetry, and watchdog heartbeat monitoring.',
+      },
+      {
+        title: 'Haptic profile encoding',
+        description:
+          'Each circuit law becomes a q-axis torque command injected into the FOC loop. R profile uses angular velocity (T=Rω), C profile uses displacement (T=θ/C), L profile uses acceleration (T=Lα), RLC combines all three for damped oscillator behaviour, Diode enforces asymmetric one-way motion by applying a large opposing torque in the blocked direction.',
+      },
+      {
+        title: 'Validation and tuning',
+        description:
+          'Phase currents verified on oscilloscope for three-phase balance. Haptic latency measured at < 2 ms end-to-end. Profiles tuned subjectively — physically accurate equations do not always feel intuitive, so parameters were adjusted iteratively. Watchdog task with latched fault flags proved essential for catching control loop stalls during development.',
+      },
+    ],
+    lessons: [
+      'FOC becomes intuitive when you stop thinking about "3-phase control" and think about current control in a rotating d/q reference frame — torque is simply the q-axis current, cleanly decoupled from flux.',
+      'Kalman filtering for velocity estimation dramatically outperforms finite-difference differentiation, especially at low speeds where encoder quantisation noise dominates.',
+      'Dual-core FreeRTOS is a natural fit for real-time control: Core 0 owns the deterministic loop with no blocking I/O, Core 1 handles everything else. Clear core ownership prevents preemption surprises.',
+      'Haptic feel is deeply subjective. Physically accurate equations do not always feel perceptually correct — tuning required real hands on the knob, not just oscilloscope traces.',
+      'Design watchdog tasks from day one, not bolted on later. A latched fault flag saved hours of debugging when the control loop stalled silently during early firmware development.',
+    ],
     links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
     subsystems: [
       {
