@@ -1,11 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ChevronLeft, ChevronRight, Play } from 'lucide-react'
 
 interface ProjectGalleryProps {
   images: string[]
   title: string
+}
+
+function isVideo(src: string) {
+  return /\.(mp4|webm|mov)$/i.test(src)
 }
 
 export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
@@ -23,14 +27,30 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
           <button
             key={i}
             onClick={() => setLightboxIndex(i)}
-            className="aspect-video bg-zinc-800 rounded-lg overflow-hidden hover:opacity-80 transition-opacity"
-            aria-label={`View image ${i + 1}`}
+            className="relative aspect-video bg-zinc-800 rounded-lg overflow-hidden hover:opacity-80 transition-opacity"
+            aria-label={`View ${isVideo(src) ? 'video' : 'image'} ${i + 1}`}
           >
-            <img
-              src={src}
-              alt={`${title} — photo ${i + 1}`}
-              className="w-full h-full object-cover"
-            />
+            {isVideo(src) ? (
+              <>
+                <video
+                  src={src}
+                  preload="metadata"
+                  muted
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <Play size={18} className="text-white fill-white ml-0.5" />
+                  </div>
+                </div>
+              </>
+            ) : (
+              <img
+                src={src}
+                alt={`${title} — photo ${i + 1}`}
+                className="w-full h-full object-cover"
+              />
+            )}
           </button>
         ))}
       </div>
@@ -49,11 +69,21 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
           </button>
           <div className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
             <div className="bg-zinc-900 rounded-lg overflow-hidden aspect-video flex items-center justify-center">
-              <img
-                src={images[lightboxIndex]}
-                alt={`${title} — photo ${lightboxIndex + 1}`}
-                className="w-full h-full object-contain"
-              />
+              {isVideo(images[lightboxIndex]) ? (
+                <video
+                  key={images[lightboxIndex]}
+                  src={images[lightboxIndex]}
+                  controls
+                  autoPlay
+                  className="w-full h-full"
+                />
+              ) : (
+                <img
+                  src={images[lightboxIndex]}
+                  alt={`${title} — photo ${lightboxIndex + 1}`}
+                  className="w-full h-full object-contain"
+                />
+              )}
             </div>
             <p className="text-center text-zinc-400 text-sm mt-3">{lightboxIndex + 1} / {images.length}</p>
           </div>

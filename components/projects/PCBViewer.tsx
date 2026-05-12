@@ -1,9 +1,11 @@
 'use client'
 
 import { Suspense, useRef, useState, useCallback, useEffect } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas, useThree, useLoader } from '@react-three/fiber'
 import { OrbitControls, Environment, useGLTF, Html, useProgress, GizmoHelper, GizmoViewport } from '@react-three/drei'
-import { Box3, Vector3 } from 'three'
+import { Box3, Vector3, Object3D, PerspectiveCamera } from 'three'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader'
 import { RotateCcw } from 'lucide-react'
 
 function Loader() {
@@ -18,30 +20,45 @@ function Loader() {
   )
 }
 
-function Model({ url }: { url: string }) {
+function fitCamera(object: Object3D, camera: PerspectiveCamera) {
+  const box = new Box3().setFromObject(object)
+  const size = new Vector3()
+  const center = new Vector3()
+  box.getSize(size)
+  box.getCenter(center)
+  const maxDim = Math.max(size.x, size.y, size.z)
+  const fovRad = (camera.fov * Math.PI) / 180
+  const distance = (maxDim / (2 * Math.tan(fovRad / 2))) * 1.8
+  camera.position.set(center.x, center.y + maxDim * 0.3, center.z + distance)
+  camera.lookAt(center)
+  camera.near = distance * 0.001
+  camera.far = distance * 100
+  camera.updateProjectionMatrix()
+}
+
+function GLTFModel({ url }: { url: string }) {
   const { scene } = useGLTF(url)
   const { camera } = useThree()
-
-  useEffect(() => {
-    // Auto-fit camera to model bounding box regardless of model scale/units
-    const box = new Box3().setFromObject(scene)
-    const size = new Vector3()
-    const center = new Vector3()
-    box.getSize(size)
-    box.getCenter(center)
-
-    const maxDim = Math.max(size.x, size.y, size.z)
-    const fovRad = (camera as any).fov ? ((camera as any).fov * Math.PI) / 180 : Math.PI / 4
-    const distance = (maxDim / (2 * Math.tan(fovRad / 2))) * 1.8
-
-    camera.position.set(center.x, center.y + maxDim * 0.3, center.z + distance)
-    camera.lookAt(center)
-    ;(camera as any).near = distance * 0.001
-    ;(camera as any).far = distance * 100
-    camera.updateProjectionMatrix()
-  }, [scene, camera])
-
+  useEffect(() => { fitCamera(scene, camera as PerspectiveCamera) }, [scene, camera])
   return <primitive object={scene} />
+}
+
+function OBJModel({ url }: { url: string }) {
+  const mtlUrl = url.replace(/\.obj$/i, '.mtl')
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const materials = useLoader(MTLLoader as any, mtlUrl) as MTLLoader.MaterialCreator
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const obj = useLoader(OBJLoader as any, url, (loader: OBJLoader) => {
+    materials.preload()
+    loader.setMaterials(materials)
+  }) as Object3D
+  const { camera } = useThree()
+  useEffect(() => { fitCamera(obj, camera as PerspectiveCamera) }, [obj, camera])
+  return <primitive object={obj} />
+}
+
+function Model({ url }: { url: string }) {
+  return /\.obj$/i.test(url) ? <OBJModel url={url} /> : <GLTFModel url={url} />
 }
 
 interface PCBViewerProps {

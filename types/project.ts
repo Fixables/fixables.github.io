@@ -60,6 +60,16 @@ export interface Subsystem {
   defaultOpen?: boolean   // first item defaults to true
 }
 
+export interface PCBLayerGroup {
+  label: string      // e.g. 'H-Bridge PCB'
+  layers: PCBLayer[]
+}
+
+export interface Model3DEntry {
+  label: string      // e.g. 'Assembly', 'H-Bridge PCB'
+  url: string        // path to .glb or .obj
+}
+
 export interface ProjectData {
   slug: string
   title: string
@@ -72,7 +82,8 @@ export interface ProjectData {
   featured: boolean
   coverImage: string
   images: string[]
-  model3d?: string
+  model3d?: string         // single model path (backward compat)
+  models3d?: Model3DEntry[] // multiple named models — overrides model3d when present
   logo?: string
   logoUrl?: string
   summary: string
@@ -83,9 +94,12 @@ export interface ProjectData {
   lessons?: string[]
   // Multi-discipline breakdown (optional — only for complex projects)
   subsystems?: Subsystem[]
+  // Embedded PDF report
+  reportUrl?: string
   // PCB viewer extras
   pcbLayers?: PCBLayer[]
-  schematic?: string     // path to SVG or PNG schematic (single)
+  pcbLayerGroups?: PCBLayerGroup[]  // multiple PCBs, each with their own layers
+  schematic?: string     // path to SVG, PNG, or PDF schematic (single; used as download if PDF)
   schematics?: string[]  // multiple schematic images — shown with prev/next nav
   bomData?: BOMEntry[]
   fabStats?: FabStats

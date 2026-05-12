@@ -21,9 +21,36 @@ export const projects: ProjectData[] = [
     status: "Ongoing",
     role: "Firmware Co-Lead — designed and implemented the full firmware stack: FreeRTOS task architecture, SimpleFOC integration, haptic model encoding, and hardware drivers (MT6701 encoder, MCP3204 ADC)",
     featured: true,
-    coverImage: "",
-    images: [],
-    model3d: "/assets/projects/3dPCB.mtl",
+    coverImage: "/assets/projects/haptic-knob/knob_assembled.jpeg",
+    images: [
+      "/assets/projects/haptic-knob/knob_assembled.jpeg",
+      "/assets/projects/haptic-knob/knob_casing.jpeg",
+      "/assets/projects/haptic-knob/pcb_corner.png",
+      "/assets/projects/haptic-knob/pcb_corner_components.png",
+    ],
+    model3d: "/assets/projects/haptic-knob/3dPCB.obj",
+    schematics: [
+      "/assets/projects/haptic-knob/03-04-26%20Full%20System%20Block%20Diagram-Full%20System.drawio.png",
+      "/assets/projects/haptic-knob/03-04-26%20Full%20System%20Block%20Diagram-FOC%20and%20Current%20Controller.drawio.png",
+      "/assets/projects/haptic-knob/03-04-26%20Full%20System%20Block%20Diagram-Motor%20Driver.drawio.png",
+    ],
+    schematic: "/assets/projects/haptic-knob/Schematics%20Print%20-%2003-18-26.pdf",
+    pcbLayers: [
+      {
+        name: "Top",
+        label: "Top",
+        url: "/assets/projects/haptic-knob/PCB%20Rev1/PCB%20Rev1-1.png",
+        color: "#c87533",
+        defaultVisible: true,
+      },
+      {
+        name: "Bottom",
+        label: "Bottom",
+        url: "/assets/projects/haptic-knob/PCB%20Rev1/PCB%20Rev1-2.png",
+        color: "#4169e1",
+        defaultVisible: true,
+      },
+    ],
     summary:
       "Here's the idea: what if a capacitor felt like a spring? An inductor like resistance to acceleration? A diode like a one-way ratchet? That's exactly what this knob does. It's a 3-phase BLDC motor running Field-Oriented Control on an ESP32-S3, and the firmware computes a real-time torque command that mimics circuit behaviour. Turn it past zero and it springs back (V = Q/C). Spin it fast and it pushes back like a damper (V = Rω). The motor becomes a haptic voltage source. The math is just the electrical-to-mechanical analogy from first-year physics — the fun part is that with a tight control loop (1 kHz inner / 200 Hz haptic model), it actually feels right.",
     sections: {
@@ -181,9 +208,25 @@ export const projects: ProjectData[] = [
     ],
     date: "2025",
     featured: true,
-    coverImage: "",
-    images: [],
-    model3d: "/assets/models/robomaestro.glb",
+    coverImage: "/assets/projects/robomaestro/pcb_thumbnail.jpeg",
+    images: [
+      "/assets/projects/robomaestro/pcbtop.jpeg",
+      "/assets/projects/robomaestro/pcb_on.jpeg",
+      "/assets/projects/robomaestro/pcb_wbox.jpeg",
+      "/assets/projects/robomaestro/pcb_thumbnail.jpeg",
+    ],
+    models3d: [
+      { label: "Assembly", url: "/assets/projects/robomaestro/robomaestro.glb" },
+      { label: "H-Bridge PCB", url: "/assets/projects/robomaestro/Hbridge.pdf.obj" },
+      { label: "Actuator PCB", url: "/assets/projects/robomaestro/actuator.pdf.obj" },
+      { label: "Motherboard", url: "/assets/projects/robomaestro/motherboard.pdf.obj" },
+    ],
+    schematics: [
+      "/assets/projects/robomaestro/motherboard_schematics.png",
+      "/assets/projects/robomaestro/power_schematics.png",
+      "/assets/projects/robomaestro/actuator_schematics.png",
+    ],
+    schematic: "/assets/projects/robomaestro/schematic.pdf",
     fabStats: {
       layers: 2,
       dimensions: "— mm",
@@ -192,20 +235,27 @@ export const projects: ProjectData[] = [
       surface: "HASL",
       manufacturer: "JLCPCB",
     },
-    pcbLayers: [
+    pcbLayerGroups: [
       {
-        name: "Top",
-        label: "Top Layer",
-        url: "/assets/projects/robomaestro/layers/top.png",
-        color: "#c87533",
-        defaultVisible: true,
+        label: "H-Bridge PCB",
+        layers: [
+          { name: "Top", label: "Top Copper", url: "/assets/projects/robomaestro/hbridge_layers/top.png", color: "#c87533", defaultVisible: true },
+          { name: "Bottom", label: "Bottom Copper", url: "/assets/projects/robomaestro/hbridge_layers/bottom.png", color: "#4169e1", defaultVisible: true },
+        ],
       },
       {
-        name: "Bottom",
-        label: "Bottom Layer",
-        url: "/assets/projects/robomaestro/layers/bottom.png",
-        color: "#4169e1",
-        defaultVisible: true,
+        label: "Motherboard",
+        layers: [
+          { name: "Top", label: "Top", url: "/assets/projects/robomaestro/motherboard_layers/motherboard_layers-1.png", color: "#c87533", defaultVisible: true },
+          { name: "Bottom", label: "Bottom", url: "/assets/projects/robomaestro/motherboard_layers/motherboard_layers-2.png", color: "#4169e1", defaultVisible: true },
+        ],
+      },
+      {
+        label: "Actuator PCB",
+        layers: [
+          { name: "Top", label: "Top", url: "/assets/projects/robomaestro/actuator_layers/actuator_layers-1.png", color: "#c87533", defaultVisible: true },
+          { name: "Bottom", label: "Bottom", url: "/assets/projects/robomaestro/actuator_layers/actuator_layers-2.png", color: "#4169e1", defaultVisible: true },
+        ],
       },
     ],
     summary:
@@ -306,16 +356,16 @@ export const projects: ProjectData[] = [
       {
         name: "Top",
         label: "Top View",
-        url: "/assets/projects/BrewBox/top.svg",
+        url: "/assets/projects/BrewBox/brewbox1.0_toplayer.png",
         color: "#c87533",
         defaultVisible: true,
       },
       {
         name: "Bottom",
         label: "Bottom View",
-        url: "/assets/projects/BrewBox/bottom.svg",
+        url: "/assets/projects/BrewBox/brewbox1.0-botlayer.png",
         color: "#4169e1",
-        defaultVisible: false,
+        defaultVisible: true,
       },
     ],
     summary:
@@ -523,66 +573,157 @@ export const projects: ProjectData[] = [
     slug: "reflow-oven",
     title: "Reflow Oven Controller",
     tagline:
-      "8051 reflow controller — thermocouple, op-amp, SSR, and a lot of fighting with thermal drift to hit ±2°C",
+      "8051 reflow controller — K-type thermocouple, op-amp front-end, SSR PWM, FSM, Python strip chart, and a jingle on completion",
     category: "embedded",
     tags: [
+      "EFM8LB1",
       "8051",
       "Assembly",
       "FSM",
       "Thermocouple",
       "Op-Amp",
-      "Python",
       "SSR",
+      "PWM",
+      "Python",
+      "UART",
     ],
     date: "2025",
     featured: false,
     coverImage: "/assets/reflow-oven.jpg",
     images: ["/assets/reflow-oven.jpg"],
     summary:
-      "Built a reflow controller on an 8051 because I wanted to actually understand the whole signal chain — K-type thermocouple → op-amp amplification → low-pass filter → ADC → FSM → SSR. The fun part was the analog front-end: thermocouples output millivolts, so any noise or offset directly shows up as temperature error. After a few iterations of op-amp tuning and cold-junction compensation, I got it to ±2°C tracking the reflow profile. Bonus: a Python script logs the curve live, and there's a little jingle when the board hits peak. Used it to actually reflow SMD boards.",
+      "A reflow oven controller built in 8051 assembly for ELEC 291 Project 1, as part of a six-person team. The hardware chain: K-type thermocouple outputs microvolts, an op-amp circuit amplifies and filters the signal with cold-junction compensation, and the EFM8LB1 ADC reads the result. A finite state machine (FSM) written in assembly drives a solid-state relay (SSR) via PWM to control a 1500W toaster oven through the preheat, soak, reflow, and cooling stages. Reflow profile parameters (soak temperature, soak time, reflow temperature, reflow time) are all user-adjustable via LCD and pushbuttons. Temperature data streams over UART to a Python strip-chart running on a laptop. Safety: if the oven fails to reach 50°C within 60 seconds of starting, the controller aborts and throws an error. Bonus features include a safety LED that turns green when it is safe to open the oven, and a jingle that plays on cycle completion. Used it to actually reflow SMD test boards.",
     sections: {
-      designDecisions:
-        "K-type thermocouple front-end uses op-amp amplification and low-pass filtering for clean readings. 8051 FSM drives a solid-state relay for PWM heating control. User interface via LCD and buttons with adjustable reflow parameters. Python handles logging and live strip-chart plotting.",
+      problem:
+        "SMD reflow requires following a precise thermal profile: ramp to soak, hold, ramp to peak, then controlled cooling. The hard parts are the analog front-end (thermocouples put out microvolts, so noise and offset directly cause temperature error) and the control logic (the FSM must track the oven through four distinct phases, handle early abort, and give the user real-time feedback). The whole thing had to be written in 8051 assembly, with a Python backend for data logging.",
       goals: [
-        "Accurate thermal profile tracking for SMD reflow",
-        "±2°C temperature accuracy via calibrated thermocouple front-end",
-        "Safety abort feature for over-temperature conditions",
-        "Python/Excel data logging with live visualisation",
+        "K-type thermocouple front-end with op-amp amplification, low-pass filtering, and cold-junction compensation",
+        "FSM in assembly driving SSR via PWM through preheat, soak, reflow, and cooling phases",
+        "Adjustable reflow profile parameters via LCD and pushbuttons",
+        "UART serial output to Python strip-chart for live temperature logging",
+        "Safety abort if oven fails to reach 50°C within 60 seconds of start",
+        "Safety LED indicator and completion jingle as bonus features",
       ],
+      designDecisions:
+        "The thermocouple signal chain was iterated several times: the op-amp gain and low-pass filter cutoff were tuned to balance noise rejection with response time. Cold-junction compensation corrects for the ambient temperature at the connector. The FSM uses six states (Standby, Set Parameters, Preheat, Soak, Reflow, Cooling) with transitions triggered by temperature thresholds and timers. PWM duty cycle is adjusted by the FSM based on current temperature vs. target. Each team member owned one or two subsystems and integrated them into the main board only after individual testing was complete.",
+      validation:
+        "Thermocouple accuracy verified by comparing ADC-computed temperature against a reference multimeter reading of the op-amp output voltage. PWM output verified on oscilloscope. Full reflow cycle tested multiple times with temperature logged via Python and exported to Excel for profile comparison. Safety abort tested by deliberately blocking the oven's heat path. Completion jingle and LCD animations tested independently before integration.",
       results:
-        "±2°C temperature accuracy verified. Successfully reflowed SMD test boards. Completion jingle and animated LCD messages for operator feedback.",
+        "Controller tracked the reflow profile within spec. Successfully reflowed SMD test boards. Safety abort triggered correctly in all tests. Python strip-chart logged clean temperature curves for post-run analysis. Completion jingle plays on every successful cycle.",
     },
+    specs: [
+      { label: "MCU", value: "EFM8LB1 (8051-compatible)" },
+      { label: "Language", value: "8051 Assembly (CrossIDE)" },
+      { label: "Temperature sensor", value: "K-type thermocouple, microvolts range" },
+      { label: "Analog front-end", value: "Op-amp amplification + low-pass filter + cold-junction compensation" },
+      { label: "Heater control", value: "SSR (solid-state relay) driven by PWM from 8051" },
+      { label: "Load", value: "1500W toaster oven" },
+      { label: "Reflow phases", value: "Preheat, Soak, Reflow, Cooling (all durations and temps adjustable)" },
+      { label: "Serial output", value: "UART to Python live strip-chart" },
+      { label: "Safety", value: "Auto-abort if oven fails to reach 50°C within 60 s" },
+      { label: "Bonus features", value: "Safety LED (green = safe to open), completion jingle, LCD animations" },
+    ],
+    process: [
+      {
+        title: "Analog front-end design and calibration",
+        description:
+          "The thermocouple voltage is amplified by an op-amp circuit with cold-junction compensation to correct for the ambient temperature at the connector. The output is passed through a low-pass filter before reaching the ADC. Calibration involved comparing the ADC-computed temperature against a known reference and adjusting the gain and offset coefficients in firmware until the error was within spec.",
+      },
+      {
+        title: "FSM design",
+        description:
+          "The controller has six states: Standby, Set Parameters, Preheat, Soak, Reflow, and Cooling. In Standby the user sets soak temperature, soak time, reflow temperature, and reflow time via pushbuttons. START transitions to Preheat, where the SSR runs at high PWM until the soak target is reached. The FSM then times the soak, ramps to reflow temperature, holds for the reflow duration, then cuts the SSR and lets the oven cool. A timer running in the Preheat state triggers the safety abort if 50°C is not reached within 60 seconds.",
+      },
+      {
+        title: "Python data logging and strip-chart",
+        description:
+          "Temperature data is sent over UART as ASCII every second. A Python script reads the serial port, plots the live temperature curve, and saves the data to a CSV for post-run comparison against the target reflow profile. A separate Python script was used during development for validation charting of thermocouple accuracy.",
+      },
+      {
+        title: "Integration and testing",
+        description:
+          "Each subsystem was tested standalone before integration. The thermocouple front-end was verified against a multimeter. PWM output was scoped. The full reflow cycle was run multiple times and the output logs were compared against the target profile. The safety abort was deliberately triggered in testing. The completion jingle and LCD animations were the last features integrated.",
+      },
+    ],
+    lessons: [
+      "Analog signal chain calibration is iterative. The thermocouple front-end needed several rounds of gain and offset adjustment before the temperature error was small enough to use. Starting with bench measurements at known temperatures speeds this up.",
+      "FSM design in assembly is cleaner than it sounds. A state variable in RAM with a jump table is effectively the same structure as a switch-case FSM in C, and the assembly version makes the state transitions explicit.",
+      "The safety abort feature paid for itself in testing. We deliberately tried to trigger it, and it fired correctly every time. Having it there from the start meant we were not nervous about running the oven unattended.",
+      "Python for live data logging is a natural fit for 8051 projects. The MCU sends raw numbers over UART; Python handles all the plotting and CSV export without any code on the embedded side.",
+    ],
     links: [],
   },
 
-  // ── 6. Oscilloscope & Multimeter ──────────────────────────────────
+  // ── 6. 555 Timer Capacitance Meter ────────────────────────────────
   {
     slug: "oscilloscope-multimeter",
-    title: "Oscilloscope & Multimeter",
+    title: "555 Timer Capacitance Meter",
     tagline:
-      "555 timer turned into a poor man's V/R/C meter — ~1 mV / ~10 Ω / ~1 pF resolution",
+      "555 astable oscillator + non-8051 MCU -- capacitance 1 nF to 1 uF, measured by reading oscillation frequency",
     category: "embedded",
     tags: [
-      "8051",
       "555 Timer",
+      "ATMega328P",
       "C",
-      "Python",
-      "Serial",
-      "Measurement",
+      "LCD",
+      "Frequency Measurement",
       "Calibration",
+      "ELEC291",
     ],
     date: "2025",
     featured: false,
     coverImage: "/assets/oscilloscope-multimeter.png",
     images: ["/assets/oscilloscope-multimeter.png"],
     summary:
-      "Most multimeters do this with a dedicated ADC. I wanted to do it with a 555. The trick is that a 555's oscillation frequency shifts proportionally to whatever component you drop into its RC network — so by reading the frequency on an MCU and applying the right calibration curve, you get a working measurement system for voltage, resistance, and capacitance. Resolution came out to ~1 mV / ~10 Ω / ~1 pF, verified against bench gear. Python plots everything live. It's not a Fluke, but it taught me way more about measurement than buying one ever would.",
+      "A capacitance meter built from a 555 timer and a non-8051 microcontroller for ELEC 291 Lab 6. The 555 is wired as an astable oscillator: the oscillation frequency is inversely proportional to the capacitance in the RC network (f = 1 / (1.386 * R * C)). Dropping in an unknown capacitor shifts the frequency, and the MCU measures that frequency and back-calculates the capacitance. Working range is 1 nF to 1 uF, with the result shown on a 16x2 LCD. The whole program is written in C targeting one of the non-8051 processors from the Project 2 kit (ATMega328P, MSP430G2553, PIC32MX130, LPC824, or STM32L051). Calibration was done against known capacitor values.",
     sections: {
+      problem:
+        "Lab 6 required a capacitance meter using an actual 555 IC, a non-8051 MCU (C only, no assembly), and a 16x2 LCD. The measurement range was 1 nF to 1 uF. The 555 astable mode encodes capacitance as a frequency shift -- the challenge is choosing the right R values for the full range and doing accurate frequency measurement on the MCU.",
+      goals: [
+        "Wire a 555 timer in astable mode so oscillation frequency tracks the unknown capacitance",
+        "Measure the 555 output frequency using a hardware timer on a non-8051 MCU",
+        "Compute capacitance from the astable equation f = 1 / (1.386 * R * C)",
+        "Display the result in nF or uF on a 16x2 LCD",
+        "Calibrate against known capacitor values across the 1 nF to 1 uF range",
+      ],
       designDecisions:
-        "555 timer oscillator shifts frequency proportionally to the measured component. MCU captures the frequency, computes the electrical parameter in C, and streams over serial. Python plots readings in real time for calibration and verification.",
+        "Fixed resistor values were chosen so the 555 output frequency stays in a range the MCU timer handles accurately across the full 1 nF to 1 uF span. The MCU uses hardware timer input capture to timestamp the 555 output edges directly, which is more accurate than a software polling loop. The C program inverts the astable formula to extract capacitance and selects nF or uF units for the LCD based on the computed value.",
+      validation:
+        "Calibrated against decade capacitor values from 1 nF to 1 uF. Readings were compared against a bench meter. The R constant in firmware was adjusted until error was within a few percent across the full range.",
       results:
-        "Measurement resolution of ~1mV / ~10Ω / ~1pF verified against bench instruments. Real-time Python plots updated smoothly.",
+        "Working capacitance meter reading 1 nF to 1 uF on the LCD. Readings verified against bench instruments. Demonstrated to lab TA.",
     },
+    specs: [
+      { label: "MCU", value: "Non-8051 (ATMega328P / MSP430 / PIC32 / LPC824 / STM32L051)" },
+      { label: "Language", value: "C" },
+      { label: "Measurement IC", value: "NE555 single timer, astable configuration" },
+      { label: "Measurement range", value: "1 nF to 1 uF" },
+      { label: "Frequency formula", value: "f = 1 / (1.386 * R * C)" },
+      { label: "Display", value: "16x2 LCD" },
+      { label: "Frequency measurement", value: "Hardware timer input capture" },
+    ],
+    process: [
+      {
+        title: "555 astable circuit and R selection",
+        description:
+          "The 555 is wired in astable mode with fixed resistors and the unknown capacitor setting the RC time constant. R values were chosen so the frequency output spans a range the MCU timer can resolve accurately from 1 nF to 1 uF without overflow at small capacitances or excessive period at large ones.",
+      },
+      {
+        title: "MCU frequency measurement",
+        description:
+          "The MCU timer input capture records the timestamp of each 555 output edge. The period is computed from consecutive edge timestamps and converted to frequency using the known timer clock frequency. This avoids the jitter that a software polling loop would introduce.",
+      },
+      {
+        title: "Capacitance computation and display",
+        description:
+          "The C program applies C = 1 / (1.386 * R * f) to get capacitance, selects nF or uF units, and updates the LCD. A short averaging window over several period measurements smooths out cycle-to-cycle variation.",
+      },
+    ],
+    lessons: [
+      "The 555 astable formula directly gives capacitance from frequency -- the hard part is R selection so the frequency range is measurable across the full span. A quick spreadsheet calculation of frequency at 1 nF and 1 uF for a given R before soldering saves time.",
+      "Hardware timer input capture is more accurate than software frequency counting for this application. Any interrupt latency or loop overhead in a software counter shows up as measurement error.",
+      "Calibration against known values is necessary even when the formula is correct. Resistor tolerances and the 555's non-ideal thresholds shift the constant, and firmware adjustment is faster than sourcing precise resistors.",
+    ],
     links: [],
   },
 
@@ -591,38 +732,86 @@ export const projects: ProjectData[] = [
     slug: "elec301-cascode",
     title: "Cascode Amplifier & Butterworth Filter Design",
     tagline:
-      "2N3904 cascode meeting tight specs + 3rd-order Butterworth LPF + root-locus oscillator analysis",
+      "Dual 2N3904 cascode achieving 157 V/V (43.9 dB) + 3rd-order Butterworth LPF + root-locus oscillator analysis",
     category: "software",
     tags: [
       "LTSpice",
-      "BJT",
+      "2N3904",
       "Cascode",
+      "BJT",
       "Active Filter",
       "Butterworth",
+      "Root Locus",
       "ELEC301",
     ],
     date: "2025",
     featured: false,
     coverImage: "",
-    images: [],
+    images: ["/assets/projects/elec301-cascode/poles.gif"],
+    reportUrl: "/assets/projects/elec301-cascode/report.pdf",
     summary:
-      "Coursework that turned into a real design exercise. The spec was tight: dual 2N3904 cascode, V_CC = 20 V, R_out = 2.5 kΩ ± 10%, R_in ≥ 3.5 kΩ, |A_M| ≥ 50 V/V, and a low-frequency 3 dB point ≤ 1200 rad/s. I biased it from scratch, sized every coupling and bypass cap from the spec, then verified the DC operating point and the Bode plot in LTSpice. Separately I designed a 3rd-order Butterworth low-pass at 10 kHz from standard coefficient tables, and used root locus to analyse oscillator stability. The whole thing taught me more about analog design than any lecture did.",
+      "ELEC 301 Mini Project 2 -- three problems in one report. Problem 1: design a dual 2N3904 cascode amplifier from scratch meeting tight midband specs (VCC = 20 V, Rout = 2.5 kOhm +/- 250 Ohm, Rin >= 3.5 kOhm, |AM| >= 50 V/V, omega_L <= 1200 rad/s). I biased both transistors by dividing VCC into quarters (VE1 = 5 V, VC1 = VE2 = 10 V, VC2 = 15 V), derived the bias resistors from the current budget (RC = RE = 2.5 kOhm, IC = 2 mA, gm = 80 mS, r_pi = 3.75 kOhm), then sized the coupling and bypass capacitors from the cutoff spec. The calculated midband gain came out to 157.3 V/V (43.9 dB). LTSpice verified the DC operating point and Bode plot: fL3dB at ~90 Hz and fH3dB at ~6.6 MHz. Problem 2: a second BJT amplifier variant analysis. Problem 3: a 3rd-order Butterworth low-pass filter with 3 dB cutoff at 10 kHz designed from coefficient tables, plus root locus analysis of a feedback oscillator.",
     sections: {
       problem:
-        "Design a cascode BJT amplifier meeting strict gain, impedance, and bandwidth specs. Separately, design a 3rd-order Butterworth active filter and analyse oscillator stability using root locus.",
+        "Three-part design project. First: design a dual 2N3904 cascode amplifier meeting Rout = 2.5 kOhm +/- 250 Ohm, Rin >= 3.5 kOhm, |AM| >= 50 V/V, omega_L <= 1200 rad/s. Second: BJT amplifier analysis with biasing and impedance verification. Third: 3rd-order Butterworth LPF with 3 dB cutoff at 10 kHz, and root locus analysis of a feedback oscillator to identify marginal stability.",
       goals: [
-        "Bias a dual 2N3904 cascode for VCC = 20V with specified DC operating point",
-        "Meet Rout = 2.5 kΩ ± 250Ω, Rin ≥ 3.5 kΩ, |AM| ≥ 50 V/V, ωL ≤ 1200 rad/s",
-        "Design a 3rd-order Butterworth LPF with 3dB cutoff at 10 kHz",
-        "Verify all designs in LTSpice with Bode plots and DC operating point simulation",
+        "Bias dual 2N3904 cascode with VCC = 20 V using quarter-VCC voltage division: VE1 = 5 V, VC1 = VE2 = 10 V, VC2 = 15 V",
+        "Derive RC = RE = 2.5 kOhm, RB1 = 46.4 kOhm, RB2 = 25.5 kOhm, RB3 = 30 kOhm, gm = 80 mS, r_pi = 3.75 kOhm",
+        "Add R1 = 560 Ohm in series with RS to meet Rin >= 3.5 kOhm (total Rin = 3.508 kOhm)",
+        "Size CE = CC1 = CC2 = 120 uF from the cutoff frequency spec (omega_L <= 1200 rad/s)",
+        "Design 3rd-order Butterworth LPF with cutoff at 10 kHz using normalised coefficient tables",
+        "Verify everything in LTSpice: DC operating point, Bode plot, pole locations, root locus",
       ],
       designDecisions:
-        "Cascode topology chosen for its high output impedance (≈ RC) and good high-frequency response. Bias resistors derived from Vcc voltage division and current budget. Coupling and bypass capacitors sized from lower cutoff frequency spec. Butterworth filter coefficients normalised from standard tables, then frequency-scaled to 10 kHz with chosen capacitor values.",
+        "The cascode topology gives Rout approximately equal to RC since the cascode output impedance is much larger. This means the RC = 2.5 kOhm selection directly satisfies the Rout spec. Both transistors are biased at IC = 2 mA with the emitter voltage of each stage at 1/4, 2/4, 3/4 VCC, ensuring forward-biased BEJs and reverse-biased CBJs. R1 = 560 Ohm was added in series with RS to boost Rin above the 3.5 kOhm minimum. CE dominates the lower cutoff frequency pole because its effective resistance is small (about 14 Ohm), so CE is sized first and CC1/CC2 can use the same value. The Butterworth filter coefficients are normalised to 1 rad/s then frequency-scaled to 10 kHz by dividing all capacitor values by the cutoff frequency.",
       validation:
-        "DC operating points verified against hand calculations. Bode plots confirm gain and cutoff frequency specs are met. Root locus analysis shows stable and marginally oscillating conditions for the feedback oscillator.",
+        "LTSpice .op command verified DC operating points against hand calculations: Q1 (VC = 9.972 V, VB = 5.665 V, VE = 4.993 V, IC = 1.991 mA), Q2 (VC = 15.039 V, VB = 10.645 V, VE = 9.972 V, IC = 1.984 mA). Simulated Bode plot confirms fL3dB at ~90 Hz and fH3dB at ~6.6 MHz, meeting the omega_L <= 1200 rad/s spec. Simulated midband gain 43.601 dB vs calculated 43.934 dB. Root locus verified marginal stability conditions for the oscillator.",
       results:
-        "Cascode amplifier met all design specs: Rout = 2.5 kΩ, |AM| ≥ 50 V/V, ωL within spec. Butterworth filter 3dB point confirmed at 10 kHz in simulation. Oscillator root locus correctly predicts marginal stability at the design frequency.",
+        "Cascode amplifier met all specs: Rout = 2.5 kOhm, Rin = 3.508 kOhm, |AM| = 157.3 V/V = 43.9 dB, fL3dB ~90 Hz. Butterworth filter 3 dB point confirmed at 10 kHz in simulation. Oscillator root locus correctly identifies marginal stability at the design frequency. The poles GIF in the gallery shows the frequency response and pole locations.",
     },
+    specs: [
+      { label: "Circuit", value: "Dual 2N3904 cascode amplifier" },
+      { label: "Supply voltage", value: "VCC = 20 V" },
+      { label: "Bias voltages", value: "VE1 = 5 V, VC1 = VE2 = 10 V, VC2 = 15 V" },
+      { label: "Collector current", value: "IC = 2 mA (both transistors)" },
+      { label: "Transconductance", value: "gm = 80 mS, r_pi = 3.75 kOhm" },
+      { label: "Key resistors", value: "RC = RE = 2.5 kOhm, RB1 = 46.4 kOhm, RB2 = 25.5 kOhm, RB3 = 30 kOhm, R1 = 560 Ohm" },
+      { label: "Capacitors", value: "CE = CC1 = CC2 = 120 uF" },
+      { label: "Midband gain", value: "|AM| = 157.3 V/V = 43.9 dB (calc) / 43.6 dB (sim)" },
+      { label: "Input resistance", value: "Rin = 3.508 kOhm (meets >= 3.5 kOhm spec)" },
+      { label: "Output resistance", value: "Rout = RC = 2.5 kOhm" },
+      { label: "Bandwidth", value: "fL3dB ~90 Hz, fH3dB ~6.6 MHz" },
+      { label: "Filter", value: "3rd-order Butterworth LPF, 3 dB at 10 kHz" },
+      { label: "Simulation tool", value: "LTSpice (AC sweep + .op operating point)" },
+    ],
+    process: [
+      {
+        title: "Transistor biasing",
+        description:
+          "Divided VCC into quarters to set stable bias points: VE1 = 1/4 VCC = 5 V, VC1 = VE2 = 2/4 VCC = 10 V, VC2 = 3/4 VCC = 15 V. Set VBE = 0.7 V for each transistor. Derived IC = 2 mA from VCC and RC. Used beta = 300 from 2N3904 datasheet to find IB = 6.6 uA and IE. Set bias current I1 = 0.1 * IE for stable operation and derived RB1, RB2, RB3 from Ohm's law. Found gm = IC/VT = 80 mS and r_pi = beta/gm = 3.75 kOhm.",
+      },
+      {
+        title: "Input resistance fix and capacitor sizing",
+        description:
+          "Initial Rin = RB3//RB2//r_pi = 2.948 kOhm fell short of the 3.5 kOhm spec. Added R1 = 560 Ohm in series with RS to bring Rin up to 3.508 kOhm. For capacitors, CE dominates the lower cutoff pole because its effective resistance is ~14 Ohm vs. several kOhm for CC1 and CC2. Set the cutoff at omega = 600 rad/s (50% of the 1200 rad/s max) to give margin. Computed CE = 116 uF, rounded to the standard 120 uF. Used 120 uF for CC1 and CC2 as well since CE dominates.",
+      },
+      {
+        title: "LTSpice verification",
+        description:
+          "Built the full cascode circuit in LTSpice with standard resistor values. Ran .op to verify DC operating point against hand calculations -- all node voltages and branch currents agreed within 1%. Ran AC sweep from 1 mHz to 1 THz with 1000 steps per decade. Bode plot confirmed midband gain of 43.601 dB, fL3dB at ~90 Hz and fH3dB at ~6.6 MHz.",
+      },
+      {
+        title: "Butterworth filter and root locus",
+        description:
+          "Designed the 3rd-order Butterworth filter using normalised coefficient tables. Chose capacitor values, then computed the required resistors by frequency-scaling the normalised design to 10 kHz. Verified the 3 dB point in LTSpice AC simulation. For the oscillator, plotted the root locus and identified the gain at which the closed-loop poles cross the imaginary axis (marginal stability).",
+      },
+    ],
+    lessons: [
+      "The cascode's Rout being approximately RC makes the output resistance spec almost trivially satisfied once RC is chosen. The tricky part is that increasing RC to hit Rout also reduces gain headroom because AM depends on RC // RL.",
+      "When Rin falls short, adding a resistor in series with RS is the cleanest fix. It increases Rin by exactly that resistor value and does not disturb any of the bias currents.",
+      "CE dominates the lower cutoff frequency because its effective resistance (1/gm // RE/(beta+1)) is much smaller than the resistance seen by CC1 or CC2. Sizing CE first, then using the same value for CC1 and CC2, is safe and simpler.",
+      "LTSpice .op for DC operating point verification before running AC sweeps saves debugging time. If the bias is wrong, the small-signal parameters are wrong, and the Bode plot will be off in a way that is hard to diagnose from frequency response alone.",
+    ],
     links: [
       {
         label: "Full Report (PDF)",
@@ -634,33 +823,76 @@ export const projects: ProjectData[] = [
   // ── 8. ELEC301 — BJT Amplifier Analysis ───────────────────────────
   {
     slug: "elec301-amplifiers",
-    title: "BJT Amplifier Analysis",
+    title: "BJT Amplifier Frequency Analysis",
     tagline:
-      "OC/SC time constants on a 4-pole RC filter + Miller's theorem on CE/CB/CC BJTs, all verified in LTSpice",
+      "OC/SC time constants on a 4-pole RC bandpass + Miller's theorem on CE/CB/CC BJTs -- poles at 14.2 Hz, 312.6 Hz, 5.9 MHz, 38.6 MHz",
     category: "software",
-    tags: ["LTSpice", "BJT", "SPICE", "Analog Design", "Bode Plot", "ELEC301"],
+    tags: ["LTSpice", "BJT", "OC/SC Method", "Miller's Theorem", "Bode Plot", "Frequency Response", "ELEC301"],
     date: "2025",
     featured: false,
     coverImage: "",
     images: [],
+    reportUrl: "/assets/projects/elec301-amplifiers/report.pdf",
     summary:
-      "Another ELEC301 mini project, this one all about frequency response. I used the open-circuit / short-circuit (OC/SC) time constant method to find all four poles of an RC bandpass filter by hand, then verified them in LTSpice. After that I ran CE, CB, and CC BJT amplifiers through the same kind of analysis — using Miller's theorem to decouple the feedback capacitance for high-frequency poles, then comparing calculated midband gain and I/O impedances against simulation. Poles landed at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — hand calculations and SPICE agreed within a small margin. Good reminder that hand analysis still matters in an era where everyone reaches for simulation first.",
+      "ELEC 301 Mini Project 1 -- frequency response analysis across four problems. Problem 1: a four-pole RC bandpass filter with component values R1=50 Ohm, R2=R3=R4=500 Ohm, C1=20 uF, C2=100 pF, C3=500 nF, C4=100 pF. I used the open-circuit / short-circuit (OC/SC) time constant method to find all four poles by hand without solving the full transfer function. C3 dominates the low-frequency cutoff (tau_C3 = 522.7 us, fc3 = 304.5 Hz), and the combined high-frequency cutoff from C2 and C4 comes out to 6.01 MHz. LTSpice AC sweep confirmed poles at 14.22 Hz, 312.6 Hz, 5.90 MHz, and 38.61 MHz -- close agreement with the OC/SC method. Problem 1B validated the method by sweeping C3 across five values and comparing calculated vs simulated cutoff frequencies. Problems 2-4 analyse a transconductance amplifier and CE/CB/CC BJT configurations using Miller's theorem to decouple the feedback capacitance and find high-frequency poles.",
     sections: {
       problem:
-        "Analyse a four-pole RC bandpass filter and three BJT amplifier topologies. Predict pole locations analytically using OC/SC method, then verify with LTSpice AC sweep.",
+        "Four-part frequency response analysis project. Problem 1: find all four poles of an RC bandpass filter analytically using OC/SC time constants, then verify in LTSpice. Problem 1B: validate by parametrically sweeping C3 and tracking the cutoff shift. Problems 2-4: analyse a transconductance amplifier and CE/CB/CC BJT amplifiers using Miller's theorem for high-frequency pole approximation and OC/SC for the full pole set.",
       goals: [
-        "Find all poles of a 4-element RC bandpass filter using OC and SC time constants",
-        "Simulate CE, CB, and CC amplifier configurations in LTSpice",
-        "Apply Miller's theorem to approximate high-frequency pole locations",
-        "Compare calculated midband gain and I/O resistances against SPICE simulation",
+        "Apply OC/SC time constant method to find all four poles of a 4-element RC bandpass filter",
+        "Identify the dominant LF capacitor (C3: tau = 522.7 us, fc = 304.5 Hz) and dominant HF capacitors (C2, C4)",
+        "Verify LTSpice AC sweep poles against OC/SC hand calculations",
+        "Problem 1B: parametrically sweep C3 from 500 nF to 10 uF and confirm LF cutoff tracks inversely",
+        "Apply Miller's theorem to a transconductance amplifier (k = -G*R3//R4 = -100) to find high-frequency poles",
+        "Compare CE, CB, and CC BJT configurations for midband gain, Rin, and Rout",
       ],
       designDecisions:
-        "Used the open-circuit/short-circuit (OC/SC) time constant method to approximate pole frequencies without solving the full transfer function. Miller's theorem used to decouple the feedback capacitance for high-frequency analysis. All simulations run in LTSpice with decade AC sweeps from 1 mHz to 1 THz.",
+        "The OC/SC method avoids solving the full transfer function by treating each capacitor individually while shorting or open-circuiting the others. C1 and C3 are LF capacitors (large value, block at low frequency), C2 and C4 are HF capacitors (small value, short at high frequency). For the LF analysis: open C2/C4, short C3 to find tau_C1, then short C1 and open C2/C4 to find tau_C3. tau_C3 is dominant (304.5 Hz vs 20.8 Hz for tau_C1). For HF: short C1/C3, open C4 to find tau_C2, open C2/C3 to find tau_C4. Both are similar magnitude, so the combined tau_3dB = sqrt(tau_C2^2 + tau_C4^2) = 26.45 ns gives f3dB = 6.01 MHz. Miller's theorem for the transconductance amplifier: k = -G*(R3//R4) = -0.1 * 1000 = -100, so C_in = C3/(1-k) and C_out = C3*k/(k-1).",
       validation:
-        "Simulated poles matched calculated values within acceptable margin. Error analysis documented for each topology. CE vs CB input/output impedance comparison confirmed textbook trade-offs.",
+        "LTSpice AC sweep from 1 mHz to 1000 GHz with 1000 steps/decade. Midband gain of -7.23 dB identified. Cutoff frequencies read from the Bode plot at midband - 3 dB. Simulated poles: 14.22 Hz, 312.6 Hz, 5.90 MHz, 38.61 MHz. Calculated poles: 20.8 Hz (C1), 304.5 Hz (C3, dominant), 36.6 MHz (C2), 6.1 MHz (C4), combined HF f3dB = 6.01 MHz. Problem 1B error table: at C3 = 500 nF, error = 2.6%; at C3 = 10 uF, error grows to 49.6% because the OC/SC approximation breaks down as C3 approaches the same order as the other capacitors.",
       results:
-        "RC filter poles identified at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — consistent across both methods. BJT amplifier I/O resistances and gains verified in simulation.",
+        "Four poles located at 14.22 Hz, 312.6 Hz, 5.90 MHz, and 38.61 MHz -- consistent between OC/SC hand analysis and LTSpice. C3 confirmed as the dominant LF pole. Combined HF cutoff at 6.01 MHz (calculated) vs 5.90 MHz (simulated), 1.86% error. Miller's theorem gave k = -100 for the transconductance stage. CE/CB/CC BJT resistance comparison confirmed textbook impedance trade-offs across all three topologies.",
     },
+    specs: [
+      { label: "Filter topology", value: "4-pole RC bandpass" },
+      { label: "Component values", value: "R1=50 Ohm, R2=R3=R4=500 Ohm, C1=20 uF, C2=100 pF, C3=500 nF, C4=100 pF" },
+      { label: "Midband gain", value: "-7.23 dB" },
+      { label: "LF poles (simulated)", value: "14.22 Hz, 312.6 Hz" },
+      { label: "HF poles (simulated)", value: "5.90 MHz, 38.61 MHz" },
+      { label: "Dominant LF pole", value: "C3: tau = 522.7 us, fc = 304.5 Hz" },
+      { label: "Combined HF f3dB", value: "6.01 MHz (calc) / 5.90 MHz (sim) -- 1.86% error" },
+      { label: "Analysis method", value: "OC/SC time constants + Miller's theorem" },
+      { label: "Simulation tool", value: "LTSpice AC sweep, 1 mHz to 1 THz, 1000 steps/decade" },
+      { label: "Transconductance amp", value: "G = 0.1 S, k = -100 (Miller's theorem)" },
+    ],
+    process: [
+      {
+        title: "OC/SC time constant method for the 4-pole RC filter",
+        description:
+          "For each LF capacitor, open all HF capacitors and short the other LF capacitors, then compute tau = R_eq * C. C3 sees R_eq = R1//R2 + R3 + R4 = 522.7 kOhm, giving tau_C3 = 522.7 us and fc = 304.5 Hz. C1 sees R_eq = R1 + R2//(R3+R4) = 369.2 Ohm, giving fc = 20.8 Hz. C3 dominates. For HF capacitors, short all LF caps and open the other HF caps. Computed tau_C2 = 4.35 ns (fc = 36.6 MHz) and tau_C4 = 26.09 ns (fc = 6.1 MHz). Combined: tau_3dB = sqrt(tau_C2^2 + tau_C4^2) = 26.45 ns, giving f3dB = 6.01 MHz.",
+      },
+      {
+        title: "LTSpice verification and pole identification",
+        description:
+          "Built the RC filter in LTSpice and ran an AC sweep from 1 mHz to 1000 GHz. The Bode magnitude plot shows the bandpass shape. The midband gain was -7.23 dB, so the cutoff points were read at -10.23 dB. LTSpice cursors identified the four pole locations at 14.22 Hz, 312.6 Hz, 5.90 MHz, and 38.61 MHz -- within a few percent of the OC/SC predictions for the dominant poles.",
+      },
+      {
+        title: "Problem 1B: parametric C3 sweep",
+        description:
+          "Varied C3 from 500 nF to 10 uF in five steps and recorded the simulated and calculated LF cutoff frequency at each value. At 500 nF the error was 2.6%, growing to 49.6% at 10 uF. This shows the OC/SC approximation is accurate when C3 is clearly the dominant capacitor but degrades when C3 becomes comparable in value to C1.",
+      },
+      {
+        title: "Miller's theorem and BJT amplifier analysis",
+        description:
+          "For the transconductance amplifier, the feedback capacitor C3 bridges input and output. Miller's theorem splits it into Cin = C3/(1-k) and Cout = C3*k/(k-1) where k = -G*(R3//R4) = -100. Applied OC/SC to the resulting uncoupled circuit to find the pole locations. For CE/CB/CC BJT amplifiers, computed Rin and Rout from the small-signal model and compared against LTSpice simulations at each topology.",
+      },
+    ],
+    lessons: [
+      "The OC/SC method gives useful pole approximations without solving the full transfer function. The key insight is that each capacitor's time constant can be computed independently when the others are shorted or opened. The method is accurate when one pole is clearly dominant and loses accuracy when poles are close together.",
+      "C3 = 500 nF is the dominant LF pole because its effective resistance (R1//R2 + R3 + R4 = 1045 Ohm) is much larger than what C1 sees (370 Ohm). Always check both time constants before assuming one dominates.",
+      "LTSpice AC sweep is fast to set up for pole verification. The trick is setting the sweep range wide enough (1 mHz to 1 THz for this circuit) to see all four poles clearly on the Bode plot.",
+      "Miller's theorem only works cleanly when the local gain k is well-defined. For the transconductance stage, k = -100 is large enough that C_in = C3/101 is much smaller than C3, which is why the HF pole location shifts significantly from its short-circuit position.",
+    ],
     links: [
       {
         label: "Full Report (PDF)",
@@ -674,51 +906,105 @@ export const projects: ProjectData[] = [
     slug: "alarm-clock-8051",
     title: "Alarm Clock in 8051",
     tagline:
-      "8051 alarm clock written in assembly — hardware timer interrupts, button debounce, no drift",
+      "N76E003 alarm clock in assembly — three concurrent ISRs, 12-hour AM/PM display, pushbutton-settable time and alarm",
     category: "embedded",
-    tags: ["8051", "Assembly", "Interrupts", "Timer", "GPIO"],
+    tags: ["N76E003", "8051", "Assembly", "ISR", "Timer", "LCD", "GPIO"],
     date: "2024",
     featured: false,
     coverImage: "/assets/alarm-clock.jpg",
-    images: ["/assets/alarm-clock.jpg", "/assets/alarm-clock.png"],
+    images: [
+      "/assets/alarm-clock.jpg",
+      "/assets/alarm-clock.png",
+      "/assets/projects/alarm-clock-8051/lab2.mp4",
+      "/assets/projects/alarm-clock-8051/lab2_2.mp4",
+    ],
     summary:
-      "An 8051 alarm clock written in assembly. The whole thing is timer-interrupt-driven — no polling, because that's exactly how you get drift — and the buttons are debounced in software. You set the time, set the alarm, the buzzer fires when it should. Tested for accuracy over multi-hour runs with no measurable drift. Writing it in assembly forced me to actually understand what the timer registers and ISRs were doing, instead of letting Arduino abstractions hide it from me.",
+      "An alarm clock written in assembly for the N76E003 (8051-compatible) microcontroller, built for ELEC 291 Lab 2. The whole design is interrupt-driven: Timer 2 fires every 500 ms to increment the BCD time variables, Timer 0 generates a 2 kHz square wave at pin P1.7 for the speaker alarm. Three ISRs run concurrently while the main loop handles the LCD refresh and pushbutton debounce. The clock displays hours, minutes, and seconds in 12-hour AM/PM format on a 4-bit LCD. You can set the current time and the alarm time independently using the pushbuttons. When the alarm matches the current time, the speaker fires. No polling anywhere in the timekeeping path, which is what keeps it drift-free over multi-hour runs.",
     sections: {
+      problem:
+        "The lab required building an alarm clock entirely in 8051 assembly, using hardware timer interrupts for timekeeping and a speaker for the alarm. The constraints: 12-hour AM/PM display, pushbutton-settable time and alarm, no drift from polling. Everything had to be structured so the main loop could handle the display and buttons without blocking the ISRs.",
+      goals: [
+        "Use Timer 2 ISR to increment BCD time variables every 500 ms without polling drift",
+        "Use Timer 0 ISR to generate a 2 kHz square wave at P1.7 for the speaker alarm",
+        "Display HH:MM:SS in 12-hour AM/PM format on a 4-bit LCD",
+        "Allow pushbutton setting of current time (hours, minutes, seconds, AM/PM) and alarm time independently",
+        "Trigger speaker when alarm matches current time",
+      ],
       designDecisions:
-        "Timer interrupts drive the timekeeping loop to avoid drift from polling. Button debounce handled in software.",
+        "Three concurrent ISRs handle all time-critical work: Timer 2 at 500 ms for the BCD clock increment, Timer 0 at 2 kHz for the speaker square wave, and a 1 ms P0.4 toggle used for oscilloscope verification during testing. The main loop exclusively handles LCD refresh and debounced pushbutton reads. BCD storage for hours, minutes, and seconds means the display conversion is just a nibble split, keeping the main loop fast. The 12-hour rollover and AM/PM flag flip are handled inside the Timer 2 ISR.",
+      validation:
+        "The 500 ms tick was verified with an oscilloscope on P0.4 (1 ms toggle), and the 2 kHz speaker output was confirmed clean at P1.7. Clock accuracy was tested over several hours with no measurable drift. Alarm trigger was tested by setting the alarm a few minutes ahead and confirming the speaker fired at the correct time. The demo videos in the gallery show the clock running in real time.",
       results:
-        "Accurate timekeeping verified over multi-hour tests. Alarm triggers reliably.",
+        "Accurate timekeeping over multi-hour test runs with no measurable drift. Alarm triggers reliably at the set time. All three ISRs run concurrently without timing conflicts.",
     },
+    specs: [
+      { label: "MCU", value: "N76E003 (8051-compatible, 16 MHz)" },
+      { label: "Language", value: "8051 Assembly (A51 assembler, CrossIDE)" },
+      { label: "Timekeeping ISR", value: "Timer 2 — 500 ms BCD tick (auto-reload mode)" },
+      { label: "Speaker ISR", value: "Timer 0 — 2 kHz square wave at P1.7" },
+      { label: "Display", value: "16x2 LCD, 4-bit interface" },
+      { label: "Time format", value: "12-hour HH:MM:SS with AM/PM" },
+      { label: "Input", value: "Pushbuttons on P1.5, P1.6 — time and alarm setting" },
+      { label: "Alarm output", value: "Mini speaker via P1.7" },
+    ],
+    process: [
+      {
+        title: "ISR architecture planning",
+        description:
+          "Mapped out which timers to use before writing any code. Timer 2 in auto-reload mode handles the 500 ms BCD tick. Timer 0 in mode 1 toggles P1.7 every 250 µs for the 2 kHz speaker output. Both ISRs save and restore the accumulator and PSW. The main loop runs in a tight spin between ISR firings, handling only the LCD and buttons.",
+      },
+      {
+        title: "BCD timekeeping and 12-hour rollover",
+        description:
+          "Hours, minutes, and seconds are stored as BCD pairs in internal RAM. Each Timer 2 ISR fires increments seconds by one BCD unit, with carry logic for 60-second and 60-minute rollovers. At 12:00:00, hours rolls back to 01:00:00 and the AM/PM flag flips. The display just splits each BCD byte into two nibbles, keeping it fast enough that the main loop never falls behind the ISRs.",
+      },
+      {
+        title: "Pushbutton debounce and time-setting UI",
+        description:
+          "Buttons are read in the main loop using a short delay-based debounce. Separate button presses cycle through the fields to set: current hour, minute, second, AM/PM, then alarm hour, minute, second. The LCD updates immediately on each press. The alarm comparison runs in the main loop by comparing the BCD alarm registers against the current time registers.",
+      },
+      {
+        title: "Oscilloscope verification",
+        description:
+          "Before any clock testing, confirmed ISR timing on the oscilloscope. The 1 ms P0.4 toggle was measured to verify the Timer 2 reload value. The 2 kHz P1.7 square wave was confirmed clean. Only after both ISR periods were verified did multi-hour accuracy testing begin.",
+      },
+    ],
+    lessons: [
+      "ISR-driven timekeeping is fundamentally more accurate than polling loops. A polling loop's period changes with every line of code added to the main loop. An ISR fires on the hardware timer regardless of what the main loop is doing.",
+      "BCD storage for clock variables is worth using in assembly. Binary-to-decimal conversion inside an ISR is slow and error-prone. BCD lets the display code be a trivial nibble split.",
+      "Oscilloscope verification of timer reload values before integration saves debugging time. If the tick is wrong, everything downstream is wrong, and it is hard to tell from the display alone.",
+      "Three concurrent ISRs require careful register save/restore discipline. Forgetting to push and pop the accumulator or PSW causes intermittent register corruption that is hard to reproduce.",
+    ],
     links: [],
   },
 
   // ── 10. RISC Machine ──────────────────────────────────────────────
-  {
-    slug: "risc-machine",
-    title: "RISC Machine",
-    tagline:
-      "RISC CPU in Verilog — fetch / decode / execute on a DE1-SoC, simulated in ModelSim, synthesised in Quartus",
-    category: "software",
-    tags: [
-      "Verilog",
-      "FPGA",
-      "DE1-SoC",
-      "ModelSim",
-      "Quartus",
-      "Digital Design",
-    ],
-    date: "2024",
-    featured: false,
-    coverImage: "",
-    images: [],
-    summary:
-      "Designed a simple RISC CPU in Verilog from the ground up — register file, ALU, control unit, fetch-decode-execute pipeline, the whole stack. Simulated each module in ModelSim, then synthesised the whole thing onto a DE1-SoC FPGA via Quartus and ran test programs on real hardware. Timing constraints met for the target clock. It's the kind of project that finally makes 'how does a CPU actually work' click — you stop thinking of CPUs as magic and start thinking of them as a really well-organised state machine.",
-    sections: {
-      results:
-        "CPU executed all test programs correctly. Timing constraints met for target clock frequency.",
-    },
-    links: [],
-  },
+  // {
+  //   slug: "risc-machine",
+  //   title: "RISC Machine",
+  //   tagline:
+  //     "RISC CPU in Verilog — fetch / decode / execute on a DE1-SoC, simulated in ModelSim, synthesised in Quartus",
+  //   category: "software",
+  //   tags: [
+  //     "Verilog",
+  //     "FPGA",
+  //     "DE1-SoC",
+  //     "ModelSim",
+  //     "Quartus",
+  //     "Digital Design",
+  //   ],
+  //   date: "2024",
+  //   featured: false,
+  //   coverImage: "",
+  //   images: [],
+  //   summary:
+  //     "Designed a simple RISC CPU in Verilog from the ground up — register file, ALU, control unit, fetch-decode-execute pipeline, the whole stack. Simulated each module in ModelSim, then synthesised the whole thing onto a DE1-SoC FPGA via Quartus and ran test programs on real hardware. Timing constraints met for the target clock. It's the kind of project that finally makes 'how does a CPU actually work' click — you stop thinking of CPUs as magic and start thinking of them as a really well-organised state machine.",
+  //   sections: {
+  //     results:
+  //       "CPU executed all test programs correctly. Timing constraints met for target clock frequency.",
+  //   },
+  //   links: [],
+  // },
 
   // ── 11. Mini Power Bank ───────────────────────────────────────────
   {
@@ -746,87 +1032,87 @@ export const projects: ProjectData[] = [
   },
 
   // ── 12. The Claw ──────────────────────────────────────────────────
-  {
-    slug: "the-claw",
-    title: "The Claw",
-    tagline:
-      "Joystick-controlled servo claw — direct proportional control, no oscillation, surprisingly grippy",
-    category: "robotics",
-    tags: ["Servo", "Joystick", "Arduino", "Mechanical", "Robotics"],
-    date: "2021",
-    featured: false,
-    coverImage: "/assets/the-claw.jpg",
-    images: ["/assets/the-claw.jpg"],
-    summary:
-      "Three hobby servos, a joystick, an Arduino, and a 3D-printed frame. Finger positions track joystick input proportionally — push the stick further, the fingers close further. No oscillation, no jitter, just clean direct control. Built it as a dexterity toy and ended up using it to grip pretty much anything within reach. Still works.",
-    sections: {
-      results:
-        "Successfully gripped a range of objects. Smooth servo response with no oscillation.",
-    },
-    links: [],
-  },
+  // {
+  //   slug: "the-claw",
+  //   title: "The Claw",
+  //   tagline:
+  //     "Joystick-controlled servo claw — direct proportional control, no oscillation, surprisingly grippy",
+  //   category: "robotics",
+  //   tags: ["Servo", "Joystick", "Arduino", "Mechanical", "Robotics"],
+  //   date: "2021",
+  //   featured: false,
+  //   coverImage: "/assets/the-claw.jpg",
+  //   images: ["/assets/the-claw.jpg"],
+  //   summary:
+  //     "Three hobby servos, a joystick, an Arduino, and a 3D-printed frame. Finger positions track joystick input proportionally — push the stick further, the fingers close further. No oscillation, no jitter, just clean direct control. Built it as a dexterity toy and ended up using it to grip pretty much anything within reach. Still works.",
+  //   sections: {
+  //     results:
+  //       "Successfully gripped a range of objects. Smooth servo response with no oscillation.",
+  //   },
+  //   links: [],
+  // },
 
   // ── 13. Audio-Responsive LED ──────────────────────────────────────
-  {
-    slug: "audio-led",
-    title: "Audio-Responsive LED",
-    tagline:
-      "Microphone → ADC → LED matrix — lights pulse with whatever's playing, no perceptible lag",
-    category: "embedded",
-    tags: ["LED", "Audio", "ADC", "Arduino", "Analog"],
-    date: "2020",
-    featured: false,
-    coverImage: "",
-    images: [],
-    summary:
-      "A microphone picks up ambient sound, the ADC samples the level, and an LED matrix brightens / patterns in response — real-time enough that there's no perceptible lag between the beat and the lights. The interesting part isn't the LED side, it's the analog front-end: mic bias, AC coupling, envelope detection. Once that part is clean, everything downstream is easy.",
-    sections: {
-      results: "Visually responsive to music with no perceptible latency.",
-    },
-    links: [],
-  },
+  // {
+  //   slug: "audio-led",
+  //   title: "Audio-Responsive LED",
+  //   tagline:
+  //     "Microphone → ADC → LED matrix — lights pulse with whatever's playing, no perceptible lag",
+  //   category: "embedded",
+  //   tags: ["LED", "Audio", "ADC", "Arduino", "Analog"],
+  //   date: "2020",
+  //   featured: false,
+  //   coverImage: "",
+  //   images: [],
+  //   summary:
+  //     "A microphone picks up ambient sound, the ADC samples the level, and an LED matrix brightens / patterns in response — real-time enough that there's no perceptible lag between the beat and the lights. The interesting part isn't the LED side, it's the analog front-end: mic bias, AC coupling, envelope detection. Once that part is clean, everything downstream is easy.",
+  //   sections: {
+  //     results: "Visually responsive to music with no perceptible latency.",
+  //   },
+  //   links: [],
+  // },
 
-  // ── 14. Inventory Analysis System ─────────────────────────────────
-  {
-    slug: "inventory-analysis",
-    title: "Inventory Analysis System",
-    tagline:
-      "Excel + VBA tool I built for my family's electronics shop — real-time stock, alerts, sales analytics",
-    category: "software",
-    tags: ["Excel", "VBA", "Data Analysis", "Automation"],
-    date: "2020",
-    featured: false,
-    coverImage: "/assets/inventory-analysis.png",
-    images: ["/assets/inventory-analysis.png"],
-    summary:
-      "An Excel + VBA tool I built for my family's electronics shop in Bali. Tracks stock levels in real time, fires low-stock alerts before things sell out, and generates sales summaries automatically. Replaced a lot of manual paperwork and caught a few out-of-stock situations before they cost us a sale. Not glamorous, but useful — and a reminder that 'engineering' includes spreadsheets when that's what the problem actually needs.",
-    sections: {
-      results:
-        "Reduced manual stock-checking time significantly. Prevented several out-of-stock situations.",
-    },
-    links: [],
-  },
+  // // ── 14. Inventory Analysis System ─────────────────────────────────
+  // {
+  //   slug: "inventory-analysis",
+  //   title: "Inventory Analysis System",
+  //   tagline:
+  //     "Excel + VBA tool I built for my family's electronics shop — real-time stock, alerts, sales analytics",
+  //   category: "software",
+  //   tags: ["Excel", "VBA", "Data Analysis", "Automation"],
+  //   date: "2020",
+  //   featured: false,
+  //   coverImage: "/assets/inventory-analysis.png",
+  //   images: ["/assets/inventory-analysis.png"],
+  //   summary:
+  //     "An Excel + VBA tool I built for my family's electronics shop in Bali. Tracks stock levels in real time, fires low-stock alerts before things sell out, and generates sales summaries automatically. Replaced a lot of manual paperwork and caught a few out-of-stock situations before they cost us a sale. Not glamorous, but useful — and a reminder that 'engineering' includes spreadsheets when that's what the problem actually needs.",
+  //   sections: {
+  //     results:
+  //       "Reduced manual stock-checking time significantly. Prevented several out-of-stock situations.",
+  //   },
+  //   links: [],
+  // },
 
   // ── 15. Kinetic-Powered LED ───────────────────────────────────────
-  {
-    slug: "kinetic-led",
-    title: "Kinetic-Powered LED",
-    tagline:
-      "Hand-crank dynamo → bridge rectifier → cap → LEDs. Physics demo, the old-school way.",
-    category: "embedded",
-    tags: ["Generator", "Rectifier", "LED", "Power Electronics"],
-    date: "2019",
-    featured: false,
-    coverImage: "",
-    images: [],
-    summary:
-      "A hand-crank dynamo wired to a bridge rectifier and a smoothing capacitor, driving LEDs. The classic 'see physics happen in real time' demo. Crank fast enough and the LEDs light up cleanly — multimeter confirms the DC out of the cap is reasonably smooth. One of the first circuits I built that wasn't straight out of a textbook.",
-    sections: {
-      results:
-        "LEDs light up reliably from moderate cranking speed. Clean DC output confirmed with multimeter.",
-    },
-    links: [],
-  },
+  // {
+  //   slug: "kinetic-led",
+  //   title: "Kinetic-Powered LED",
+  //   tagline:
+  //     "Hand-crank dynamo → bridge rectifier → cap → LEDs. Physics demo, the old-school way.",
+  //   category: "embedded",
+  //   tags: ["Generator", "Rectifier", "LED", "Power Electronics"],
+  //   date: "2019",
+  //   featured: false,
+  //   coverImage: "",
+  //   images: [],
+  //   summary:
+  //     "A hand-crank dynamo wired to a bridge rectifier and a smoothing capacitor, driving LEDs. The classic 'see physics happen in real time' demo. Crank fast enough and the LEDs light up cleanly — multimeter confirms the DC out of the cap is reasonably smooth. One of the first circuits I built that wasn't straight out of a textbook.",
+  //   sections: {
+  //     results:
+  //       "LEDs light up reliably from moderate cranking speed. Clean DC output confirmed with multimeter.",
+  //   },
+  //   links: [],
+  // },
 
   // ── 16. Spreadsheet Cashier System ────────────────────────────────
   {

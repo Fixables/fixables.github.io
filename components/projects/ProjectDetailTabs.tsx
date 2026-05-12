@@ -1,13 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ExternalLink } from 'lucide-react'
 import type { ProjectData } from '@/types/project'
 import PCBTabViewer from './PCBTabViewer'
 import ProjectGallery from './ProjectGallery'
 import SubsystemsAccordion from './SubsystemsAccordion'
 
-type TabId = 'overview' | 'pcb' | 'gallery' | 'details' | 'lessons'
+type TabId = 'overview' | 'pcb' | 'gallery' | 'details' | 'lessons' | 'report'
 
 interface Tab {
   id: TabId
@@ -54,13 +54,15 @@ export default function ProjectDetailTabs({ project }: { project: ProjectData })
     sections.validation || sections.challenges || sections.results
   )
   const hasLessons = !!(project.lessons?.length)
+  const hasReport = !!project.reportUrl
 
   const tabs: Tab[] = [
     { id: 'overview', label: 'Overview' },
-    ...(hasPCB      ? [{ id: 'pcb'     as TabId, label: 'PCB Views' }] : []),
-    ...(hasGallery  ? [{ id: 'gallery' as TabId, label: 'Gallery'   }] : []),
-    ...(hasDetails  ? [{ id: 'details' as TabId, label: 'Details'   }] : []),
-    ...(hasLessons  ? [{ id: 'lessons' as TabId, label: 'Lessons'   }] : []),
+    ...(hasPCB      ? [{ id: 'pcb'     as TabId, label: 'PCB Views'      }] : []),
+    ...(hasGallery  ? [{ id: 'gallery' as TabId, label: 'Gallery'        }] : []),
+    ...(hasDetails  ? [{ id: 'details' as TabId, label: 'Details'        }] : []),
+    ...(hasLessons  ? [{ id: 'lessons' as TabId, label: 'Lessons'        }] : []),
+    ...(hasReport   ? [{ id: 'report'  as TabId, label: 'Project Report' }] : []),
   ]
 
   const [active, setActive] = useState<TabId>('overview')
@@ -207,6 +209,31 @@ export default function ProjectDetailTabs({ project }: { project: ProjectData })
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Project Report */}
+      {active === 'report' && hasReport && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-zinc-400">Full project report — use the controls below to scroll through all pages.</p>
+            <a
+              href={project.reportUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-zinc-800 border border-zinc-700 text-zinc-300 text-sm rounded-lg hover:border-sky-400 hover:text-sky-400 transition-colors flex-shrink-0"
+            >
+              Open PDF <ExternalLink size={12} />
+            </a>
+          </div>
+          <div className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900">
+            <iframe
+              src={project.reportUrl}
+              title="Project Report"
+              className="w-full"
+              style={{ height: '72vh', minHeight: 520 }}
+            />
+          </div>
+        </div>
       )}
     </div>
   )
