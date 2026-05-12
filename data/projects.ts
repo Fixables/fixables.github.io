@@ -180,7 +180,141 @@ export const projects: ProjectData[] = [
     ],
   },
 
-  // ── 3. Coin Picking Robot ─────────────────────────────────────────
+  // ── 3. BrewBox ────────────────────────────────────────────────────
+  {
+    slug: 'brew-box',
+    title: 'BrewBox',
+    tagline: 'IoT fermentation monitor — temperature, pH, dissolved oxygen, and CO₂ through a galvanically isolated modular sensor hub',
+    category: 'pcb',
+    tags: ['Altium Designer', 'ESP32', 'ADM3260', 'Isolated I2C', 'IoT', 'Sensors', 'PCB', 'Fermentation'],
+    date: '2025',
+    status: 'Ongoing',
+    role: 'Instrumentation Team — designed the motherboard PCB (schematic, layout, isolation architecture) and developed sensor front-ends, calibration procedures, and data-processing routines',
+    featured: true,
+    coverImage: '/assets/projects/BrewBox/RealLife_PCB_Photo.JPG',
+    images: [
+      '/assets/projects/BrewBox/RealLife_PCB_Photo.JPG',
+      '/assets/projects/BrewBox/PCB_andTheTeam.JPG',
+      '/assets/projects/BrewBox/Input_Power_Schematic.png',
+      '/assets/projects/BrewBox/Isolator_Schematics.png',
+      '/assets/projects/BrewBox/Sensors_Schematics.png',
+    ],
+    model3d: '/assets/projects/BrewBox/brewbox1.0.glb',
+    schematic: '/assets/projects/BrewBox/Isolator_Schematics.png',
+    fabStats: {
+      layers: 2,
+      dimensions: '— mm',
+      minTrace: '0.2 mm',
+      minVia: '0.3 mm drill',
+      surface: 'HASL',
+      manufacturer: 'JLCPCB',
+    },
+    pcbLayers: [
+      { name: 'GTL', label: 'Top Copper',        url: '/assets/projects/BrewBox/brewbox1.0.GTL.svg', color: '#c87533', defaultVisible: true  },
+      { name: 'GBL', label: 'Bottom Copper',     url: '/assets/projects/BrewBox/brewbox1.0.GBL.svg', color: '#4169e1', defaultVisible: true  },
+      { name: 'GTO', label: 'Top Silkscreen',    url: '/assets/projects/BrewBox/brewbox1.0.GTO.svg', color: '#e8e8e8', defaultVisible: false },
+      { name: 'GTS', label: 'Top Soldermask',    url: '/assets/projects/BrewBox/brewbox1.0.GTS.svg', color: '#2d7a3a', defaultVisible: false },
+      { name: 'GBS', label: 'Bottom Soldermask', url: '/assets/projects/BrewBox/brewbox1.0.GBS.svg', color: '#1a5276', defaultVisible: false },
+    ],
+    summary:
+      "Fermentation is basically chemistry happening in a bucket — and if you want to make it repeatable, you need eyes on it. BrewBox is an IoT platform for small-scale brewing that tracks temperature, pH, dissolved oxygen, and CO₂ activity in real time and ships the data wirelessly to a monitoring dashboard. My side of it was the instrumentation: designing the 2-layer motherboard in Altium, building the sensor front-ends, and making the whole thing stable in a humid, variable-temperature environment. The board architecture is modular — an ESP32 carrier at the centre, edge-connector slots for plug-in sensor boards — so different sensor combinations can be assembled without touching the main board. The isolation piece was the most interesting: sensors sitting in conductive liquid can have significant ground offsets relative to the electronics, so I used the ADM3260 to galvanically isolate every I2C line, with integrated isolated power so no separate converter is needed.",
+    sections: {
+      problem:
+        "Fermentation environments are electrically hostile — sensors sitting in conductive wort or must can carry ground offsets large enough to latch up or damage an MCU if connected directly. On top of that, humidity, temperature swings, and long unattended runs mean the system has to be stable and repeatable across multiple batches, not just a one-shot demo. We needed a platform that could acquire clean data from four different sensor types and push it wirelessly to a dashboard, while being modular enough that the sensor payload could change between experiments.",
+      goals: [
+        'Galvanically isolate all sensor I2C lines from the ESP32 using the ADM3260 (isolated I2C + integrated isolated power)',
+        'Design a modular motherboard: ESP32 carrier + edge-connector slots for swappable sensor boards',
+        'Develop and calibrate sensor front-ends for temperature, pH, dissolved oxygen, and CO₂ activity',
+        'Ensure stable, repeatable measurements in humid, variable-temperature fermentation conditions',
+        'Transmit data wirelessly to a monitoring dashboard for real-time process insight',
+      ],
+      designDecisions:
+        'ADM3260 chosen because it integrates I2C isolation and an isolated 3.3 V supply in one package — no separate isolated converter needed. Modular edge-connector architecture lets sensor boards swap independently; a failed module is replaced without touching the motherboard. Ground planes are fully separated across both layers with a creepage gap. Sensor calibration is done per-module with stored coefficients, so drift in one sensor type does not affect others.',
+      schematicHighlights:
+        'Three schematic sheets: (1) input power — 5 V input, 3.3 V non-isolated MCU rail; (2) ADM3260 isolation network — SDA/SCL isolation with integrated 3.3 V isolated supply for sensor side; (3) sensor interface — edge connectors, isolated I2C pull-ups, per-module protection. The ADM3260 sheet was the most iterated — decoupling placement and enable-pin sequencing both needed refinement after the first board spin.',
+      pcbHighlights:
+        '2-layer board in Altium. Non-isolated (MCU) and isolated (sensor) ground pours are physically separated by a creepage gap across both layers. Sensor connectors are clustered at one board edge to confine isolated-side routing. All ADM3260 decoupling placed within 0.5 mm of the IC pins.',
+      validation:
+        'Both power rails verified before any sensor connection. I2C communication confirmed across the isolation barrier with a logic analyser. Sensor modules (temperature and pH first, then DO and CO₂) validated individually. Measurements cross-checked against reference instruments across multiple test batches to confirm repeatability. Ground isolation verified by measuring the potential between the two ground planes under live sensor load.',
+      results:
+        'Platform operational across multiple fermentation test batches. Sensor readings stable and repeatable across temperature swings and humidity. Wireless data transmission to dashboard confirmed. Calibration procedures documented and repeatable by other team members. Modular architecture validated — sensor board swap takes under two minutes without touching the motherboard.',
+    },
+    specs: [
+      { label: 'MCU',             value: 'ESP32 (carrier module)' },
+      { label: 'Isolation IC',    value: 'ADM3260 — isolated I2C + integrated isolated 3.3 V' },
+      { label: 'Isolation type',  value: 'Galvanic — capacitive (ADM3260)' },
+      { label: 'Communication',   value: 'Isolated I2C (sensor side) + Wi-Fi (dashboard)' },
+      { label: 'Sensors',         value: 'Temperature, pH, Dissolved Oxygen, CO₂ activity' },
+      { label: 'Environment',     value: 'Humid, variable-temperature fermentation vessel' },
+      { label: 'PCB',             value: '2-layer, designed in Altium Designer' },
+      { label: 'Manufacturer',    value: 'JLCPCB' },
+      { label: 'Architecture',    value: 'Modular — ESP32 carrier + edge-connector sensor boards' },
+      { label: 'Output',          value: 'Real-time wireless data to monitoring dashboard' },
+    ],
+    process: [
+      {
+        title: 'Instrumentation architecture',
+        description:
+          'Started from the sensor side: what are we measuring, what are the electrical characteristics of each sensor, and what does each need from the interface circuit? pH and DO sensors have their own electrochemical quirks (high source impedance, reference electrode considerations). Temperature is straightforward. CO₂ was approached indirectly via activity correlation. Centralised everything onto one ESP32 hub via I2C, with the isolation barrier between the sensor connectors and the MCU bus.',
+      },
+      {
+        title: 'PCB design — isolation and layout',
+        description:
+          'Three schematic sheets in Altium: input power, ADM3260 isolation network, sensor interface. The layout challenge was ground separation — the non-isolated and isolated pours had to be fully separate across both layers with a physical creepage gap. ADM3260 decoupling capacitors placed within 0.5 mm. Sensor connectors clustered at one board edge to keep isolated routing short and away from the MCU.',
+      },
+      {
+        title: 'Sensor calibration and front-end development',
+        description:
+          'Each sensor type required its own calibration procedure. Temperature was calibrated against a reference thermometer. pH was two-point calibrated with buffer solutions. Dissolved oxygen was calibrated at air saturation and zero-oxygen reference. All coefficients stored per-module so they travel with the sensor board. Measurement routines were tuned for sampling integrity and noise rejection in the humid, electrically noisy fermentation environment.',
+      },
+      {
+        title: 'Validation across batches',
+        description:
+          'Ran the platform through multiple fermentation test batches rather than just bench tests. Cross-checked sensor readings against reference instruments at several points per batch. Verified that calibration held stable across temperature swings. Dashboard data transmission was monitored for dropouts. Calibration procedures and test reports were documented so other team members could run validation without needing to be in the loop for every batch.',
+      },
+    ],
+    lessons: [
+      'Sensor calibration in a real environment is completely different from bench calibration. Temperature gradients inside a fermentation vessel, humidity on connectors, and vibration from CO₂ outgassing all show up as drift that a clean-bench cal will miss.',
+      'The ADM3260 is genuinely elegant — isolated I2C and isolated 3.3 V supply in one package. The datasheet layout recommendations for decoupling are worth following precisely; even small deviations caused signal integrity issues on the first board spin.',
+      'Ground separation in a 2-layer board is a layout discipline, not just a schematic concern. The mental model that helped: treat isolated and non-isolated regions as two separate boards that share a substrate — zero copper connection between them, no exceptions.',
+      'Modular architectures need a locked interface contract from day one. We defined the sensor module pinout early and committed to it — any mid-project change would have broken boards already in fabrication.',
+      'Documenting calibration procedures as you go (not at the end) pays off. When the second team member had to run validation independently, clean docs meant the process took an afternoon instead of a week of back-and-forth.',
+    ],
+    links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
+    subsystems: [
+      {
+        label: 'Isolation',
+        icon: 'Zap',
+        summary: 'ADM3260 — galvanic I2C isolation + integrated 3.3 V isolated supply',
+        body: 'The ADM3260 provides capacitive galvanic isolation on SDA and SCL, and an integrated isolated DC/DC converter powering the sensor side at 3.3 V. This is the key protection layer: sensors in conductive liquid can carry ground offsets large enough to damage the ESP32 without it. One IC replaces what would otherwise be a separate isolated transformer, rectifier, regulator, and two I2C buffer ICs.',
+        tags: ['ADM3260', 'Isolated I2C', 'Galvanic Isolation', 'Integrated Isolated Power'],
+        defaultOpen: true,
+      },
+      {
+        label: 'PCB',
+        icon: 'Layers',
+        summary: '2-layer Altium board — separated ground planes, modular edge connectors',
+        body: '2-layer board in Altium Designer. Non-isolated (MCU) and isolated (sensor) ground pours are physically separated by a creepage gap across both layers — no copper bridge, no shared via. Sensor connectors cluster at one edge to confine isolated-side routing. ADM3260 decoupling placed within 0.5 mm of the IC. Fabricated at JLCPCB.',
+        tags: ['Altium Designer', '2-Layer PCB', 'Ground Separation', 'JLCPCB'],
+      },
+      {
+        label: 'Sensors',
+        icon: 'CircuitBoard',
+        summary: 'Temperature, pH, DO, CO₂ — calibrated front-ends, plug-in boards',
+        body: 'Each sensor type is on its own plug-in board connecting via edge connector. Front-end circuits handle the impedance and signal conditioning specific to each sensor. Calibration coefficients are stored per module. Temperature uses a reference thermometer cal. pH uses two-point buffer solution cal. DO is calibrated at air saturation. CO₂ activity is inferred indirectly. All modules tested for stability across temperature swings and humidity.',
+        tags: ['Temperature', 'pH', 'Dissolved Oxygen', 'CO₂', 'Calibration', 'Modular'],
+      },
+      {
+        label: 'Data & Wireless',
+        icon: 'Cpu',
+        summary: 'ESP32 acquisition hub — real-time wireless to monitoring dashboard',
+        body: 'The ESP32 polls all sensor modules over isolated I2C, runs calibration correction, and transmits data wirelessly to a monitoring dashboard. Data-processing routines handle sampling integrity and noise filtering. The system runs unattended across multi-day fermentation batches with stable readout.',
+        tags: ['ESP32', 'Wi-Fi', 'IoT', 'Data Processing', 'Dashboard'],
+      },
+    ],
+  },
+
+  // ── 4. Coin Picking Robot ─────────────────────────────────────────
   {
     slug: 'coin-picking-robot',
     title: 'Coin Picking Robot',
