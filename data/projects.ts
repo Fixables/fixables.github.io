@@ -1,10 +1,11 @@
 import type { ProjectData } from '@/types/project'
 
 export const projects: ProjectData[] = [
+  // ── 1. Haptic Knob ────────────────────────────────────────────────
   {
     slug: 'haptic-knob',
     title: 'Haptic Knob',
-    tagline: 'BLDC haptic interface that lets you feel circuit behaviour — R, L, C, diode — through torque feedback',
+    tagline: 'BLDC knob that lets you feel circuits — capacitors spring back, inductors resist acceleration, diodes block in reverse',
     category: 'firmware',
     tags: ['ESP32', 'BLDC', 'FOC', 'PID', 'C++', 'FreeRTOS', 'Motor Control'],
     date: '2024',
@@ -15,10 +16,10 @@ export const projects: ProjectData[] = [
     images: [],
     model3d: '/assets/models/haptic-knob.glb',
     summary:
-      'A haptic feedback rotary knob using closed-loop BLDC motor control. The user physically feels the behaviour of an RLC circuit by turning the knob — inductance, resistance, capacitance, and diode characteristics are encoded as torque profiles in real time.',
+      "Here's the idea: what if a capacitor felt like a spring? An inductor like resistance to acceleration? A diode like a one-way ratchet? That's exactly what this knob does. It's a 3-phase BLDC motor running Field-Oriented Control on an ESP32, and the firmware computes a real-time torque command that mimics circuit behaviour. Turn it past zero and it springs back (V = Q/C). Spin it fast and it pushes back like a damper (V = Rω). The motor becomes a haptic voltage source. The math is just the electrical-to-mechanical analogy from first-year physics — the fun part is that with a tight control loop (~1 kHz, < 2 ms latency), it actually feels right.",
     sections: {
       problem:
-        'Circuits are normally invisible — you measure them with probes and plots. The goal was a knob that lets you physically feel circuit element behaviour: resistance as velocity damping, capacitance as a position spring, inductance as resistance to acceleration, and a diode as one-way blocking.',
+        "Circuits are normally invisible — you see them on an oscilloscope, never in your hand. I wanted a knob that lets you feel circuit element behaviour directly: resistance as velocity damping, capacitance as a position spring, inductance as resistance to acceleration, and a diode as one-way blocking. The hard constraint was that it had to be smooth and silent — any cogging noise or PWM whine would instantly break the illusion, which meant six-step commutation was out and FOC was the only real option.",
       goals: [
         'Implement FOC for smooth, silent torque control at low RPM',
         'Encode R, L, C, RLC, and diode behaviour as distinct haptic torque profiles',
@@ -108,10 +109,12 @@ export const projects: ProjectData[] = [
       },
     ],
   },
+
+  // ── 2. RoboMaestro ────────────────────────────────────────────────
   {
     slug: 'robomaestro',
     title: 'RoboMaestro',
-    tagline: 'Discrete MOSFET H-bridge motor driver with 2-layer Altium PCB for PWM motor control',
+    tagline: 'Discrete MOSFET H-bridge motor driver — built in Altium because off-the-shelf drivers hide all the interesting parts',
     category: 'pcb',
     tags: ['Altium Designer', 'H-Bridge', 'MOSFET', 'Gate Driver', 'PWM', 'Power Electronics', 'PCB'],
     date: '2025',
@@ -132,7 +135,7 @@ export const projects: ProjectData[] = [
       { name: 'Bottom', label: 'Bottom Layer', url: '/assets/projects/robomaestro/layers/bottom.png', color: '#4169e1', defaultVisible: true },
     ],
     summary:
-      'A discrete MOSFET H-bridge motor driver designed from scratch in Altium. Focused on gate-drive integrity, level shifting, and noise-aware PCB layout for reliable PWM operation and dead-time control.',
+      "Most motor driver projects slap an L298N on a breadboard and call it done — but that hides every interesting decision. So I designed one from scratch in Altium: discrete N-channel MOSFETs in an H-bridge, bootstrap circuits for the high-side gate drive, level shifters from 3.3 V logic to 12 V gate domain, and the kind of decoupling network you only learn about after you've watched a half-bridge ring like crazy on an oscilloscope. The board is a 2-layer Altium design with deliberate plane separation: power on the bottom (≥5 A traces), logic on top, ground pour tying it all together. The point was less 'spin a motor' and more 'understand exactly why fast switching is hard.'",
     sections: {
       designDecisions:
         'Discrete MOSFET H-bridge chosen for full control over gate-drive timing and dead-time. Gate-drive networks with decoupling suppression reduce switching noise. Level shifting handles high-side drive.',
@@ -169,10 +172,12 @@ export const projects: ProjectData[] = [
       },
     ],
   },
+
+  // ── 3. Coin Picking Robot ─────────────────────────────────────────
   {
     slug: 'coin-picking-robot',
     title: 'Coin Picking Robot',
-    tagline: 'Multi-MCU robot with JDY-40 wireless, autonomous FSM coin pickup, and joystick manual override',
+    tagline: 'Three MCUs, a wireless joystick, and an FSM that hunts coins — basically an over-engineered scavenger',
     category: 'robotics',
     tags: ['EFM8LB1', 'MSP430', 'LPC824', 'PWM', 'FSM', 'JDY-40', 'Embedded C'],
     date: '2025',
@@ -180,7 +185,7 @@ export const projects: ProjectData[] = [
     coverImage: '/assets/coin-picking.JPG',
     images: ['/assets/coin-picking.JPG'],
     summary:
-      'A multi-microcontroller robotic system with JDY-40 wireless communication. Supports autonomous coin collection via a finite state machine and manual remote control via joystick with LCD feedback.',
+      "Three microcontrollers, two operating modes, and a JDY-40 wireless link talking between them. The EFM8LB1 handles motors and sensors, the MSP430 takes care of power, and an LPC824 runs comms. In autonomous mode, an FSM searches for coins, drives over to pick them up, and dodges obstacles with an ultrasonic. In manual mode, you drive it like an RC car with a joystick + LCD remote — complete with turn signals, a headlamp, and a laser alignment guide because once you have a robot, you might as well give it features. Surprisingly reliable across the test arena.",
     sections: {
       designDecisions:
         'Three separate MCUs handle different subsystems — EFM8LB1 for motor/sensor control, MSP430 for power management, LPC824 for comms. JDY-40 wireless links the remote controller to the robot. FSM handles autonomous mode switching cleanly.',
@@ -197,10 +202,12 @@ export const projects: ProjectData[] = [
     },
     links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
   },
+
+  // ── 4. Smart Energy Meter ─────────────────────────────────────────
   {
     slug: 'smart-energy-meter',
     title: 'Smart Energy Meter',
-    tagline: 'IoT energy monitor using ESP32, current/voltage sensors, and real-time power factor calculation',
+    tagline: 'ESP32 energy monitor — real-time RMS, power factor, and a Python pipeline that catches the weird stuff',
     category: 'embedded',
     tags: ['ESP32', 'IoT', 'SCT-013', 'ZMPT101B', 'TFT Display', 'Python', 'Power Measurement'],
     date: '2025',
@@ -208,7 +215,7 @@ export const projects: ProjectData[] = [
     coverImage: '',
     images: [],
     summary:
-      'An IoT-enabled energy monitoring system using ESP32, SCT-013 current sensor, and ZMPT101B voltage module. Computes real-time RMS voltage, current, power, and power factor with a TFT display. Includes a Python analytics pipeline for visualisation and anomaly detection.',
+      "An ESP32 reads a non-invasive SCT-013 current clamp and a ZMPT101B voltage sensor, then computes RMS, real power, and power factor in firmware. A TFT shows live readings, and a Python backend on the other side logs everything and runs anomaly detection — useful for spotting the kind of weird load behaviour you'd otherwise never notice (like that one appliance that draws way more than it should). Verified against a bench power analyser. It's the kind of project where the firmware is straightforward but the calibration is where you spend half your time.",
     sections: {
       designDecisions:
         'SCT-013 non-invasive current transformer and ZMPT101B voltage sensor feed ADC inputs on the ESP32. RMS computation done in firmware. TFT display shows live readings. Python backend handles long-term logging and analytics.',
@@ -222,10 +229,12 @@ export const projects: ProjectData[] = [
     },
     links: [{ label: 'GitHub', url: 'https://github.com/Fixables' }],
   },
+
+  // ── 5. Reflow Oven Controller ─────────────────────────────────────
   {
     slug: 'reflow-oven',
     title: 'Reflow Oven Controller',
-    tagline: '8051 FSM reflow controller with K-type thermocouple front-end, SSR, and ±2°C thermal accuracy',
+    tagline: '8051 reflow controller — thermocouple, op-amp, SSR, and a lot of fighting with thermal drift to hit ±2°C',
     category: 'embedded',
     tags: ['8051', 'Assembly', 'FSM', 'Thermocouple', 'Op-Amp', 'Python', 'SSR'],
     date: '2025',
@@ -233,7 +242,7 @@ export const projects: ProjectData[] = [
     coverImage: '/assets/reflow-oven.jpg',
     images: ['/assets/reflow-oven.jpg'],
     summary:
-      'A reflow oven controller on an 8051. K-type thermocouple signal conditioning (op-amp amplification + filtering) feeds an FSM controller driving a solid-state relay. Python/Excel logging with live strip-chart visualisation achieved ±2°C accuracy.',
+      "Built a reflow controller on an 8051 because I wanted to actually understand the whole signal chain — K-type thermocouple → op-amp amplification → low-pass filter → ADC → FSM → SSR. The fun part was the analog front-end: thermocouples output millivolts, so any noise or offset directly shows up as temperature error. After a few iterations of op-amp tuning and cold-junction compensation, I got it to ±2°C tracking the reflow profile. Bonus: a Python script logs the curve live, and there's a little jingle when the board hits peak. Used it to actually reflow SMD boards.",
     sections: {
       designDecisions:
         'K-type thermocouple front-end uses op-amp amplification and low-pass filtering for clean readings. 8051 FSM drives a solid-state relay for PWM heating control. User interface via LCD and buttons with adjustable reflow parameters. Python handles logging and live strip-chart plotting.',
@@ -247,10 +256,12 @@ export const projects: ProjectData[] = [
     },
     links: [],
   },
+
+  // ── 6. Oscilloscope & Multimeter ──────────────────────────────────
   {
     slug: 'oscilloscope-multimeter',
     title: 'Oscilloscope & Multimeter',
-    tagline: '555 timer-based measurement system for voltage, resistance, and capacitance with Python visualisation',
+    tagline: '555 timer turned into a poor man\'s V/R/C meter — ~1 mV / ~10 Ω / ~1 pF resolution',
     category: 'embedded',
     tags: ['8051', '555 Timer', 'C', 'Python', 'Serial', 'Measurement', 'Calibration'],
     date: '2025',
@@ -258,7 +269,7 @@ export const projects: ProjectData[] = [
     coverImage: '/assets/oscilloscope-multimeter.png',
     images: ['/assets/oscilloscope-multimeter.png'],
     summary:
-      'A 555 timer-based measurement circuit paired with a microcontroller. Measures voltage, resistance, and capacitance via frequency-shift sensing — ~1mV, ~10Ω, ~1pF resolution. Python visualisation for real-time plotting and calibration.',
+      "Most multimeters do this with a dedicated ADC. I wanted to do it with a 555. The trick is that a 555's oscillation frequency shifts proportionally to whatever component you drop into its RC network — so by reading the frequency on an MCU and applying the right calibration curve, you get a working measurement system for voltage, resistance, and capacitance. Resolution came out to ~1 mV / ~10 Ω / ~1 pF, verified against bench gear. Python plots everything live. It's not a Fluke, but it taught me way more about measurement than buying one ever would.",
     sections: {
       designDecisions:
         '555 timer oscillator shifts frequency proportionally to the measured component. MCU captures the frequency, computes the electrical parameter in C, and streams over serial. Python plots readings in real time for calibration and verification.',
@@ -266,163 +277,12 @@ export const projects: ProjectData[] = [
     },
     links: [],
   },
-  {
-    slug: 'alarm-clock-8051',
-    title: 'Alarm Clock in 8051',
-    tagline: '8051 clock with alarm and buzzer using hardware timer interrupts for accurate timekeeping',
-    category: 'embedded',
-    tags: ['8051', 'Assembly', 'Interrupts', 'Timer', 'GPIO'],
-    date: '2024',
-    featured: false,
-    coverImage: '/assets/alarm-clock.jpg',
-    images: ['/assets/alarm-clock.jpg', '/assets/alarm-clock.png'],
-    summary:
-      'A digital clock with alarm functionality on an 8051. Hardware timer interrupts keep accurate time. Buttons set the alarm, and a buzzer fires at the trigger time. Written in 8051 assembly.',
-    sections: {
-      designDecisions:
-        'Timer interrupts drive the timekeeping loop to avoid drift from polling. Button debounce handled in software.',
-      results: 'Accurate timekeeping verified over multi-hour tests. Alarm triggers reliably.',
-    },
-    links: [],
-  },
-  {
-    slug: 'risc-machine',
-    title: 'RISC Machine',
-    tagline: 'Designed a RISC CPU in Verilog, simulated with ModelSim, and synthesised on DE1-SoC',
-    category: 'software',
-    tags: ['Verilog', 'FPGA', 'DE1-SoC', 'ModelSim', 'Quartus', 'Digital Design'],
-    date: '2024',
-    featured: false,
-    coverImage: '',
-    images: [],
-    summary:
-      'A simple RISC CPU implemented in Verilog and targeted at the DE1-SoC FPGA. Designed with a standard fetch-decode-execute pipeline, simulated in ModelSim, and synthesised with Quartus.',
-    sections: {
-      results: 'CPU executed all test programs correctly. Timing constraints met for target clock frequency.',
-    },
-    links: [],
-  },
-  {
-    slug: 'mini-powerbank',
-    title: 'Mini Power Bank',
-    tagline: 'Compact USB power bank built with Li-ion battery and boost converter',
-    category: 'pcb',
-    tags: ['Power Electronics', 'Li-ion', 'Boost Converter', 'USB', 'PCB'],
-    date: '2022',
-    featured: false,
-    coverImage: '/assets/mini-powerbank.jpg',
-    images: ['/assets/mini-powerbank.jpg', '/assets/mini-powerbank-inside.jpg', '/assets/mini-powerbank-inside2.jpg'],
-    summary:
-      'A hand-built USB power bank using a Li-ion cell and a boost converter module. Designed for compact form factor with USB-A output and charge-through micro-USB input.',
-    sections: {
-      results: 'Powers phones and small USB devices reliably. Fits in a shirt pocket.',
-    },
-    links: [],
-  },
-  {
-    slug: 'inventory-analysis',
-    title: 'Inventory Analysis System',
-    tagline: 'Excel tool for real-time stock tracking, low-stock alerts, and sales analytics',
-    category: 'software',
-    tags: ['Excel', 'VBA', 'Data Analysis', 'Automation'],
-    date: '2020',
-    featured: false,
-    coverImage: '/assets/inventory-analysis.png',
-    images: ['/assets/inventory-analysis.png'],
-    summary:
-      'An Excel-based inventory management tool built for Tjahya Elektronik. Tracks stock in real time, fires low-stock alerts, and generates sales summaries automatically.',
-    sections: {
-      results: 'Reduced manual stock-checking time significantly. Prevented several out-of-stock situations.',
-    },
-    links: [],
-  },
-  {
-    slug: 'cashier-system',
-    title: 'Spreadsheet Cashier System',
-    tagline: 'Google Sheets POS system tracking transactions and balances for a retail electronics store',
-    category: 'software',
-    tags: ['Google Sheets', 'Apps Script', 'POS', 'Automation'],
-    date: '2019',
-    featured: false,
-    coverImage: '/assets/cashier-system.png',
-    images: ['/assets/cashier-system.png'],
-    summary:
-      'A Google Sheets-based point-of-sale system for Tjahya Elektronik. Records each transaction, calculates change, tracks daily totals, and flags discrepancies.',
-    sections: {
-      results: 'Replaced manual cashbook with near-zero arithmetic errors.',
-    },
-    links: [],
-  },
-  {
-    slug: 'the-claw',
-    title: 'The Claw',
-    tagline: 'Joystick-controlled mechanical claw driven by servos for dexterity training and object gripping',
-    category: 'robotics',
-    tags: ['Servo', 'Joystick', 'Arduino', 'Mechanical', 'Robotics'],
-    date: '2021',
-    featured: false,
-    coverImage: '/assets/the-claw.jpg',
-    images: ['/assets/the-claw.jpg'],
-    summary:
-      'A joystick-controlled mechanical claw driven by hobby servos. Built as a dexterity training tool and general-purpose gripper. Finger positions map proportionally to joystick input.',
-    sections: {
-      results: 'Successfully gripped a range of objects. Smooth servo response with no oscillation.',
-    },
-    links: [],
-  },
-  {
-    slug: 'audio-led',
-    title: 'Audio-Responsive LED',
-    tagline: 'LED matrix that pulses to music volume, creating a live light effect from audio amplitude',
-    category: 'embedded',
-    tags: ['LED', 'Audio', 'ADC', 'Arduino', 'Analog'],
-    date: '2020',
-    featured: false,
-    coverImage: '',
-    images: [],
-    summary:
-      'An LED matrix that reacts to the amplitude of audio input. A microphone picks up sound, an ADC samples the level, and the LED brightness and pattern respond in real time.',
-    sections: {
-      results: 'Visually responsive to music with no perceptible latency.',
-    },
-    links: [],
-  },
-  {
-    slug: 'elec301-amplifiers',
-    title: 'BJT Amplifier Analysis',
-    tagline: 'LTSpice simulation and hand analysis of RC filters, CE/CB/CC BJT amplifiers, and frequency response',
-    category: 'software',
-    tags: ['LTSpice', 'BJT', 'SPICE', 'Analog Design', 'Bode Plot', 'ELEC301'],
-    date: '2025',
-    featured: false,
-    coverImage: '',
-    images: [],
-    summary:
-      'ELEC301 Mini Project 1 — Frequency response analysis of a four-pole RC bandpass filter using OC/SC time constants. Hand-calculated and SPICE-simulated pole locations compared against LTSpice Bode plots. Extended to CE, CB, and CC BJT amplifier configurations with Miller\'s theorem, midband gain, and input/output resistance analysis.',
-    sections: {
-      problem:
-        'Analyse a four-pole RC bandpass filter and three BJT amplifier topologies. Predict pole locations analytically using OC/SC method, then verify with LTSpice AC sweep.',
-      goals: [
-        'Find all poles of a 4-element RC bandpass filter using OC and SC time constants',
-        'Simulate CE, CB, and CC amplifier configurations in LTSpice',
-        'Apply Miller\'s theorem to approximate high-frequency pole locations',
-        'Compare calculated midband gain and I/O resistances against SPICE simulation',
-      ],
-      designDecisions:
-        'Used the open-circuit/short-circuit (OC/SC) time constant method to approximate pole frequencies without solving the full transfer function. Miller\'s theorem used to decouple the feedback capacitance for high-frequency analysis. All simulations run in LTSpice with decade AC sweeps from 1 mHz to 1 THz.',
-      validation:
-        'Simulated poles matched calculated values within acceptable margin. Error analysis documented for each topology. CE vs CB input/output impedance comparison confirmed textbook trade-offs.',
-      results:
-        'RC filter poles identified at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — consistent across both methods. BJT amplifier I/O resistances and gains verified in simulation.',
-    },
-    links: [
-      { label: 'Full Report (PDF)', url: '/assets/projects/elec301-amplifiers/report.pdf' },
-    ],
-  },
+
+  // ── 7. ELEC301 — Cascode Amplifier & Butterworth Filter ───────────
   {
     slug: 'elec301-cascode',
     title: 'Cascode Amplifier & Butterworth Filter Design',
-    tagline: 'Designed a 2N3904 cascode amplifier and 3rd-order Butterworth active filter from specs to simulation',
+    tagline: '2N3904 cascode meeting tight specs + 3rd-order Butterworth LPF + root-locus oscillator analysis',
     category: 'software',
     tags: ['LTSpice', 'BJT', 'Cascode', 'Active Filter', 'Butterworth', 'ELEC301'],
     date: '2025',
@@ -430,7 +290,7 @@ export const projects: ProjectData[] = [
     coverImage: '',
     images: [],
     summary:
-      'ELEC301 Mini Project 2 — Full design flow for a two-transistor 2N3904 cascode amplifier meeting Rout = 2.5 kΩ, Rin ≥ 3.5 kΩ, |AM| ≥ 50 V/V, ωL,3dB ≤ 1200 rad/s. Separate design of a 3rd-order Butterworth low-pass active filter at 10 kHz cutoff, plus stability analysis of an oscillator via root locus.',
+      "Coursework that turned into a real design exercise. The spec was tight: dual 2N3904 cascode, V_CC = 20 V, R_out = 2.5 kΩ ± 10%, R_in ≥ 3.5 kΩ, |A_M| ≥ 50 V/V, and a low-frequency 3 dB point ≤ 1200 rad/s. I biased it from scratch, sized every coupling and bypass cap from the spec, then verified the DC operating point and the Bode plot in LTSpice. Separately I designed a 3rd-order Butterworth low-pass at 10 kHz from standard coefficient tables, and used root locus to analyse oscillator stability. The whole thing taught me more about analog design than any lecture did.",
     sections: {
       problem:
         'Design a cascode BJT amplifier meeting strict gain, impedance, and bandwidth specs. Separately, design a 3rd-order Butterworth active filter and analyse oscillator stability using root locus.',
@@ -451,10 +311,162 @@ export const projects: ProjectData[] = [
       { label: 'Full Report (PDF)', url: '/assets/projects/elec301-cascode/report.pdf' },
     ],
   },
+
+  // ── 8. ELEC301 — BJT Amplifier Analysis ───────────────────────────
+  {
+    slug: 'elec301-amplifiers',
+    title: 'BJT Amplifier Analysis',
+    tagline: 'OC/SC time constants on a 4-pole RC filter + Miller\'s theorem on CE/CB/CC BJTs, all verified in LTSpice',
+    category: 'software',
+    tags: ['LTSpice', 'BJT', 'SPICE', 'Analog Design', 'Bode Plot', 'ELEC301'],
+    date: '2025',
+    featured: false,
+    coverImage: '',
+    images: [],
+    summary:
+      "Another ELEC301 mini project, this one all about frequency response. I used the open-circuit / short-circuit (OC/SC) time constant method to find all four poles of an RC bandpass filter by hand, then verified them in LTSpice. After that I ran CE, CB, and CC BJT amplifiers through the same kind of analysis — using Miller's theorem to decouple the feedback capacitance for high-frequency poles, then comparing calculated midband gain and I/O impedances against simulation. Poles landed at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — hand calculations and SPICE agreed within a small margin. Good reminder that hand analysis still matters in an era where everyone reaches for simulation first.",
+    sections: {
+      problem:
+        'Analyse a four-pole RC bandpass filter and three BJT amplifier topologies. Predict pole locations analytically using OC/SC method, then verify with LTSpice AC sweep.',
+      goals: [
+        'Find all poles of a 4-element RC bandpass filter using OC and SC time constants',
+        'Simulate CE, CB, and CC amplifier configurations in LTSpice',
+        'Apply Miller\'s theorem to approximate high-frequency pole locations',
+        'Compare calculated midband gain and I/O resistances against SPICE simulation',
+      ],
+      designDecisions:
+        'Used the open-circuit/short-circuit (OC/SC) time constant method to approximate pole frequencies without solving the full transfer function. Miller\'s theorem used to decouple the feedback capacitance for high-frequency analysis. All simulations run in LTSpice with decade AC sweeps from 1 mHz to 1 THz.',
+      validation:
+        'Simulated poles matched calculated values within acceptable margin. Error analysis documented for each topology. CE vs CB input/output impedance comparison confirmed textbook trade-offs.',
+      results:
+        'RC filter poles identified at 14.2 Hz, 312.6 Hz, 5.90 MHz, and 38.6 MHz — consistent across both methods. BJT amplifier I/O resistances and gains verified in simulation.',
+    },
+    links: [
+      { label: 'Full Report (PDF)', url: '/assets/projects/elec301-amplifiers/report.pdf' },
+    ],
+  },
+
+  // ── 9. Alarm Clock in 8051 ────────────────────────────────────────
+  {
+    slug: 'alarm-clock-8051',
+    title: 'Alarm Clock in 8051',
+    tagline: '8051 alarm clock written in assembly — hardware timer interrupts, button debounce, no drift',
+    category: 'embedded',
+    tags: ['8051', 'Assembly', 'Interrupts', 'Timer', 'GPIO'],
+    date: '2024',
+    featured: false,
+    coverImage: '/assets/alarm-clock.jpg',
+    images: ['/assets/alarm-clock.jpg', '/assets/alarm-clock.png'],
+    summary:
+      "An 8051 alarm clock written in assembly. The whole thing is timer-interrupt-driven — no polling, because that's exactly how you get drift — and the buttons are debounced in software. You set the time, set the alarm, the buzzer fires when it should. Tested for accuracy over multi-hour runs with no measurable drift. Writing it in assembly forced me to actually understand what the timer registers and ISRs were doing, instead of letting Arduino abstractions hide it from me.",
+    sections: {
+      designDecisions:
+        'Timer interrupts drive the timekeeping loop to avoid drift from polling. Button debounce handled in software.',
+      results: 'Accurate timekeeping verified over multi-hour tests. Alarm triggers reliably.',
+    },
+    links: [],
+  },
+
+  // ── 10. RISC Machine ──────────────────────────────────────────────
+  {
+    slug: 'risc-machine',
+    title: 'RISC Machine',
+    tagline: 'RISC CPU in Verilog — fetch / decode / execute on a DE1-SoC, simulated in ModelSim, synthesised in Quartus',
+    category: 'software',
+    tags: ['Verilog', 'FPGA', 'DE1-SoC', 'ModelSim', 'Quartus', 'Digital Design'],
+    date: '2024',
+    featured: false,
+    coverImage: '',
+    images: [],
+    summary:
+      "Designed a simple RISC CPU in Verilog from the ground up — register file, ALU, control unit, fetch-decode-execute pipeline, the whole stack. Simulated each module in ModelSim, then synthesised the whole thing onto a DE1-SoC FPGA via Quartus and ran test programs on real hardware. Timing constraints met for the target clock. It's the kind of project that finally makes 'how does a CPU actually work' click — you stop thinking of CPUs as magic and start thinking of them as a really well-organised state machine.",
+    sections: {
+      results: 'CPU executed all test programs correctly. Timing constraints met for target clock frequency.',
+    },
+    links: [],
+  },
+
+  // ── 11. Mini Power Bank ───────────────────────────────────────────
+  {
+    slug: 'mini-powerbank',
+    title: 'Mini Power Bank',
+    tagline: 'Hand-built USB power bank — Li-ion + boost converter, small enough for a shirt pocket',
+    category: 'pcb',
+    tags: ['Power Electronics', 'Li-ion', 'Boost Converter', 'USB', 'PCB'],
+    date: '2022',
+    featured: false,
+    coverImage: '/assets/mini-powerbank.jpg',
+    images: ['/assets/mini-powerbank.jpg', '/assets/mini-powerbank-inside.jpg', '/assets/mini-powerbank-inside2.jpg'],
+    summary:
+      "Built this before I really knew what PCB layout meant. A Li-ion cell, a boost converter board, a USB-A output, and a micro-USB charge-through port — all packed into something that actually fits in a shirt pocket. Charges phones and small USB devices reliably. Looking back I'd redesign half of it, but at the time it taught me about battery safety, current limiting, and the difference between 'works on the bench' and 'survives being thrown in a backpack.'",
+    sections: {
+      results: 'Powers phones and small USB devices reliably. Fits in a shirt pocket.',
+    },
+    links: [],
+  },
+
+  // ── 12. The Claw ──────────────────────────────────────────────────
+  {
+    slug: 'the-claw',
+    title: 'The Claw',
+    tagline: 'Joystick-controlled servo claw — direct proportional control, no oscillation, surprisingly grippy',
+    category: 'robotics',
+    tags: ['Servo', 'Joystick', 'Arduino', 'Mechanical', 'Robotics'],
+    date: '2021',
+    featured: false,
+    coverImage: '/assets/the-claw.jpg',
+    images: ['/assets/the-claw.jpg'],
+    summary:
+      "Three hobby servos, a joystick, an Arduino, and a 3D-printed frame. Finger positions track joystick input proportionally — push the stick further, the fingers close further. No oscillation, no jitter, just clean direct control. Built it as a dexterity toy and ended up using it to grip pretty much anything within reach. Still works.",
+    sections: {
+      results: 'Successfully gripped a range of objects. Smooth servo response with no oscillation.',
+    },
+    links: [],
+  },
+
+  // ── 13. Audio-Responsive LED ──────────────────────────────────────
+  {
+    slug: 'audio-led',
+    title: 'Audio-Responsive LED',
+    tagline: 'Microphone → ADC → LED matrix — lights pulse with whatever\'s playing, no perceptible lag',
+    category: 'embedded',
+    tags: ['LED', 'Audio', 'ADC', 'Arduino', 'Analog'],
+    date: '2020',
+    featured: false,
+    coverImage: '',
+    images: [],
+    summary:
+      "A microphone picks up ambient sound, the ADC samples the level, and an LED matrix brightens / patterns in response — real-time enough that there's no perceptible lag between the beat and the lights. The interesting part isn't the LED side, it's the analog front-end: mic bias, AC coupling, envelope detection. Once that part is clean, everything downstream is easy.",
+    sections: {
+      results: 'Visually responsive to music with no perceptible latency.',
+    },
+    links: [],
+  },
+
+  // ── 14. Inventory Analysis System ─────────────────────────────────
+  {
+    slug: 'inventory-analysis',
+    title: 'Inventory Analysis System',
+    tagline: 'Excel + VBA tool I built for my family\'s electronics shop — real-time stock, alerts, sales analytics',
+    category: 'software',
+    tags: ['Excel', 'VBA', 'Data Analysis', 'Automation'],
+    date: '2020',
+    featured: false,
+    coverImage: '/assets/inventory-analysis.png',
+    images: ['/assets/inventory-analysis.png'],
+    summary:
+      "An Excel + VBA tool I built for my family's electronics shop in Bali. Tracks stock levels in real time, fires low-stock alerts before things sell out, and generates sales summaries automatically. Replaced a lot of manual paperwork and caught a few out-of-stock situations before they cost us a sale. Not glamorous, but useful — and a reminder that 'engineering' includes spreadsheets when that's what the problem actually needs.",
+    sections: {
+      results: 'Reduced manual stock-checking time significantly. Prevented several out-of-stock situations.',
+    },
+    links: [],
+  },
+
+  // ── 15. Kinetic-Powered LED ───────────────────────────────────────
   {
     slug: 'kinetic-led',
     title: 'Kinetic-Powered LED',
-    tagline: 'Hand-crank dynamo powering LEDs — a demonstration of motion-to-light energy conversion',
+    tagline: 'Hand-crank dynamo → bridge rectifier → cap → LEDs. Physics demo, the old-school way.',
     category: 'embedded',
     tags: ['Generator', 'Rectifier', 'LED', 'Power Electronics'],
     date: '2019',
@@ -462,9 +474,28 @@ export const projects: ProjectData[] = [
     coverImage: '',
     images: [],
     summary:
-      'A hand-crank dynamo connected to a bridge rectifier and capacitor, smoothing the output to drive LEDs. Built to demonstrate mechanical-to-electrical energy conversion.',
+      "A hand-crank dynamo wired to a bridge rectifier and a smoothing capacitor, driving LEDs. The classic 'see physics happen in real time' demo. Crank fast enough and the LEDs light up cleanly — multimeter confirms the DC out of the cap is reasonably smooth. One of the first circuits I built that wasn't straight out of a textbook.",
     sections: {
       results: 'LEDs light up reliably from moderate cranking speed. Clean DC output confirmed with multimeter.',
+    },
+    links: [],
+  },
+
+  // ── 16. Spreadsheet Cashier System ────────────────────────────────
+  {
+    slug: 'cashier-system',
+    title: 'Spreadsheet Cashier System',
+    tagline: 'Google Sheets POS for the family shop — transactions, balances, daily totals, near-zero arithmetic errors',
+    category: 'software',
+    tags: ['Google Sheets', 'Apps Script', 'POS', 'Automation'],
+    date: '2019',
+    featured: false,
+    coverImage: '/assets/cashier-system.png',
+    images: ['/assets/cashier-system.png'],
+    summary:
+      "A Google Sheets-based point-of-sale system I built for my family's shop, Tjahya Elektronik. Records every transaction, calculates change, tracks daily totals, and flags discrepancies the moment they show up. Replaced the manual cashbook we'd been using forever — and dropped arithmetic errors to nearly zero. Built with Apps Script, deployed on a shared spreadsheet so anyone in the shop could use it from any device. Worked so well it stayed in production for years.",
+    sections: {
+      results: 'Replaced manual cashbook with near-zero arithmetic errors.',
     },
     links: [],
   },
