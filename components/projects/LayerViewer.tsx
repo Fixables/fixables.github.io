@@ -92,28 +92,34 @@ export default function LayerViewer({ layers }: Props) {
             transformOrigin: 'center center',
           }}
         >
-          {layers.map(layer => (
-            <div
-              key={layer.name}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                display: visible[layer.name] ? 'block' : 'none',
-                mixBlendMode: 'screen',
-              }}
-            >
-              {/* Colored background — image multiplies against it: white traces → color, black → black */}
-              <div style={{ position: 'absolute', inset: 0, backgroundColor: layer.color }} />
-              <Image
-                src={layer.url}
-                alt={layer.label}
-                fill
-                className="object-contain"
-                style={{ mixBlendMode: 'multiply' }}
-                unoptimized
-              />
-            </div>
-          ))}
+          {layers.map(layer => {
+            const isSvg = layer.url.endsWith('.svg')
+            return (
+              <div
+                key={layer.name}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: visible[layer.name] ? 'block' : 'none',
+                  mixBlendMode: 'screen',
+                }}
+              >
+                {/* PNGs: monochrome white-on-black — tint by multiplying against a color background.
+                    SVGs: already have baked-in colors — render directly, screen blend makes black transparent. */}
+                {!isSvg && (
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: layer.color }} />
+                )}
+                <Image
+                  src={layer.url}
+                  alt={layer.label}
+                  fill
+                  className="object-contain"
+                  style={{ mixBlendMode: isSvg ? 'normal' : 'multiply' }}
+                  unoptimized
+                />
+              </div>
+            )
+          })}
         </div>
 
         {/* Zoom indicator */}

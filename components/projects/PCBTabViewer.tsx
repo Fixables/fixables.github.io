@@ -25,8 +25,14 @@ interface Props {
 export default function PCBTabViewer({ project }: Props) {
   const has3D        = !!project.model3d
   const hasLayers    = !!project.pcbLayers?.length
-  const hasSchematic = !!project.schematic
   const hasBOM       = !!project.bomData?.length
+
+  // Merge single schematic + schematics array into one list
+  const allSchematics = [
+    ...(project.schematic ? [project.schematic] : []),
+    ...(project.schematics ?? []),
+  ]
+  const hasSchematic = allSchematics.length > 0
 
   // Build available tabs in display order
   const tabs: { id: Tab; label: string }[] = [
@@ -73,9 +79,9 @@ export default function PCBTabViewer({ project }: Props) {
 
       {active === 'schematic' && hasSchematic && (
         <SchematicViewer
-          src={project.schematic!}
+          srcs={allSchematics}
           title={project.title}
-          downloadUrl={project.schematic!.endsWith('.pdf') ? project.schematic : undefined}
+          downloadUrl={allSchematics.find(s => s.endsWith('.pdf'))}
         />
       )}
 

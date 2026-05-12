@@ -85,7 +85,8 @@ export interface ProjectData {
   subsystems?: Subsystem[]
   // PCB viewer extras
   pcbLayers?: PCBLayer[]
-  schematic?: string     // path to SVG or PNG schematic
+  schematic?: string     // path to SVG or PNG schematic (single)
+  schematics?: string[]  // multiple schematic images — shown with prev/next nav
   bomData?: BOMEntry[]
   fabStats?: FabStats
 }
